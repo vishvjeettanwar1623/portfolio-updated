@@ -24,6 +24,17 @@ export interface FlowingMenuProps {
   fontFamily?: string;
 }
 
+interface MenuItemProps {
+  category: string;
+  items: SkillItem[];
+  speed: number;
+  textColor: string;
+  marqueeBgColor: string;
+  marqueeTextColor: string;
+  borderColor: string;
+  fontFamily: string;
+}
+
 const MenuItem = ({
   category,
   items,
@@ -33,7 +44,7 @@ const MenuItem = ({
   marqueeTextColor,
   borderColor,
   fontFamily,
-}: any) => {
+}: MenuItemProps) => {
   const itemRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const marqueeInnerRef = useRef<HTMLDivElement>(null);
@@ -56,13 +67,13 @@ const MenuItem = ({
 
   const handleMouseEnter = () => {
     if (marqueeRef.current) {
-      gsap.to(marqueeRef.current, { opacity: 1, duration: 0.3 });
+      gsap.to(marqueeRef.current, { y: '0%', opacity: 1, duration: 0.3 });
     }
   };
 
   const handleMouseLeave = () => {
     if (marqueeRef.current) {
-      gsap.to(marqueeRef.current, { opacity: 0, duration: 0.3 });
+      gsap.to(marqueeRef.current, { y: '101%', opacity: 0, duration: 0.3 });
     }
   };
 
@@ -82,7 +93,7 @@ const MenuItem = ({
             {[...Array(2)].map((_, idx) => (
               <div className="marquee__part" key={idx} style={{ color: marqueeTextColor }}>
                 <div className="marquee__skills-list">
-                  {items.map((skill: any, i: number) => (
+                  {items.map((skill: SkillItem, i: number) => (
                     <div key={i} className="marquee__skill-item font-[family-name:var(--font-syne-mono)]">
                       <div className="w-8 h-8 md:w-10 md:h-10 relative flex-shrink-0">
                         {skill.icon}
