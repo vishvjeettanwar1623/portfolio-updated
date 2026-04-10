@@ -16,7 +16,7 @@ const createTouchTexture = () => {
   texture.minFilter = THREE.LinearFilter;
   texture.magFilter = THREE.LinearFilter;
   texture.generateMipmaps = false;
-  const trail: { x: number; y: number; age: number }[] = [];
+  const trail: TrailPoint[] = [];
   let last: { x: number; y: number } | null = null;
   const maxAge = 64;
   let radius = 0.1 * size;
@@ -29,7 +29,7 @@ const createTouchTexture = () => {
     const pos = { x: p.x * size, y: (1 - p.y) * size };
     let intensity = 1;
     const easeOutSine = (t: number) => Math.sin((t * Math.PI) / 2);
-    const easeOutQuad = t => -t * (t - 2);
+    const easeOutQuad = (t: number) => -t * (t - 2);
     if (p.age < maxAge * 0.3) intensity = easeOutSine(p.age / (maxAge * 0.3));
     else intensity = easeOutQuad(1 - (p.age - maxAge * 0.3) / (maxAge * 0.7)) || 0;
     intensity *= p.force;
@@ -44,7 +44,7 @@ const createTouchTexture = () => {
     ctx.arc(pos.x - offset, pos.y - offset, radius, 0, Math.PI * 2);
     ctx.fill();
   };
-  const addTouch = norm => {
+  const addTouch = (norm: { x: number; y: number }) => {
     let force = 0;
     let vx = 0;
     let vy = 0;
@@ -89,7 +89,7 @@ const createTouchTexture = () => {
   };
 };
 
-const createLiquidEffect = (texture, opts) => {
+const createLiquidEffect = (texture: THREE.Texture, opts: { strength?: number; freq?: number }) => {
   const fragment = `
     uniform sampler2D uTexture;
     uniform float uStrength;
@@ -301,6 +301,40 @@ void main(){
 
 const MAX_CLICKS = 10;
 
+interface TrailPoint {
+  x: number;
+  y: number;
+  age: number;
+  force: number;
+  vx: number;
+  vy: number;
+}
+
+interface PixelBlastProps {
+  variant?: 'square' | 'circle' | 'triangle' | 'diamond';
+  pixelSize?: number;
+  color?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  antialias?: boolean;
+  patternScale?: number;
+  patternDensity?: number;
+  liquid?: boolean;
+  liquidStrength?: number;
+  liquidRadius?: number;
+  pixelSizeJitter?: number;
+  enableRipples?: boolean;
+  rippleIntensityScale?: number;
+  rippleThickness?: number;
+  rippleSpeed?: number;
+  liquidWobbleSpeed?: number;
+  autoPauseOffscreen?: boolean;
+  speed?: number;
+  transparent?: boolean;
+  edgeFade?: number;
+  noiseAmount?: number;
+}
+
 const PixelBlast = ({
   variant = 'square',
   pixelSize = 3,
@@ -324,7 +358,7 @@ const PixelBlast = ({
   transparent = true,
   edgeFade = 0.5,
   noiseAmount = 0
-}: any) => {
+}: PixelBlastProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const visibilityRef = useRef({ visible: true });
   const speedRef = useRef(speed);
@@ -437,7 +471,7 @@ const PixelBlast = ({
         composer = new EffectComposer(renderer);
         const renderPass = new RenderPass(scene, camera);
         liquidEffect = createLiquidEffect(touch.texture, {
-          start: `top ${String(cardStackPos)}px`,
+          strength: liquidStrength,
           freq: liquidWobbleSpeed
         });
         const effectPass = new EffectPass(camera, liquidEffect);
@@ -472,12 +506,6 @@ const PixelBlast = ({
         const scaleY = renderer.domElement.height / rect.height;
         const fx = (e.clientX - rect.left) * scaleX;
         const fy = (rect.height - (e.clientY - rect.top)) * scaleY;
-        gsap.set(card as any, {
-          fx,
-          fy,
-          w: renderer.domElement.width,
-          h: renderer.domElement.height
-        });
         return {
           fx,
           fy,

@@ -57,10 +57,10 @@ const ScrollStack = ({
       const containerHeight = window.innerHeight;
       const stackPositionPx = typeof stackPosition === 'string' && stackPosition.includes('%') 
         ? (parseFloat(stackPosition) / 100) * containerHeight 
-        : parseFloat(stackPosition);
+        : parseFloat(String(stackPosition));
       const scaleEndPositionPx = typeof scaleEndPosition === 'string' && scaleEndPosition.includes('%')
         ? (parseFloat(scaleEndPosition) / 100) * containerHeight
-        : parseFloat(scaleEndPosition);
+        : parseFloat(String(scaleEndPosition));
 
       cards.forEach((card: any, i: number) => {
         const isLast = i === cards.length - 1;
