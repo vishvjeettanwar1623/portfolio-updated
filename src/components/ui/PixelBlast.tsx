@@ -3,6 +3,40 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import './PixelBlast.css';
 
+interface TrailPoint {
+  x: number;
+  y: number;
+  age: number;
+  force: number;
+  vx: number;
+  vy: number;
+}
+
+interface PixelBlastProps {
+  variant?: 'square' | 'circle' | 'triangle' | 'diamond';
+  pixelSize?: number;
+  color?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  antialias?: boolean;
+  patternScale?: number;
+  patternDensity?: number;
+  liquid?: boolean;
+  liquidStrength?: number;
+  liquidRadius?: number;
+  pixelSizeJitter?: number;
+  enableRipples?: boolean;
+  rippleIntensityScale?: number;
+  rippleThickness?: number;
+  rippleSpeed?: number;
+  liquidWobbleSpeed?: number;
+  autoPauseOffscreen?: boolean;
+  speed?: number;
+  transparent?: boolean;
+  edgeFade?: number;
+  noiseAmount?: number;
+}
+
 const createTouchTexture = () => {
   const size = 64;
   const canvas = document.createElement('canvas');
@@ -25,7 +59,7 @@ const createTouchTexture = () => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
-  const drawPoint = (p: { x: number; y: number }) => {
+  const drawPoint = (p: TrailPoint) => {
     const pos = { x: p.x * size, y: (1 - p.y) * size };
     let intensity = 1;
     const easeOutSine = (t: number) => Math.sin((t * Math.PI) / 2);
@@ -110,7 +144,7 @@ const createLiquidEffect = (texture: THREE.Texture, opts: { strength?: number; f
     }
     `;
   return new Effect('LiquidEffect', fragment, {
-    uniforms: new Map([
+    uniforms: new Map<string, any>([
       ['uTexture', new THREE.Uniform(texture)],
       ['uStrength', new THREE.Uniform(opts?.strength ?? 0.025)],
       ['uTime', new THREE.Uniform(0)],
@@ -300,40 +334,6 @@ void main(){
 `;
 
 const MAX_CLICKS = 10;
-
-interface TrailPoint {
-  x: number;
-  y: number;
-  age: number;
-  force: number;
-  vx: number;
-  vy: number;
-}
-
-interface PixelBlastProps {
-  variant?: 'square' | 'circle' | 'triangle' | 'diamond';
-  pixelSize?: number;
-  color?: string;
-  className?: string;
-  style?: React.CSSProperties;
-  antialias?: boolean;
-  patternScale?: number;
-  patternDensity?: number;
-  liquid?: boolean;
-  liquidStrength?: number;
-  liquidRadius?: number;
-  pixelSizeJitter?: number;
-  enableRipples?: boolean;
-  rippleIntensityScale?: number;
-  rippleThickness?: number;
-  rippleSpeed?: number;
-  liquidWobbleSpeed?: number;
-  autoPauseOffscreen?: boolean;
-  speed?: number;
-  transparent?: boolean;
-  edgeFade?: number;
-  noiseAmount?: number;
-}
 
 const PixelBlast = ({
   variant = 'square',
