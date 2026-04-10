@@ -1,40 +1,40 @@
-"use client";
+'use client';
 
-import { Home, Briefcase, Zap, User, Trophy, Terminal, History, Palette } from "lucide-react";
-import { ExpandableTabs } from "@/components/ui/expandable-tabs";
-import { PremiumToggle } from "@/components/ui/bouncy-toggle";
+import StaggeredMenu from '@/components/ui/StaggeredMenu';
+
+const menuItems = [
+  { label: 'Home',         ariaLabel: 'Go to home section',         link: '#home' },
+  { label: 'About',        ariaLabel: 'Learn about me',              link: '#about' },
+  { label: 'Skills',       ariaLabel: 'View my skills',              link: '#skills' },
+  { label: 'Projects',     ariaLabel: 'View my projects',            link: '#projects' },
+  { label: 'Designs',      ariaLabel: 'View my UI designs',          link: '#designs' },
+  { label: 'Achievements', ariaLabel: 'View my achievements',        link: '#achievements' },
+];
+
+const socialItems = [
+  { label: 'GitHub',   link: 'https://github.com/vishvjeettanwar' },
+  { label: 'LinkedIn', link: 'https://www.linkedin.com/in/vishvjeet-tanwar/' },
+  { label: 'Resume',   link: '/resume.pdf' },
+  { label: 'Email me', link: 'mailto:vishvjeetsinghtanwar@gmail.com' },
+];
 
 export function Navbar() {
-  const tabs = [
-    { title: "Home", icon: Home, id: "home" },
-    { title: "About", icon: User, id: "about" },
-    { title: "Projects", icon: Briefcase, id: "projects" },
-    { title: "Design", icon: Palette, id: "designs" },
-    { title: "Skills", icon: Zap, id: "skills" },
-    { title: "Awards", icon: Trophy, id: "achievements" },
-    { title: "Code and Compete", icon: Terminal, id: "coding" },
-    { title: "Change Log", icon: History, id: "experience" },
-  ];
-
-  const handleTabChange = (index: number | null) => {
-    if (index === null) return;
-    const tab = tabs[index];
-    if (tab && 'id' in tab) {
-      document.getElementById(tab.id)?.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <nav className="fixed top-4 z-50 flex w-full justify-center px-4 pointer-events-none">
-      <div className="flex items-center gap-4 bg-background/80 backdrop-blur-md p-2 rounded-2xl border border-black/10 dark:border-white/10 shadow-lg pointer-events-auto">
-        <ExpandableTabs tabs={tabs} onChange={handleTabChange} />
-        <PremiumToggle 
-          defaultChecked={true}
-          onChange={(checked) => {
-            document.documentElement.setAttribute('data-theme', checked ? 'dark' : 'light')
-          }}
-        />
-      </div>
-    </nav>
+    <StaggeredMenu
+      isFixed
+      position="right"
+      items={menuItems}
+      socialItems={socialItems}
+      displaySocials
+      displayItemNumbering
+      logoText="vishvjeet.me"
+      menuButtonColor="#ffffff"
+      openMenuButtonColor="#000000"
+      changeMenuColorOnOpen
+      colors={['#2a2a2a', '#ffffff']}
+      accentColor="#6c63ff"
+      onMenuOpen={() => {}}
+      onMenuClose={() => {}}
+    />
   );
 }

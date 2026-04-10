@@ -4,8 +4,11 @@ import Image from "next/image";
 import React from "react";
 import { Timeline } from "@/components/ui/timeline";
 
+import { SectionWrapper } from "@/components/sections/SectionWrapper";
+
 export function ExperienceSection() {
   const data = [
+    
     {
       title: "2026",
       content: (
@@ -14,6 +17,7 @@ export function ExperienceSection() {
             <p> • Got Certified from Google in Data Analytics </p>
             <p> • Qualified Google Big Code Qualifiers Round </p>
             <p> • Scored 9.35 SGPA in my 3rd Semester </p>
+            <p> • Won $100 prize at Monad Blitz V3 </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <Image
@@ -38,7 +42,7 @@ export function ExperienceSection() {
               className="rounded-lg object-contain bg-white dark:bg-neutral-900 h-20 md:h-44 lg:h-60 w-full border-2 border-neutral-200 dark:border-white/40 transition-transform duration-300 hover:scale-150 hover:z-50 relative z-10 cursor-pointer"
             />
             <Image
-              src="/assets/experience/more.png"
+              src="/assets/achievements/monad.jpg"
               alt="more-to-come-image"
               width={500}
               height={500}
@@ -139,10 +143,11 @@ export function ExperienceSection() {
       ),
     },
   ];
+
   return (
-    <section id="experience" className="py-24 bg-background">
+    <SectionWrapper id="experience" animate={false}>
         <Timeline data={data} />
-    </section>
+    </SectionWrapper>
   );
 }
 

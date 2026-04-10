@@ -73,12 +73,12 @@ return (
                 }}
                 className="relative flex items-center group"
               >
-                {/* Tooltip */}
+                {}
                 <span className="absolute right-full mr-3 whitespace-nowrap bg-foreground text-background text-xs px-3 py-1.5 rounded-lg border border-white/10 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300 pointer-events-none shadow-xl font-medium">
                   {option.label}
                 </span>
                 
-                {/* Button */}
+                {}
                 <Button
                   onClick={option.onClick}
                   size="icon"

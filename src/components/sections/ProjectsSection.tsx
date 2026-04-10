@@ -1,14 +1,31 @@
 "use client";
 
-import { HoverRevealCard } from "@/components/ui/hover-reveal-card";
-import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { SectionWrapper } from "@/components/sections/SectionWrapper";
+import CardSwap, { Card } from "@/components/ui/CardSwap";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const projects = [
+  {
+    name: "Eternal",
+    subtitle: "TypeScript • Solidity • JavaScript",
+    image: "./assets/Projects/eternal.png",
+    description: (
+      <>
+        <p className="mb-2">
+          Eternal is a real-time, on-chain auto-battler where two players stake on-chain tokens, solve a live coding challenge in their browser, and have their code graded by AI.
+        </p>
+        <p>
+          The resulting stats power an animated fighter that battles the opponent's fighter — all resolved on-chain.
+        </p>
+      </>
+    ),
+  },
   {
     name: "Data Roots",
     subtitle: "JavaScript • Solidity • Pinata",
     image: "./assets/Projects/data_roots.png",
-    githubUrl: "https://github.com/vishvjeettanwar1623/Data-Roots",
     description: (
       <>
         <p className="mb-2">
@@ -24,11 +41,10 @@ const projects = [
     name: "Promp-IP",
     subtitle: "React • TypeScript • Solidity",
     image: "./assets/Projects/promp-ip.png",
-    githubUrl: "https://github.com/vishvjeettanwar1623/prompIP",
     description: (
       <>
         <p className="mb-2">
-          Promp IP is a AI Prompt Ownership & Licensing Marketplace powered by Story Protocol
+          Promp IP is an AI Prompt Ownership &amp; Licensing Marketplace powered by Story Protocol.
         </p>
         <p>
           It uses Story Protocol for IP management and Solidity for smart contracts to ensure data security and transparency.
@@ -40,7 +56,6 @@ const projects = [
     name: "Questfi",
     subtitle: "JavaScript • Solidity • React.js",
     image: "./assets/Projects/questfi.png",
-    githubUrl: "https://github.com/vishvjeettanwar1623/Questfi-VietBuild",
     description: (
       <>
         <p className="mb-2">
@@ -56,14 +71,13 @@ const projects = [
     name: "Profile Auditor",
     subtitle: "Python • JavaScript • FastAPI",
     image: "./assets/Projects/profile-auditor.png",
-    githubUrl: "https://github.com/vishvjeettanwar1623/ProfileAuditor",
     description: (
       <>
         <p className="mb-2">
-         A application that verifies resume claims against online activity.
+          An application that verifies resume claims against online activity.
         </p>
         <p>
-          This application matches your current skills mentioned in your resume with your online presences from GitHub and Leetcode. 
+          Matches skills mentioned in your resume with your online presence from GitHub and Leetcode.
         </p>
       </>
     ),
@@ -72,14 +86,13 @@ const projects = [
     name: "PDF-Chatbot",
     subtitle: "Flutter • Dart • Firebase",
     image: "./assets/Projects/pdf-chatbot.png",
-    githubUrl: "https://github.com/vishvjeettanwar1623/pdf-chatbot",
     description: (
       <>
         <p className="mb-2">
-         This PDF chatbot not only interacts with you like a PDF teacher but also provides you PDF-specific questions and PDF-specific quizzes generated from that exact PDF. 
+          This PDF chatbot interacts like a PDF teacher and provides PDF-specific questions and quizzes generated from that exact document.
         </p>
         <p>
-         Its architectures include using various APIs generation where the bearer tokens to match the user's resume and online presence and then rate them. 
+          Built with Flutter and Firebase for a seamless cross-platform experience.
         </p>
       </>
     ),
@@ -88,47 +101,93 @@ const projects = [
     name: "Playback Extension",
     subtitle: "JavaScript • HTML",
     image: "./assets/Projects/playback-extension.png",
-    githubUrl: "https://github.com/vishvjeettanwar1623/playback_extension",
     description: (
       <>
         <p className="mb-2">
-         This extension allows the user to go from 2x speed to 3x, 4x, and in between speed measurements also. 
+          This extension allows users to control YouTube playback speed beyond the default 2x — up to 3x, 4x, and in-between.
         </p>
         <p>
-         It uses simple HTML and JavaScript to create the process of increasing the YouTube speed. 
+          Built with simple HTML and JavaScript for a lightweight, no-dependency experience.
         </p>
       </>
     ),
-  },  
+  },
 ];
 
 export function ProjectsSection() {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const cardSwapRef = useRef<any>(null);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { amount: 0.1 });
+
+  const activeProject = projects[selectedIndex] || projects[0];
+
   return (
-    <section id="projects" className="py-24 bg-background relative overflow-hidden flex flex-col">
-      <div className="container mx-auto px-4 md:px-8 mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-left">Work Portfolio</h2>
-          <p className="text-muted-foreground max-w-lg text-left text-lg">Not concepts, just things that exist and work..</p>
-      </div>
-      
-      <div className="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project, index) => (
-          <HoverRevealCard
-            key={index}
-            number={String(index + 1).padStart(2, '0')}
-            title={project.name}
-            subtitle={project.subtitle}
-            image={project.image}
-            description={project.description}
-            githubUrl={project.githubUrl}
-          />
-        ))}
-      </div>
-      <div className="container mx-auto px-4 md:px-8 mt-12 mb-4 flex justify-end">
-        <LiquidMetalButton 
-          label="View More on GitHub"
-          onClick={() => window.open('https://github.com/vishvjeettanwar1623', '_blank')}
-        />
-      </div>
-    </section>
+    <>
+    <div ref={sectionRef}>
+      <SectionWrapper id="projects" className="bg-transparent overflow-visible">
+
+        {}
+        <div className="mb-10 relative z-10">
+          <h2 className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-4 text-left text-white font-[family-name:var(--font-audiowide)] drop-shadow-[0_10px_50px_rgba(0,0,0,1)]">
+            Work Portfolio
+          </h2>
+          <p className="text-white/85 max-w-lg text-left text-lg">Not concepts, just things that exist and work.</p>
+        </div>
+
+        {}
+        <div className="relative flex flex-col lg:flex-row items-center lg:items-center gap-0 w-full min-h-[520px]">
+
+          {}
+          <div className="w-full lg:w-2/5 flex flex-col items-center text-center justify-center relative z-10 pr-0 lg:pr-12 md:mt-24 lg:mt-0">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="font-[family-name:var(--font-syne-mono)] flex flex-col items-center"
+              >
+                <p className="text-white/85 text-xs uppercase tracking-widest mb-4 font-medium">
+                  {activeProject.subtitle}
+                </p>
+                <h3 className="text-3xl lg:text-4xl xl:text-5xl font-extrabold mb-5 text-white leading-tight">
+                  {activeProject.name}
+                </h3>
+                <div className="text-white/95 space-y-3 leading-relaxed text-base lg:text-lg max-w-sm">
+                  {activeProject.description}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+          </div>
+
+          {}
+          <div className="w-full lg:w-3/5 relative flex items-center justify-center lg:justify-end h-[500px] lg:h-[600px] overflow-visible">
+            <CardSwap
+              ref={cardSwapRef}
+              width={750}
+              height={460}
+              cardDistance={60}
+              verticalDistance={60}
+              delay={4000}
+              pauseOnHover={false}
+              isAutoPlayActive={isInView}
+              skewAmount={4}
+              onOrderChange={(frontIndex: number) => setSelectedIndex(frontIndex)}
+            >
+              {projects.map((p, i) => (
+                <Card key={i}>
+                  <img src={p.image} alt={p.name} />
+                </Card>
+              ))}
+            </CardSwap>
+          </div>
+
+        </div>
+      </SectionWrapper>
+    </div>
+    </>
   );
 }

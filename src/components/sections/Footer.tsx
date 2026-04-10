@@ -1,31 +1,17 @@
 "use client";
 
-import { Github, Linkedin, Mail, Heart } from "lucide-react";
-
-const socialLinks = [
-  {
-    label: "GitHub",
-    href: "https://github.com/vishvjeettanwar1623",
-    icon: Github,
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/vishvjeet-tanwar/", // Replace with your LinkedIn URL
-    icon: Linkedin,
-  },
-  {
-    label: "Email",
-    href: "mailto:[sbvj727@gmail.com]", // Replace with your email
-    icon: Mail,
-  },
-];
+import { WavyBackground } from "@/components/ui/wavy-background";
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-border/30 bg-background">
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Left — Name & tagline */}
+    <footer id="contact" className="relative border-t border-border/30 bg-background overflow-hidden min-h-[300px] flex items-center justify-center">
+      <WavyBackground />
+      <div className="container relative z-10 mx-auto px-4 py-16 md:py-24 flex flex-col items-center h-full justify-end">
+        {}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-border/50 to-transparent max-w-5xl mx-auto mb-8 mt-auto"></div>
+
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 w-full max-w-5xl mx-auto">
+          {}
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold text-foreground tracking-tight">
               Vishvjeet Singh Tanwar
@@ -35,32 +21,13 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Right — Social links */}
-          <div className="flex items-center gap-4">
-            {socialLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.label}
-                  className="group flex items-center justify-center w-10 h-10 rounded-full border border-border/50 bg-card/20 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-card/40 transition-all duration-300"
-                >
-                  <Icon className="w-4 h-4" />
-                </a>
-              );
-            })}
+          {}
+          <div className="text-center md:text-right">
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} Vishvjeet Singh Tanwar.<br className="md:hidden" /> Built with
+              inspirations and creations.
+            </p>
           </div>
-        </div>
-
-        {/* Bottom copyright */}
-        <div className="mt-8 pt-6 border-t border-border/20 text-center">
-          <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
-            © {new Date().getFullYear()} Vishvjeet Singh Tanwar. Built with
-            inspirations and creations.
-          </p>
         </div>
       </div>
     </footer>

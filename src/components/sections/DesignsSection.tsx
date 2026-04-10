@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { SectionWrapper } from "@/components/sections/SectionWrapper";
+
+import GlareHover from "@/components/ui/GlareHover";
 
 const designs = [
   {
@@ -21,122 +25,133 @@ const designs = [
   },
 ];
 
-// Each card gets a unique tilt for visual interest
-// Uniform rightward tilt for all cards
-const CARD_TILT = { rotate: "3deg", translateY: "-4px" };
-
 export function DesignsSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleEnter = (index: number) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setHoveredIndex(index), 60);
+  };
+
+  const handleLeave = () => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setHoveredIndex(null), 80);
+  };
 
   return (
-    <section
-      id="designs"
-      className="py-24 bg-background relative overflow-visible flex flex-col"
-    >
-      {/* Header */}
-      <div className="container mx-auto px-4 md:px-8 mb-16">
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-left">
+    <SectionWrapper id="designs" className="overflow-visible">
+      {}
+      <div className="mb-16">
+        <h2 className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-4 text-left text-white font-[family-name:var(--font-audiowide)] drop-shadow-[0_10px_50px_rgba(0,0,0,1)]">
           UI Craft
         </h2>
-        <p className="text-muted-foreground max-w-sm text-left">
+        <p className="text-white/95 max-w-lg text-left text-lg">
           Concept-driven designs shaped into usable interfaces.
         </p>
       </div>
 
-      {/* Cards row — horizontal, tilted, expand on hover */}
-      <div
-        className="container mx-auto px-4 md:px-8 pb-16"
-        onMouseLeave={() => setHoveredIndex(null)}
-      >
-        <div className="flex items-center justify-center gap-6 md:gap-10 relative">
+      {}
+      <div className="pb-16" onMouseLeave={handleLeave}>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-10">
           {designs.map((design, index) => {
             const isHovered = hoveredIndex === index;
             const isAnyHovered = hoveredIndex !== null;
+            const isDimmed = isAnyHovered && !isHovered;
 
             return (
-              <div
+              <motion.div
                 key={index}
-                className="relative"
-                style={{
-                  // Default: small tilted card
-                  // Hovered: expand, straighten, come forward
-                  transform: isHovered
-                    ? "rotate(0deg) translateY(-20px) scale(1.6)"
-                    : `rotate(${CARD_TILT.rotate}) translateY(${CARD_TILT.translateY})`,
-                  zIndex: isHovered ? 50 : 10 - index,
-                  filter:
-                    isAnyHovered && !isHovered
-                      ? "blur(4px) brightness(0.5)"
-                      : "blur(0px) brightness(1)",
-                  opacity: isAnyHovered && !isHovered ? 0.5 : 1,
-                  transition:
-                    "transform 0.5s cubic-bezier(0.22,1,0.36,1), filter 0.4s ease, opacity 0.4s ease, z-index 0s, max-width 0.5s cubic-bezier(0.22,1,0.36,1)",
-                  flex: "1 1 0%",
-                  maxWidth: isHovered ? "805px" : "460px",
+                onMouseEnter={() => handleEnter(index)}
+                onMouseLeave={handleLeave}
+                onClick={() => setHoveredIndex(hoveredIndex === index ? null : index)}
+                style={{ zIndex: isHovered ? 50 : 10 - index, willChange: "transform, filter, opacity" }}
+                animate={{
+                  scale: isHovered ? 1.5 : 1,
+                  rotate: isHovered ? 0 : 3,
+                  y: isHovered ? -18 : -4,
+                  filter: isDimmed
+                    ? "blur(3px) brightness(0.45)"
+                    : "blur(0px) brightness(1)",
+                  opacity: isDimmed ? 0.5 : 1,
                 }}
-                onMouseEnter={() => setHoveredIndex(index)}
+                transition={{
+                  duration: 0.55,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+                className="relative w-full md:flex-1 cursor-pointer"
               >
-                {/* Card */}
-                <div
-                  className={cn(
-                    "relative w-full overflow-hidden rounded-2xl border cursor-pointer",
-                    "shadow-lg hover:shadow-2xl",
-                    isHovered
-                      ? "border-white/30 shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
-                      : "border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.2)]"
-                  )}
-                  style={{
-                    aspectRatio: "16 / 10",
-                    transition: "box-shadow 0.5s ease, border-color 0.4s ease",
+                {}
+                <motion.div
+                  animate={{
+                    boxShadow: isHovered
+                      ? "0 24px 64px rgba(0,0,0,0.55)"
+                      : "0 8px 24px rgba(0,0,0,0.2)",
+                    borderColor: isHovered
+                      ? "rgba(255,255,255,0.25)"
+                      : "rgba(255,255,255,0.08)",
                   }}
+                  transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  className="relative w-full overflow-hidden rounded-2xl border border-white/10"
+                  style={{ aspectRatio: "16 / 10" }}
                 >
-                  {/* Image */}
-                  <img
-                    src={design.image}
-                    alt={design.name}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    style={{
-                      transition: "transform 0.6s cubic-bezier(0.22,1,0.36,1)",
-                      transform: isHovered ? "scale(1.05)" : "scale(1)",
-                    }}
-                  />
-
-                  {/* Gradient overlay */}
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: isHovered
-                        ? "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)"
-                        : "linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 40%)",
-                      transition: "background 0.4s ease",
-                    }}
-                  />
-
-                  {/* Label at bottom */}
-                  <div
-                    className="absolute bottom-0 left-0 right-0 p-4"
-                    style={{
-                      transform: isHovered
-                        ? "translateY(0)"
-                        : "translateY(4px)",
-                      opacity: isHovered ? 1 : 0.85,
-                      transition:
-                        "transform 0.4s ease, opacity 0.4s ease",
-                    }}
+                  <GlareHover
+                    glareOpacity={0.4}
+                    glareSize={200}
+                    glareAngle={-45}
+                    transitionDuration={600}
+                    className="w-full h-full"
                   >
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/60 mb-1">
-                      {design.tag}
-                    </p>
-                    <h3 className="text-sm md:text-base font-bold text-white leading-tight">
-                      {design.name}
-                    </h3>
-                  </div>
-                </div>
-              </div>
+                    {}
+                    <motion.div
+                      className="absolute inset-0"
+                      animate={{ scale: isHovered ? 1.06 : 1 }}
+                      transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    >
+                      <Image
+                        src={design.image}
+                        alt={design.name}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover"
+                      />
+                    </motion.div>
+
+                    {}
+                    <motion.div
+                      className="absolute inset-0"
+                      animate={{
+                        background: isHovered
+                          ? "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%)"
+                          : "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 40%)",
+                      }}
+                      transition={{ duration: 0.55, ease: "easeInOut" }}
+                    />
+
+                    {}
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 p-4"
+                      animate={{
+                        y: isHovered ? 0 : 5,
+                        opacity: isHovered ? 1 : 0.75,
+                      }}
+                      transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    >
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/95 mb-1 font-bold">
+                        {design.tag}
+                      </p>
+                      <h3 className="text-sm md:text-base font-bold text-white leading-tight">
+                        {design.name}
+                      </h3>
+                    </motion.div>
+                  </GlareHover>
+                </motion.div>
+              </motion.div>
             );
           })}
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   );
 }

@@ -44,13 +44,13 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
   return (
     <div
-      className="w-full font-sans md:px-10"
+      className="relative w-full font-sans md:px-10"
       ref={containerRef}
     >
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 flex items-center gap-4 text-black dark:text-white max-w-4xl">
-          <History className="w-8 h-8 md:w-12 md:h-12 text-primary" />
-          Changelog from my journey
+        <h2 className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-4 text-left text-white font-[family-name:var(--font-audiowide)] drop-shadow-[0_10px_50px_rgba(0,0,0,1)] flex items-center gap-4 max-w-4xl">
+          <History className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+          My Journey
         </h2>
         <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-sm">
           Here&apos;s a timeline of my journey.
@@ -77,7 +77,9 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-neutral-500 dark:text-neutral-500">
                 {item.title}
               </h3>
-              {item.content}{" "}
+              <div className="font-[family-name:var(--font-tactic-sans)]">
+                {item.content}
+              </div>{" "}
             </div>
           </div>
         ))}

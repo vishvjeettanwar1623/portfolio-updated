@@ -13,7 +13,7 @@ import {
   GitPullRequest,
 } from "lucide-react";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+
 
 interface GitHubProfile {
   avatar_url: string;
@@ -55,7 +55,7 @@ interface LeetCodeStats {
   hardSolved: number;
 }
 
-// ─── Constants ───────────────────────────────────────────────────────────────
+
 
 const GITHUB_USERNAME = "vishvjeettanwar1623";
 const LEETCODE_USERNAME = "vishvjeet1623";
@@ -73,7 +73,7 @@ const LANG_COLORS: Record<string, string> = {
   Rust: "#dea584",
 };
 
-// ─── Animated Donut Chart (SVG) ─────────────────────────────────────────────
+
 
 function LeetCodeDonut({
   easy,
@@ -109,7 +109,7 @@ function LeetCodeDonut({
 
   return (
     <div ref={ref} className="relative flex items-center justify-center">
-      {/* Outer glow ring */}
+      {}
       <motion.div
         className="absolute inset-0 rounded-full"
         style={{
@@ -125,7 +125,7 @@ function LeetCodeDonut({
         viewBox={`0 0 ${size} ${size}`}
         className="-rotate-90"
       >
-        {/* Background track */}
+        {}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -134,7 +134,7 @@ function LeetCodeDonut({
           stroke="rgba(255,255,255,0.05)"
           strokeWidth={strokeWidth}
         />
-        {/* Easy (green) — animated spin-in */}
+        {}
         <motion.circle
           cx={size / 2}
           cy={size / 2}
@@ -152,7 +152,7 @@ function LeetCodeDonut({
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
           style={{ filter: "drop-shadow(0 0 6px rgba(34,197,94,0.4))" }}
         />
-        {/* Medium (amber) — animated spin-in */}
+        {}
         <motion.circle
           cx={size / 2}
           cy={size / 2}
@@ -170,7 +170,7 @@ function LeetCodeDonut({
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.5 }}
           style={{ filter: "drop-shadow(0 0 6px rgba(245,158,11,0.4))" }}
         />
-        {/* Hard (red) — animated spin-in */}
+        {}
         {hard > 0 && (
           <motion.circle
             cx={size / 2}
@@ -191,7 +191,7 @@ function LeetCodeDonut({
           />
         )}
       </svg>
-      {/* Center text — count up */}
+      {}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <motion.span
           className="text-3xl font-bold text-foreground"
@@ -214,7 +214,7 @@ function LeetCodeDonut({
   );
 }
 
-// ─── Animated Counter ────────────────────────────────────────────────────────
+
 
 function AnimatedCounter({ value, label }: { value: number; label: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -260,7 +260,7 @@ function AnimatedCounter({ value, label }: { value: number; label: string }) {
   );
 }
 
-// ─── Event formatter ─────────────────────────────────────────────────────────
+
 
 function formatEvent(event: GitHubEvent) {
   const repoName = event.repo.name.split("/")[1] || event.repo.name;
@@ -314,7 +314,7 @@ function getTimeAgo(date: Date): string {
   return `${months}mo ago`;
 }
 
-// ─── Repo Card with blur/focus on hover ──────────────────────────────────────
+
 
 function RepoCard({ repo, isHovered, isAnyHovered }: { repo: GitHubRepo; isHovered: boolean; isAnyHovered: boolean }) {
   return (
@@ -371,7 +371,7 @@ function RepoCard({ repo, isHovered, isAnyHovered }: { repo: GitHubRepo; isHover
   );
 }
 
-// ─── Main Component ──────────────────────────────────────────────────────────
+
 
 export function CodingSection() {
   const [profile, setProfile] = useState<GitHubProfile | null>(null);
@@ -419,7 +419,7 @@ export function CodingSection() {
   return (
     <section id="coding" className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4">
-        {/* Header */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -427,12 +427,12 @@ export function CodingSection() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 flex items-center gap-4">
+          <h2 className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-4 text-left text-white font-[family-name:var(--font-audiowide)] drop-shadow-[0_10px_50px_rgba(0,0,0,1)] flex items-center gap-4">
             <motion.span
               animate={{ rotate: [0, -10, 10, -5, 0] }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 4 }}
             >
-              <Code2 className="w-8 h-8 md:w-12 md:h-12 text-primary" />
+              <Code2 className="w-8 h-8 md:w-10 md:h-10 text-primary" />
             </motion.span>
             Code & Compete
           </h2>
@@ -462,9 +462,9 @@ export function CodingSection() {
               transition={{ duration: 0.5 }}
               className="grid grid-cols-1 lg:grid-cols-3 gap-8"
             >
-              {/* ─── LEFT: GitHub (2 cols) ──────────────────────────── */}
+              {}
               <div className="lg:col-span-2 space-y-8">
-                {/* Profile Card + Contribution Chart */}
+                {}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -472,7 +472,7 @@ export function CodingSection() {
                   transition={{ duration: 0.6, delay: 0.1 }}
                   className="rounded-2xl border border-border/50 bg-card/30 backdrop-blur-md p-6 space-y-6"
                 >
-                  {/* Profile Row */}
+                  {}
                   {profile && (
                     <div className="flex items-center gap-5">
                       <motion.img
@@ -513,12 +513,12 @@ export function CodingSection() {
                     </div>
                   )}
 
-                  {/* Contribution Chart with hover effects */}
+                  {}
                   <div className="overflow-x-auto group/chart">
                     <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">
                       Contribution Activity
                     </p>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    {}
                     <img
                       src={`https://ghchart.rshah.org/${GITHUB_USERNAME}`}
                       alt="GitHub Contribution Chart"
@@ -527,7 +527,7 @@ export function CodingSection() {
                   </div>
                 </motion.div>
 
-                {/* Repos Grid — blur/focus effect */}
+                {}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -562,7 +562,7 @@ export function CodingSection() {
 
               </div>
 
-              {/* ─── RIGHT: LeetCode ──────────────────────────────── */}
+              {}
               <div className="space-y-8">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -593,7 +593,7 @@ export function CodingSection() {
 
                   {leetcode ? (
                     <div className="space-y-6">
-                      {/* Animated Donut Chart */}
+                      {}
                       <div className="flex justify-center">
                         <LeetCodeDonut
                           easy={leetcode.easySolved}
@@ -603,7 +603,7 @@ export function CodingSection() {
                         />
                       </div>
 
-                      {/* Breakdown — staggered entry */}
+                      {}
                       <div className="space-y-3">
                         {[
                           { label: "Easy", color: "#22c55e", value: leetcode.easySolved },
