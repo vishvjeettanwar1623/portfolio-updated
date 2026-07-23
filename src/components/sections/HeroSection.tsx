@@ -10,7 +10,7 @@ export function HeroSection() {
       <MascotHero 
         name="Vishvjeet Tanwar"
         badge="Designer & Builder"
-        mascotSrc="/assets/Mascot Image.png"
+        mascotSrc="/assets/Mascot Image.png?v=2"
         animationDelay={0}
       />
     </section>
