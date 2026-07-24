@@ -29,7 +29,7 @@ export function SectionWrapper({
         className
       )}
     >
-      <div className={cn("container mx-auto px-4 relative z-10", containerClassName)}>
+      <div className={cn("container mx-auto px-4 relative z-20", containerClassName)}>
         {animate ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -43,9 +43,9 @@ export function SectionWrapper({
           children
         )}
       </div>
-      
-      {}
-      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent_70%)]" />
+
+      {/* Soft Ambient Radial Background Aura */}
+      <div className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.04),transparent_75%)]" />
     </section>
   );
 }
