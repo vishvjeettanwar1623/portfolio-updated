@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
@@ -127,20 +127,20 @@
 }
 
 [data-theme="dark"] {
-  --background: #000000;
-  --foreground: #ffffff;
-  --text-primary: #ffffff;
-  --text-secondary: #888888;
+  --background: #09090b;
+  --foreground: #f4f4f5;
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
   
-  --card-hsl: 0 0% 5%;
+  --card-hsl: 240 6% 8%;
   --card-foreground-hsl: 0 0% 98%;
-  --popover-hsl: 0 0% 5%;
+  --popover-hsl: 240 6% 8%;
   --popover-foreground-hsl: 0 0% 98%;
   --destructive-hsl: 0 62.8% 30.6%;
   --destructive-foreground-hsl: 0 0% 98%;
-  --border-hsl: 0 0% 18%;
-  --input-hsl: 0 0% 18%;
-  --ring-hsl: 0 0% 80%;
+  --border-hsl: 240 4% 16%;
+  --input-hsl: 240 4% 16%;
+  --ring-hsl: 240 5% 65%;
 }
 
 
@@ -336,4 +336,52 @@ body {
 
 ::view-transition-new(root) {
   z-index: 9999;
+}
+
+/* Lenis Smooth Scroll Styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Hide native browser scrollbar */
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+/* Hide HUD elements when StaggeredMenu is open */
+body.menu-open .journey-scrollbar,
+body.menu-open .sound-toggle-btn {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.25s ease;
+}
+/* Hide Scrollbar and Sound Toggle when Navigation Menu is Open */
+body:has([aria-expanded="true"]) .journey-scrollbar,
+body:has([aria-expanded="true"]) .sound-toggle-btn,
+body:has(.staggered-menu-panel:not([aria-hidden="true"])) .journey-scrollbar,
+body:has(.staggered-menu-panel:not([aria-hidden="true"])) .sound-toggle-btn {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateX(30px) !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
 }

@@ -22,7 +22,6 @@
     "@react-three/postprocessing": "^3.0.4",
     "@tabler/icons-react": "latest",
     "@tailwindcss/postcss": "^4.2.1",
-    "@types/matter-js": "^0.20.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "latest",
@@ -43,6 +42,7 @@
     "usehooks-ts": "latest"
   },
   "devDependencies": {
+    "@types/matter-js": "^0.20.2",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
