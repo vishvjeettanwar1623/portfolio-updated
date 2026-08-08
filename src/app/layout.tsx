@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import type { Metadata } from "next";
 import {
   Noto_Sans,
@@ -16,6 +16,8 @@ import { MAINTENANCE_MODE } from "@/config/maintenance";
 import { NotFound } from "@/components/ui/ghost-404-page";
 
 import { ThemeProvider } from "@/context/ThemeContext";
+import { SoundProvider } from "@/context/SoundContext";
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
 
 const noto = Noto_Sans({
   subsets: ["latin"],
@@ -77,7 +79,7 @@ const themeScript = `
   (function() {
     try {
       var saved = localStorage.getItem('portfolio-theme');
-      var theme = (saved === 'light' || saved === 'dark') ? saved : 'light';
+      var theme = (saved === 'light' || saved === 'dark') ? saved : 'dark';
       document.documentElement.setAttribute('data-theme', theme);
       if (theme === 'dark') {
         document.documentElement.classList.add('dark');
@@ -96,18 +98,24 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-theme="light"
+      data-theme="dark"
       suppressHydrationWarning
-      className={`scroll-smooth ${noto.variable} ${signika.variable} ${dmSans.variable} ${greatVibes.variable} ${audiowide.variable} ${tektur.variable} ${syneMono.variable} ${wallpoet.variable} ${bungeeOutline.variable}`}
+      className={`dark ${noto.variable} ${signika.variable} ${dmSans.variable} ${greatVibes.variable} ${audiowide.variable} ${tektur.variable} ${syneMono.variable} ${wallpoet.variable} ${bungeeOutline.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="antialiased font-sans" suppressHydrationWarning>
         <ThemeProvider>
-          {MAINTENANCE_MODE ? <NotFound /> : children}
+          <SoundProvider>
+          <SmoothScroll>
+            {MAINTENANCE_MODE ? <NotFound /> : children}
+          </SmoothScroll>
+          </SoundProvider>
         </ThemeProvider>
       </body>
     </html>
   );
 }
+
+
