@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import Image from "next/image";
@@ -58,7 +58,7 @@ export function Footer() {
     <footer
       id="contact"
       onMouseMove={handleMouseMove}
-      className="relative border-t border-foreground/10 bg-background transition-colors duration-400 overflow-visible min-h-[360px] flex flex-col justify-between"
+      className="relative border-t border-foreground/10 bg-background transition-colors duration-400 overflow-visible min-h-[360px] flex flex-col justify-between py-12 md:py-16"
     >
       <WavyBackground />
 
@@ -99,10 +99,10 @@ export function Footer() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="container relative z-10 mx-auto px-6 py-14 md:py-16 flex flex-col justify-between flex-grow max-w-6xl"
+        className="container relative z-10 mx-auto px-6 flex flex-col justify-between flex-grow max-w-6xl"
       >
         {/* 2-Column Layout */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-6">
           {/* Left Column: Name & Tagline */}
           <div className="flex flex-col gap-2 text-center md:text-left">
             <motion.h2
@@ -161,7 +161,7 @@ export function Footer() {
                     setActiveSocial({ name: social.name, image: social.image })
                   }
                   onMouseLeave={() => setActiveSocial(null)}
-                  className="relative p-3.5 rounded-2xl bg-foreground/5 border border-foreground/15 text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-colors duration-300 shadow-md group overflow-visible"
+                  className="relative p-3.5 rounded-2xl bg-foreground/5 border border-foreground/15 text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-colors duration-300 shadow-md group overflow-visible cursor-pointer"
                 >
                   <motion.div className="group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300">
                     {social.icon}
@@ -171,14 +171,13 @@ export function Footer() {
             </div>
           </div>
         </div>
-
         {/* Expanding Divider Line */}
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           whileInView={{ scaleX: 1, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full h-px bg-gradient-to-r from-transparent via-foreground/25 to-transparent my-2 origin-center"
+          className="w-full h-px bg-gradient-to-r from-transparent via-foreground/25 to-transparent my-4 origin-center"
         />
 
         {/* Bottom Full-Width Copyright */}
@@ -187,7 +186,7 @@ export function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="pt-4 text-center w-full"
+          className="pt-2 text-center w-full"
         >
           <p className="text-xs md:text-sm text-foreground/60 font-mono tracking-wider">
             © {currentYear} Vishvjeet Singh Tanwar. All rights reserved. Built with inspirations and creations.
@@ -197,3 +196,6 @@ export function Footer() {
     </footer>
   );
 }
+
+export default Footer;
+
