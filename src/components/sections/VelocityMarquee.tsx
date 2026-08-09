@@ -10,7 +10,7 @@ export function VelocityMarquee() {
       <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
 
       <VelocityScroll
-        text="FRONTEND DEVELOPER • CREATIVE DESIGNER • TECH GEEK • STUDENT • BLOCKCHAIN DEVELOPER • WEB3 EXPLORER •"
+        text="FULL-STACK & WEB3 DEVELOPER • 9.4 SGPA • 3RD PLACE — EDUCHAIN DELHI • 5TH PLACE — MONAD BLITZ V3 • 120+ DEVELOPERS MENTORED •"
         default_velocity={2.25}
         className="font-[family-name:var(--font-tektur)] text-4xl md:text-7xl font-bold tracking-tighter text-foreground/20 uppercase"
       />
