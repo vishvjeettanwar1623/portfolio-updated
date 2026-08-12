@@ -1,9 +1,20 @@
-"use client";
+﻿"use client";
 
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { SectionSkeleton } from "@/components/ui/section-skeleton";
 
-export function LazyRender({ children, height = "100vh", id }: { children: React.ReactNode, height?: string, id?: string }) {
+export function LazyRender({
+  children,
+  skeletonType = "general",
+  height = "80vh",
+  id,
+}: {
+  children: React.ReactNode;
+  skeletonType?: "projects" | "skills" | "experience" | "achievements" | "about" | "general";
+  height?: string;
+  id?: string;
+}) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -15,9 +26,9 @@ export function LazyRender({ children, height = "100vh", id }: { children: React
           observer.disconnect();
         }
       },
-      { 
-        rootMargin: "400px", 
-        threshold: 0.01 
+      {
+        rootMargin: "350px",
+        threshold: 0.01,
       }
     );
 
@@ -37,14 +48,17 @@ export function LazyRender({ children, height = "100vh", id }: { children: React
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.45 }}
           >
             {children}
           </motion.div>
         ) : (
-          <div style={{ height }} className="w-full bg-black/2" />
+          <SectionSkeleton type={skeletonType} />
         )}
       </AnimatePresence>
     </div>
   );
 }
+
+export default LazyRender;
+

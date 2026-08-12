@@ -651,11 +651,82 @@ export function LiquidEther({
       }
     }
 
+    class WashdownWaveManager {
+      streams: {
+        x: number;
+        y: number;
+        speed: number;
+        force: number;
+        size: number;
+        active: boolean;
+      }[] = [];
+      state: "ACTIVE" | "PAUSED" = "ACTIVE";
+      pauseTimer = 0;
+      pauseDuration = 9.0; // 9 seconds of clean calm between washdown waves
+
+      constructor(count: number) {
+        for (let i = 0; i < count; i++) {
+          this.streams.push({
+            x: ((i + 0.5) / count) * 1.7 - 0.85 + (Math.random() - 0.5) * 0.12,
+            y: 1.35 + (i % 3) * 0.25,
+            speed: 0.08 + (i % 2) * 0.02,
+            force: 2.8 + Math.random() * 1.2,
+            size: 200 + (i % 3) * 40,
+            active: true,
+          });
+        }
+      }
+
+      startNewWave() {
+        this.state = "ACTIVE";
+        const count = this.streams.length;
+        for (let i = 0; i < count; i++) {
+          const s = this.streams[i];
+          s.x = ((i + 0.5) / count) * 1.7 - 0.85 + (Math.random() - 0.5) * 0.12;
+          s.y = 1.35 + (i % 3) * 0.25;
+          s.speed = 0.075 + (i % 2) * 0.02;
+          s.force = 2.8 + Math.random() * 1.2;
+          s.size = 200 + (i % 3) * 40;
+          s.active = true;
+        }
+      }
+
+      update(dtSec: number) {
+        if (this.state === "PAUSED") {
+          this.pauseTimer -= dtSec;
+          if (this.pauseTimer <= 0) {
+            this.startNewWave();
+          }
+          return;
+        }
+
+        let anyActive = false;
+        for (let i = 0; i < this.streams.length; i++) {
+          const s = this.streams[i];
+          if (!s.active) continue;
+          s.y -= s.speed * dtSec;
+          if (s.y < -1.45) {
+            s.active = false;
+          } else {
+            anyActive = true;
+          }
+        }
+
+        if (!anyActive) {
+          this.state = "PAUSED";
+          this.pauseTimer = this.pauseDuration;
+        }
+      }
+    }
+
     class ExternalForce extends ShaderPass {
       mouse: THREE.Mesh | null = null;
+      waveManager: WashdownWaveManager;
+      rainMeshes: THREE.Mesh[] = [];
 
       constructor(simProps: any) {
         super({ output: simProps.dst });
+        this.waveManager = new WashdownWaveManager(6);
         this.init(simProps);
       }
 
@@ -676,10 +747,33 @@ export function LiquidEther({
         });
         this.mouse = new THREE.Mesh(mouseG, mouseM);
         if (this.scene) this.scene.add(this.mouse);
+
+        // Smooth Periodic Washdown Meshes
+        const streamCount = 6;
+        for (let i = 0; i < streamCount; i++) {
+          const s = this.waveManager.streams[i];
+          const rainM = new THREE.RawShaderMaterial({
+            vertexShader: mouse_vert,
+            fragmentShader: externalForce_frag,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            uniforms: {
+              px: { value: simProps?.cellScale },
+              force: { value: new THREE.Vector2(0.0, 0.0) },
+              center: { value: new THREE.Vector2(0.0, -10.0) },
+              scale: { value: new THREE.Vector2(s.size, s.size * 1.6) },
+            },
+          });
+          const rainMesh = new THREE.Mesh(mouseG, rainM);
+          this.rainMeshes.push(rainMesh);
+          if (this.scene) this.scene.add(rainMesh);
+        }
       }
 
       update(props?: any): any {
         if (!this.mouse || !props) return;
+
+        // 1. Interactive Mouse Fluid Force
         const forceX = (Mouse.diff.x / 2) * props.mouse_force;
         const forceY = (Mouse.diff.y / 2) * props.mouse_force;
         const cursorSizeX = props.cursor_size * props.cellScale.x;
@@ -692,10 +786,31 @@ export function LiquidEther({
           Math.max(Mouse.coords.y, -1 + cursorSizeY + props.cellScale.y * 2),
           1 - cursorSizeY - props.cellScale.y * 2
         );
-        const uniforms = (this.mouse.material as THREE.RawShaderMaterial).uniforms;
-        uniforms.force.value.set(forceX, forceY);
-        uniforms.center.value.set(centerX, centerY);
-        uniforms.scale.value.set(props.cursor_size, props.cursor_size);
+        const mouseUniforms = (this.mouse.material as THREE.RawShaderMaterial).uniforms;
+        mouseUniforms.force.value.set(forceX, forceY);
+        mouseUniforms.center.value.set(centerX, centerY);
+        mouseUniforms.scale.value.set(props.cursor_size, props.cursor_size);
+
+        // 2. Smooth Interval Washdown Waves
+        const dt = props.dt || 0.016;
+        this.waveManager.update(dt);
+
+        for (let i = 0; i < this.waveManager.streams.length; i++) {
+          const s = this.waveManager.streams[i];
+          const mesh = this.rainMeshes[i];
+          if (!mesh) continue;
+
+          const rUniforms = (mesh.material as THREE.RawShaderMaterial).uniforms;
+          if (s.active) {
+            rUniforms.force.value.set(0.0, -s.force * dt * 60.0);
+            rUniforms.center.value.set(s.x, s.y);
+            rUniforms.scale.value.set(s.size, s.size * 1.6);
+          } else {
+            rUniforms.force.value.set(0.0, 0.0);
+            rUniforms.center.value.set(0.0, -10.0);
+          }
+        }
+
         super.update(props);
       }
     }
