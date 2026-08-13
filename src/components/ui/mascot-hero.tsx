@@ -8,7 +8,7 @@ import ButtonWithIcon from "./button-with-icon";
 import ShinyText from "./ShinyText";
 import SubtleParticleDust from "./SubtleParticleDust";
 import { MagneticImage } from "./morphing-cursor";
-import { LiquidEther } from "./LiquidEther";
+import { GlassRain } from "./GlassRain";
 
 import { useTheme } from "@/context/ThemeContext";
 
@@ -21,23 +21,13 @@ interface MascotHeroProps {
 
 export function MascotHero({
   name = "Vishvjeet Singh Tanwar",
-  badge = "Designer & Developer",
+  badge = "Full-stack & Web3 Developer",
   mascotSrc = "/assets/Mascot Image.png?v=2",
   animationDelay = 0.2,
 }: MascotHeroProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isCanvasReady, setIsCanvasReady] = useState(false);
-
-  // Defer WebGL fluid canvas initialization until AFTER intro loading screen & curtain lift complete completely!
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsCanvasReady(true);
-    }, 3600);
-    return () => clearTimeout(timer);
-  }, []);
-
   const surgenaFontClass = "font-surgena";
   const baseDelay = animationDelay > 0 ? animationDelay : 0;
 
@@ -56,20 +46,8 @@ export function MascotHero({
       ref={containerRef}
       className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background transition-colors duration-400"
     >
-      {/* Liquid Ether Interactive WebGL Fluid Background (Deferred until intro completes) */}
-      <div className="absolute inset-0 pointer-events-auto z-0 opacity-75">
-        {isCanvasReady && (
-          <LiquidEther
-            colors={isDark ? ["#ffffff", "#888888", "#222222"] : ["#000000", "#666666", "#cccccc"]}
-            mouseForce={25}
-            cursorSize={120}
-            isViscous={false}
-            autoDemo={true}
-            autoSpeed={0.4}
-            autoIntensity={2.0}
-          />
-        )}
-      </div>
+      {/* Crisp Digital Glass Light Rain Streaks */}
+      <GlassRain className="opacity-80" />
 
       {/* Ultra-subtle Particle Dust Background */}
       <SubtleParticleDust />
@@ -190,7 +168,7 @@ export function MascotHero({
             className="pointer-events-auto flex flex-col items-center justify-center"
           >
             <TrueFocus
-              sentence="DESIGNER DEVELOPER"
+              sentence="FULL-STACK WEB3"
               manualMode={false}
               blurAmount={3}
               borderColor={isDark ? "#ffffff" : "#000000"}
@@ -201,7 +179,7 @@ export function MascotHero({
           </motion.div>
         </div>
 
-        {/* Bottom Right: Action Button (EXPLORE WORKS) */}
+        {/* Bottom Right: Action Button (VIEW SELECTED WORK) */}
         <div className="absolute bottom-[15%] right-[10vw] md:right-[15vw] z-30 flex items-center justify-end">
           <motion.div
             initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
@@ -214,7 +192,7 @@ export function MascotHero({
             className="pointer-events-auto"
           >
             <ButtonWithIcon
-              label="EXPLORE WORKS"
+              label="VIEW SELECTED WORK"
               onClick={() =>
                 document
                   .getElementById("projects")
