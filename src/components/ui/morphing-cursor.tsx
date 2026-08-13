@@ -40,6 +40,13 @@ export function MagneticText({
   }, []);
 
   useEffect(() => {
+    if (!isHovered) {
+      if (animationFrameRef.current !== undefined) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      return;
+    }
+
     const lerp = (start: number, end: number, factor: number) =>
       start + (end - start) * factor;
 
@@ -64,7 +71,7 @@ export function MagneticText({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
+  }, [isHovered]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
