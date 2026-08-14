@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import ThemeToggle from './ThemeToggle';
+import SoundToggle from './SoundToggle';
 import './StaggeredMenu.css';
 
 export interface MenuItem {
@@ -333,6 +334,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         </div>
 
         <div className="sm-header-controls flex items-center gap-3">
+          <SoundToggle />
           <ThemeToggle />
           <button
             ref={toggleBtnRef}
@@ -399,3 +401,4 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 };
 
 export default StaggeredMenu;
+
