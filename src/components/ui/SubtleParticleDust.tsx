@@ -21,6 +21,7 @@ export default function SubtleParticleDust() {
     if (!ctx) return;
 
     let animationFrameId: number;
+    let isVisible = true;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -32,20 +33,37 @@ export default function SubtleParticleDust() {
 
     window.addEventListener("resize", handleResize);
 
-    const particleCount = Math.floor((width * height) / 18000);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = requestAnimationFrame(render);
+        } else {
+          cancelAnimationFrame(animationFrameId);
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(canvas);
+
+    const particleCount = Math.min(Math.floor((width * height) / 25000), 40);
     const particles: Particle[] = Array.from({ length: particleCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      size: Math.random() * 1.8 + 0.6,
-      speedX: (Math.random() - 0.5) * 0.25,
-      speedY: (Math.random() - 0.5) * 0.25 - 0.05,
-      opacity: Math.random() * 0.25 + 0.08,
+      size: Math.random() * 1.5 + 0.5,
+      speedX: (Math.random() - 0.5) * 0.2,
+      speedY: (Math.random() - 0.5) * 0.2 - 0.05,
+      opacity: Math.random() * 0.2 + 0.05,
     }));
 
     const render = () => {
+      if (!isVisible) return;
       ctx.clearRect(0, 0, width, height);
 
-      particles.forEach((p) => {
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
         p.x += p.speedX;
         p.y += p.speedY;
 
@@ -58,7 +76,7 @@ export default function SubtleParticleDust() {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
-      });
+      }
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -67,6 +85,7 @@ export default function SubtleParticleDust() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

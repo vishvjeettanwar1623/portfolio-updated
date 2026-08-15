@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
+import { useSound } from "@/context/SoundContext";
 
 interface ThemeToggleProps {
   className?: string;
@@ -10,10 +11,12 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ className = "" }: ThemeToggleProps) {
   const { theme, toggleTheme } = useTheme();
+  const { playSound } = useSound();
   const isDark = theme === "dark";
   const [clicked, setClicked] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    playSound("theme");
     setClicked(true);
     setTimeout(() => setClicked(false), 600);
     toggleTheme(e);
@@ -57,78 +60,57 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
         )}
       </AnimatePresence>
 
-      {/* Kinetic Morphing Sun / Moon SVG */}
-      <AnimatePresence mode="wait" initial={false}>
-        {isDark ? (
-          /* Sun Mode: Crisp SVG Sun with Radiating Rays & Solar Glow */
-          <motion.div
-            key="sun"
-            initial={{ rotate: -90, scale: 0.3, opacity: 0 }}
-            animate={{ rotate: 0, scale: 1, opacity: 1 }}
-            exit={{ rotate: 90, scale: 0.3, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 350, damping: 18 }}
-            className="relative w-6 h-6 flex items-center justify-center"
+      <div className="relative w-5 h-5 flex items-center justify-center">
+        {/* Sun Icon */}
+        <motion.div
+          animate={{
+            scale: isDark ? 0 : 1,
+            rotate: isDark ? -90 : 0,
+            opacity: isDark ? 0 : 1,
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <svg
+            className="w-5 h-5 text-amber-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
+            <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="w-5.5 h-5.5 text-amber-200 drop-shadow-[0_0_8px_rgba(253,224,71,0.7)]"
-            >
-              <circle cx="12" cy="12" r="4" fill="currentColor" fillOpacity="0.25" />
-              <path d="M12 2v2" />
-              <path d="M12 20v2" />
-              <path d="m4.93 4.93 1.41 1.41" />
-              <path d="m17.66 17.66 1.41 1.41" />
-              <path d="M2 12h2" />
-              <path d="M20 12h2" />
-              <path d="m6.34 17.66-1.41 1.41" />
-              <path d="m19.07 4.93-1.41 1.41" />
-            </svg>
-          </motion.div>
-        ) : (
-          /* Moon Mode: Crescent Silhouette with Twinkling Stars */
-          <motion.div
-            key="moon"
-            initial={{ rotate: -90, scale: 0.3, opacity: 0 }}
-            animate={{ rotate: 0, scale: 1, opacity: 1 }}
-            exit={{ rotate: 90, scale: 0.3, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 350, damping: 18 }}
-            className="relative w-6 h-6 flex items-center justify-center"
+              strokeWidth={2}
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+            />
+          </svg>
+        </motion.div>
+
+        {/* Moon Icon */}
+        <motion.div
+          animate={{
+            scale: isDark ? 1 : 0,
+            rotate: isDark ? 0 : 90,
+            opacity: isDark ? 1 : 0,
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <svg
+            className="w-5 h-5 text-amber-100"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
+            <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="w-5 h-5 text-neutral-900 drop-shadow-sm"
-            >
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" fill="currentColor" fillOpacity="0.15" />
-            </svg>
-            <motion.span
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: [0, 1.2, 1], opacity: 1 }}
-              transition={{ delay: 0.15, duration: 0.3 }}
-              className="absolute top-0 right-0 text-[9px] text-neutral-800 leading-none select-none font-bold"
-            >
-              ✦
-            </motion.span>
-            <motion.span
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: [0, 1, 0.8], opacity: 0.8 }}
-              transition={{ delay: 0.25, duration: 0.3 }}
-              className="absolute bottom-0 left-0 text-[7px] text-neutral-700 leading-none select-none"
-            >
-              ✦
-            </motion.span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              strokeWidth={2}
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+            />
+          </svg>
+        </motion.div>
+      </div>
     </motion.button>
   );
 }
