@@ -1,4 +1,4 @@
-.focus-container {
+﻿.focus-container {
   position: relative;
   display: flex;
   gap: 1em;
@@ -19,7 +19,7 @@
     color 0.3s ease;
   outline: none;
   user-select: none;
-  color: white;
+  color: var(--foreground);
   text-transform: uppercase;
 }
 
@@ -46,8 +46,8 @@
   position: absolute;
   width: 0.8rem;
   height: 0.8rem;
-  border: 2px solid var(--border-color, #fff);
-  filter: drop-shadow(0px 0px 4px var(--border-color, #fff));
+  border: 2px solid var(--border-color, var(--foreground));
+  filter: drop-shadow(0px 0px 4px var(--border-color, var(--foreground)));
   border-radius: 2px;
   transition: none;
 }
@@ -79,3 +79,4 @@
   border-left: none;
   border-top: none;
 }
+
