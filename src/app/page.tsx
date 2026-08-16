@@ -1,4 +1,5 @@
 ﻿"use client";
+
 import { useEffect, useState } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -9,7 +10,10 @@ import ClickSpark from "@/components/ui/ClickSpark";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { JourneyScrollbar } from "@/components/ui/JourneyScrollbar";
 import { SoundToggle } from "@/components/ui/SoundToggle";
+import { NFCContactModal } from "@/components/ui/NFCContactModal";
+
 import { useTheme } from "@/context/ThemeContext";
+
 const ProjectsSection = dynamic(
   () => import("@/components/sections/ProjectsSection").then((mod) => mod.ProjectsSection),
   { ssr: false, loading: () => <SectionSkeleton type="projects" /> }
@@ -34,6 +38,10 @@ const ExperienceSection = dynamic(
   () => import("@/components/sections/ExperienceSection").then((mod) => mod.ExperienceSection),
   { ssr: false, loading: () => <SectionSkeleton type="experience" /> }
 );
+const GitHubActivitySection = dynamic(
+  () => import("@/components/sections/GitHubActivitySection").then((mod) => mod.GitHubActivitySection),
+  { ssr: false }
+);
 const VelocityMarquee = dynamic(
   () => import("@/components/sections/VelocityMarquee").then((mod) => mod.VelocityMarquee),
   { ssr: false }
@@ -42,16 +50,19 @@ const Footer = dynamic(
   () => import("@/components/sections/Footer").then((mod) => mod.Footer),
   { ssr: false }
 );
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
   useEffect(() => {
     window.scrollTo(0, 0);
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
   }, []);
+
   return (
     <ClickSpark
       sparkColor={isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.8)"}
@@ -61,39 +72,54 @@ export default function Home() {
       duration={500}
     >
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+
       <main className="relative min-h-screen bg-background text-foreground selection:bg-primary/30">
         <Navbar />
         <JourneyScrollbar />
-        <SoundToggle />
+                <NFCContactModal />
+
         <HeroSection />
         <VelocityMarquee />
+
         <div className="relative w-full">
           <div className="relative pt-24 pb-48 z-10 pointer-events-auto">
             <LazyRender id="projects" skeletonType="projects" height="120vh">
               <ProjectsSection />
             </LazyRender>
+
             <LazyRender height="150vh">
               <DesignsSection />
             </LazyRender>
           </div>
         </div>
+
         <LazyRender id="skills" skeletonType="skills" height="100vh">
           <SkillsSection />
         </LazyRender>
+
         <LazyRender id="achievements" skeletonType="achievements" height="100vh">
           <AchievementsSection />
         </LazyRender>
+
         {/* Animating Text Section (About) */}
         <LazyRender id="about" skeletonType="about" height="80vh">
           <AboutSection />
         </LazyRender>
-        {/* My Journey (Experience Section) right below animating text and above Footer */}
+
+        {/* My Journey (Experience Section) */}
         <LazyRender id="experience" skeletonType="experience" height="200vh">
           <ExperienceSection />
         </LazyRender>
+
+        {/* 3D Holographic GitHub Activity Section - Placed Below My Journey */}
+        <LazyRender id="github-activity" height="90vh">
+          <GitHubActivitySection />
+        </LazyRender>
+
         {/* Contact (Footer) */}
         <Footer />
       </main>
     </ClickSpark>
   );
 }
+
