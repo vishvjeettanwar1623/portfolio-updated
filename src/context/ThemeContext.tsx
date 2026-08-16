@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { createContext, useContext, useEffect, useState, startTransition } from "react";
 
@@ -15,12 +15,12 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>("dark");
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("portfolio-theme") as Theme | null;
     const initialTheme: Theme =
-      savedTheme === "light" || savedTheme === "dark" ? savedTheme : "light";
+      savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
 
     setThemeState(initialTheme);
     document.documentElement.setAttribute("data-theme", initialTheme);
@@ -117,3 +117,4 @@ export function useTheme() {
   }
   return context;
 }
+
