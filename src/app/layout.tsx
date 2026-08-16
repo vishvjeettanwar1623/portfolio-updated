@@ -71,8 +71,92 @@ const bungeeOutline = Bungee_Outline({
 });
 
 export const metadata: Metadata = {
-  title: "Vishvjeet | Portfolio",
-  description: "Designer & Builder building things that matter.",
+  metadataBase: new URL("https://vishvjeet.me"),
+  title: {
+    default: "Vishvjeet Singh Tanwar · Full-Stack & Web3 Developer",
+    template: "%s · Vishvjeet",
+  },
+  description:
+    "Full-Stack & Web3 Developer building high-performance decentralized protocols, kinetic frontends, and scalable systems.",
+  keywords: [
+    "Vishvjeet Singh Tanwar",
+    "Vishvjeet",
+    "Full-Stack Developer",
+    "Web3 Developer",
+    "Smart Contracts",
+    "Solidity",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "Creative Developer",
+    "Portfolio",
+  ],
+  authors: [{ name: "Vishvjeet Singh Tanwar", url: "https://vishvjeet.me" }],
+  creator: "Vishvjeet Singh Tanwar",
+  openGraph: {
+    title: "Vishvjeet Singh Tanwar · Full-Stack & Web3 Developer",
+    description:
+      "Full-Stack & Web3 Developer building high-performance decentralized protocols and kinetic frontends.",
+    url: "https://vishvjeet.me",
+    siteName: "Vishvjeet Singh Tanwar",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vishvjeet Singh Tanwar · Full-Stack & Web3 Developer",
+    description:
+      "Full-Stack & Web3 Developer building high-performance decentralized protocols and kinetic frontends.",
+    creator: "@vishvjeet_me",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://vishvjeet.me/#person",
+      name: "Vishvjeet Singh Tanwar",
+      url: "https://vishvjeet.me",
+      jobTitle: "Full-Stack & Web3 Developer",
+      sameAs: [
+        "https://github.com/vishvjeet-tanwar",
+        "https://linkedin.com/in/vishvjeet-tanwar",
+        "https://twitter.com/vishvjeet_me",
+      ],
+      knowsAbout: [
+        "Full-Stack Development",
+        "Web3 Development",
+        "Smart Contracts",
+        "Solidity",
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Creative Web Development",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://vishvjeet.me/#website",
+      url: "https://vishvjeet.me",
+      name: "Vishvjeet Singh Tanwar Portfolio",
+      publisher: {
+        "@id": "https://vishvjeet.me/#person",
+      },
+    },
+  ],
 };
 
 const themeScript = `
@@ -103,19 +187,26 @@ export default function RootLayout({
       className={`dark ${noto.variable} ${signika.variable} ${dmSans.variable} ${greatVibes.variable} ${audiowide.variable} ${tektur.variable} ${syneMono.variable} ${wallpoet.variable} ${bungeeOutline.variable}`}
     >
       <head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="antialiased font-sans" suppressHydrationWarning>
         <ThemeProvider>
           <SoundProvider>
-          <SmoothScroll>
-            {MAINTENANCE_MODE ? <NotFound /> : children}
-          </SmoothScroll>
+            <SmoothScroll>
+              {MAINTENANCE_MODE ? <NotFound /> : children}
+            </SmoothScroll>
           </SoundProvider>
         </ThemeProvider>
       </body>
     </html>
   );
 }
-
-
