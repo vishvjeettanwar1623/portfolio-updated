@@ -385,3 +385,21 @@ body:has(.staggered-menu-panel:not([aria-hidden="true"])) .sound-toggle-btn {
   transform: translateX(30px) !important;
   transition: opacity 0.3s ease, transform 0.3s ease !important;
 }
+/* High-Performance Rendering & Offscreen Layout Containment */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}
+/* GPU Hardware Layer Promotion & Motion Fluidity */
+.gpu-layer {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, opacity;
+}
+.will-change-transform {
+  will-change: transform;
+}
+img, svg {
+  shape-rendering: geometricPrecision;
+}
