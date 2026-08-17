@@ -1,3 +1,4 @@
+﻿import { SplitTextReveal } from "@/components/ui/SplitTextReveal";
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
@@ -51,7 +52,7 @@ const SLIDES: MilestoneSlide[] = [
     headline: "Academic Inception & Web3 Foundations",
     status: "FOUNDATION",
     timeframe: "Aug 2024 — Dec 2024",
-    tagline: "B.Tech CSE Commencement · 9.29 SGPA · HackQuest Advocate",
+    tagline: "B.Tech CSE Commencement Â· 9.29 SGPA Â· HackQuest Advocate",
     summary:
       "Commenced Bachelor of Technology in Computer Science & Engineering at JSS University Noida, built first smart contract protocols, and joined global developer advocacy programs.",
     highlights: [
@@ -90,7 +91,7 @@ const SLIDES: MilestoneSlide[] = [
     headline: "Leadership, Hackathons & 3D Internship",
     status: "COMPLETED",
     timeframe: "Jan 2025 — Dec 2025",
-    tagline: "McKinsey Forward · AIR 30 ACPC · 3D Games Internship · 9.45 SGPA",
+    tagline: "McKinsey Forward Â· AIR 30 ACPC Â· 3D Games Internship Â· 9.45 SGPA",
     summary:
       "Selected for McKinsey's global executive fellowship, scored AIR 30 in national algorithmic programming, finished a 3D modeling engineering internship, and podiumed at Web3 hackathons.",
     highlights: [
@@ -139,7 +140,7 @@ const SLIDES: MilestoneSlide[] = [
     headline: "Data Intelligence & Prize Podiums",
     status: "CURRENT ERA",
     timeframe: "Jan 2026 — Present",
-    tagline: "Google Certified · National Big Code Finals · Monad Blitz Prize",
+    tagline: "Google Certified Â· National Big Code Finals Â· Monad Blitz Prize",
     summary:
       "Enterprise data intelligence pipelines, competitive algorithmic optimization, maintaining a 9.35 SGPA, and claiming high-throughput EVM smart contract podium wins.",
     highlights: [
@@ -426,7 +427,6 @@ function CarouselSlideCard({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b border-foreground/10 relative z-10">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2 h-2 rounded-full bg-foreground" />
               <span className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground">
                 {slide.timeframe}
               </span>
@@ -521,16 +521,16 @@ function CarouselSlideCard({
 
               {/* Corner HUD Brackets */}
               <div className="absolute top-2 left-2 text-white/80 font-mono text-xs select-none">
-                ⌜
+                +
               </div>
               <div className="absolute top-2 right-2 text-white/80 font-mono text-xs select-none">
-                ⌝
+                +
               </div>
               <div className="absolute bottom-2 left-2 text-white/80 font-mono text-xs select-none">
-                ⌞
+                +
               </div>
               <div className="absolute bottom-2 right-2 text-white/80 font-mono text-xs select-none">
-                ⌟
+                +
               </div>
 
               <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/75 backdrop-blur-md border border-white/20 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">
@@ -657,15 +657,7 @@ export function ExperienceSection() {
       <div className="w-full max-w-6xl mx-auto px-4 md:px-8 relative z-10">
         {/* Section Header with Clean Arrow Controllers */}
         <div className="mb-12 sm:mb-16 flex flex-col sm:flex-row items-center justify-between gap-6 w-full">
-          <motion.h2
-            initial={{ opacity: 0, y: 35, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-[2px] sm:tracking-[4px] md:tracking-[6px] text-foreground font-[family-name:var(--font-audiowide)] drop-shadow-md whitespace-nowrap"
-          >
-            My Journey
-          </motion.h2>
+          <SplitTextReveal text="My Journey" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-[2px] sm:tracking-[4px] md:tracking-[6px] text-foreground font-[family-name:var(--font-audiowide)] drop-shadow-md whitespace-nowrap" />
 
           {/* Clean Arrow Controllers */}
           <div className="flex items-center gap-2">
@@ -720,3 +712,4 @@ export function ExperienceSection() {
 }
 
 export default ExperienceSection;
+
