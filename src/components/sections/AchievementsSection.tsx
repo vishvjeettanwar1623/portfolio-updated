@@ -1,11 +1,24 @@
-"use client";
+﻿"use client";
 
+import React, { useState } from "react";
 import { Trophy, Linkedin, ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
 import { SectionWrapper } from "@/components/sections/SectionWrapper";
+import { SplitTextReveal } from "@/components/ui/SplitTextReveal";
+import { useSound } from "@/context/SoundContext";
 
-const achievements = [
+export interface AchievementItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  image: string;
+  date: string;
+  tag: string;
+  url: string;
+}
+
+const achievements: AchievementItem[] = [
   {
     id: "01",
     title: "Hackathon Winner",
@@ -90,18 +103,22 @@ const achievements = [
 
 export function AchievementsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { playSound } = useSound();
 
   return (
-    <SectionWrapper id="achievements" className="bg-background transition-colors duration-400 py-20 md:py-28 overflow-hidden">
+    <SectionWrapper id="achievements" className="bg-background transition-colors duration-400 py-20 md:py-28 overflow-hidden font-mono">
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8">
         {/* Stable Centered Heading */}
         <div className="mb-16 text-center max-w-3xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-normal uppercase tracking-[3px] md:tracking-[6px] mb-4 text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] flex items-center justify-center gap-4 drop-shadow-sm">
-            <Trophy className="w-10 h-10 md:w-12 md:h-12 text-neutral-900 dark:text-white" />
-            Achievements
-          </h2>
-          <p className="text-neutral-700 dark:text-white/85 text-base md:text-lg font-light">
-            Hover or tap across the kinetic deck to explore verified milestones.
+          <div className="flex items-center justify-center gap-4">
+            <Trophy className="w-10 h-10 md:w-12 md:h-12 text-neutral-900 dark:text-white flex-shrink-0" />
+            <SplitTextReveal
+              text="Achievements"
+              className="text-4xl md:text-6xl font-normal uppercase tracking-[3px] md:tracking-[6px] text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] drop-shadow-sm"
+            />
+          </div>
+          <p className="text-neutral-700 dark:text-white/85 text-xs sm:text-sm font-light mt-3 uppercase tracking-wider font-mono">
+            Key milestones, hackathons, and certifications.
           </p>
         </div>
 
@@ -113,7 +130,10 @@ export function AchievementsSection() {
             return (
               <motion.div
                 key={item.id}
-                onMouseEnter={() => setActiveIndex(index)}
+                onMouseEnter={() => {
+                  setActiveIndex(index);
+                  playSound("hover");
+                }}
                 onClick={() => setActiveIndex(index)}
                 animate={{
                   flex: isActive ? 5 : 1,
@@ -122,7 +142,7 @@ export function AchievementsSection() {
                   duration: 0.85,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className={`relative rounded-3xl overflow-hidden border transition-colors duration-700 cursor-pointer ${
+                className={`relative rounded-3xl overflow-hidden border transition-colors duration-700 cursor-pointer group ${
                   isActive
                     ? "border-black/20 dark:border-white/40 bg-white dark:bg-neutral-900 shadow-xl dark:shadow-2xl"
                     : "border-black/10 dark:border-white/10 bg-white/90 dark:bg-neutral-950/80 hover:border-black/25 dark:hover:border-white/25"
@@ -164,13 +184,13 @@ export function AchievementsSection() {
                   <span className="text-xs font-mono text-neutral-700 dark:text-white/40">{item.date}</span>
                 </motion.div>
 
-                {/* Expanded Active View with STRICT Hardcoded 480px Width (Zero text reflow or width shrinking) */}
+                {/* Expanded Active View with STRICT Hardcoded 480px Width */}
                 <motion.div
                   animate={{ opacity: isActive ? 1 : 0 }}
                   transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                   className="absolute inset-0 z-30 p-8 md:p-10 flex flex-col justify-between overflow-hidden pointer-events-auto"
                 >
-                  {/* Strict Hardcoded 480px Layout Container (Immune to Parent Card Resizing) */}
+                  {/* Strict Hardcoded 480px Layout Container */}
                   <div className="w-[480px] min-w-[480px] h-full flex flex-col justify-between">
                     {/* Top Bar */}
                     <div className="flex items-center justify-between w-full">
@@ -195,17 +215,21 @@ export function AchievementsSection() {
                       </p>
                     </div>
 
-                    {/* Bottom Link Action Button */}
-                    <div className="w-full">
+                    {/* Bottom Action: Direct LinkedIn Verification Link */}
+                    <div className="w-full flex items-center">
                       <a
                         href={item.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 px-7 py-3.5 bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-xs uppercase tracking-widest rounded-full transition-all duration-300 shadow-xl group/btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          playSound("click");
+                        }}
+                        className="inline-flex items-center gap-2 px-6 py-3.5 bg-foreground text-background hover:opacity-90 font-bold text-xs uppercase tracking-widest rounded-full transition-all shadow-xl group/btn"
                       >
                         <Linkedin className="w-4 h-4" />
-                        <span>Verify on LinkedIn</span>
-                        <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                        <span>Verify Certificate</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                       </a>
                     </div>
                   </div>
@@ -257,16 +281,19 @@ export function AchievementsSection() {
                       <p className="text-sm text-neutral-700 dark:text-white/80 font-light leading-relaxed">
                         {item.excerpt}
                       </p>
-                      <a
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-black text-white dark:bg-white dark:text-black font-bold text-xs uppercase tracking-wider rounded-full mt-2"
-                      >
-                        <Linkedin className="w-4 h-4" />
-                        <span>Verify on LinkedIn</span>
-                        <ArrowUpRight className="w-4 h-4" />
-                      </a>
+                      
+                      <div className="flex flex-col sm:flex-row gap-2 mt-2">
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-foreground text-background font-bold text-xs uppercase tracking-wider rounded-full shadow-md"
+                        >
+                          <Linkedin className="w-4 h-4" />
+                          <span>Verify Certificate</span>
+                          <ArrowUpRight className="w-4 h-4" />
+                        </a>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -278,3 +305,5 @@ export function AchievementsSection() {
     </SectionWrapper>
   );
 }
+
+export default AchievementsSection;
