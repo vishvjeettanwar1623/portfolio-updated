@@ -1,3 +1,5 @@
+﻿import { ProjectLiveSandbox } from "@/components/ui/ProjectLiveSandbox";
+import { SplitTextReveal } from "@/components/ui/SplitTextReveal";
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
@@ -473,16 +475,16 @@ function InteractivePerspectiveCard({ project }: { project: Project }) {
 
         {/* Corner HUD Brackets */}
         <div className="absolute top-4 left-4 text-white/50 font-mono text-sm pointer-events-none select-none">
-          ⌜
+          +
         </div>
         <div className="absolute top-4 right-4 text-white/50 font-mono text-sm pointer-events-none select-none">
-          ⌝
+          +
         </div>
         <div className="absolute bottom-4 left-4 text-white/50 font-mono text-sm pointer-events-none select-none">
-          ⌞
+          +
         </div>
         <div className="absolute bottom-4 right-4 text-white/50 font-mono text-sm pointer-events-none select-none">
-          ⌟
+          +
         </div>
 
         {/* Floating Project Tag */}
@@ -509,6 +511,7 @@ function ProjectRow({
   onToggle: () => void;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [viewMode, setViewMode] = useState<"sandbox" | "card">("sandbox");
   const rowRef = useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(0);
@@ -668,7 +671,6 @@ function ProjectRow({
               >
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="w-2 h-2 rounded-full bg-foreground" />
                     <span className="text-xs font-mono uppercase tracking-widest text-foreground/70 font-bold">
                       {project.category}
                     </span>
@@ -807,15 +809,7 @@ export function ProjectsSection() {
       <div className="w-full max-w-6xl mx-auto px-4 md:px-8 relative z-10">
         {/* Section Header with On-Scroll Kinetic Reveal */}
         <div className="mb-14 text-center w-full">
-          <motion.h2
-            initial={{ opacity: 0, y: 35, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-[2px] sm:tracking-[4px] md:tracking-[6px] text-foreground font-[family-name:var(--font-audiowide)] drop-shadow-md whitespace-nowrap"
-          >
-            Work Portfolio
-          </motion.h2>
+          <SplitTextReveal text="Work Portfolio" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-[2px] sm:tracking-[4px] md:tracking-[6px] text-foreground font-[family-name:var(--font-audiowide)] drop-shadow-md whitespace-nowrap" />
         </div>
 
         {/* Master Project Rows Table */}
@@ -871,3 +865,7 @@ export function ProjectsSection() {
 }
 
 export default ProjectsSection;
+
+
+
+

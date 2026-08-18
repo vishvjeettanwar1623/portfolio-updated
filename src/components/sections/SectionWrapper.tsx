@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -24,7 +24,7 @@ export function SectionWrapper({
     <section
       id={id}
       className={cn(
-        "relative py-24 md:py-32",
+        "relative py-24 md:py-32 content-visibility-auto",
         !noOverflow && "overflow-hidden",
         className
       )}
@@ -49,3 +49,4 @@ export function SectionWrapper({
     </section>
   );
 }
+
