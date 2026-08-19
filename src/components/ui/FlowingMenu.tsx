@@ -1,3 +1,5 @@
+﻿"use client";
+
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import './FlowingMenu.css';
@@ -48,21 +50,43 @@ const MenuItem = ({
   const itemRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const marqueeInnerRef = useRef<HTMLDivElement>(null);
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
     const marqueeInner = marqueeInnerRef.current;
-    if (!marqueeInner) return;
+    const itemEl = itemRef.current;
+    if (!marqueeInner || !itemEl) return;
 
     const ctx = gsap.context(() => {
-      gsap.to(marqueeInner, {
+      const tween = gsap.to(marqueeInner, {
         xPercent: -50,
         repeat: -1,
         duration: speed,
         ease: "none",
+        paused: true,
       }).totalProgress(0.5);
+
+      tweenRef.current = tween;
     }, marqueeRef);
 
-    return () => ctx.revert();
+    // High-performance IntersectionObserver to auto-pause when offscreen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          tweenRef.current?.play();
+        } else {
+          tweenRef.current?.pause();
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(itemEl);
+
+    return () => {
+      observer.disconnect();
+      ctx.revert();
+    };
   }, [speed]);
 
   const handleMouseEnter = () => {
@@ -93,17 +117,12 @@ const MenuItem = ({
             {[...Array(2)].map((_, idx) => (
               <div className="marquee__part" key={idx} style={{ color: marqueeTextColor }}>
                 <div className="marquee__skills-list">
-                  {items.map((skill: SkillItem, i: number) => (
-                    <div key={i} className="marquee__skill-item font-[family-name:var(--font-syne-mono)]">
-                      <div className="w-8 h-8 md:w-10 md:h-10 relative flex-shrink-0">
-                        {skill.icon}
-                      </div>
-                      <span>{skill.title}</span>
-                    </div>
+                  {items.map((skill, sIdx) => (
+                    <span key={sIdx} className="marquee__skill-tag">
+                      {skill.icon}
+                      <span className="marquee__skill-name">{skill.title}</span>
+                    </span>
                   ))}
-                  <div className="marquee__skill-item text-white/20">
-                     •
-                  </div>
                 </div>
               </div>
             ))}
@@ -116,27 +135,31 @@ const MenuItem = ({
 
 export default function FlowingMenu({
   categories = [],
-  speed = 40,
+  speed = 18,
   textColor = '#ffffff',
+  bgColor = '#09090b',
   marqueeBgColor = '#ffffff',
   marqueeTextColor = '#000000',
-  borderColor = 'rgba(255,255,255,0.05)',
-  fontFamily = 'inherit',
+  borderColor = 'rgba(255,255,255,0.1)',
+  fontFamily = 'sans-serif',
 }: FlowingMenuProps) {
   return (
-    <nav className="menu">
-      {categories.map((category, index) => (
-        <MenuItem
-          key={index}
-          {...category}
-          speed={speed}
-          textColor={textColor}
-          marqueeBgColor={marqueeBgColor}
-          marqueeTextColor={marqueeTextColor}
-          borderColor={borderColor}
-          fontFamily={fontFamily}
-        />
-      ))}
-    </nav>
+    <div className="menu-wrap" style={{ backgroundColor: bgColor }}>
+      <nav className="menu">
+        {categories.map((cat, idx) => (
+          <MenuItem
+            key={idx}
+            category={cat.category}
+            items={cat.items}
+            speed={speed}
+            textColor={textColor}
+            marqueeBgColor={marqueeBgColor}
+            marqueeTextColor={marqueeTextColor}
+            borderColor={borderColor}
+            fontFamily={fontFamily}
+          />
+        ))}
+      </nav>
+    </div>
   );
 }
