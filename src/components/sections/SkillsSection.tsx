@@ -1,3 +1,4 @@
+﻿import { SplitTextReveal } from "@/components/ui/SplitTextReveal";
 "use client";
 
 import { SectionWrapper } from "@/components/sections/SectionWrapper";
@@ -85,9 +86,7 @@ export function SkillsSection() {
     <SectionWrapper id="skills" className="pb-12 bg-background relative overflow-hidden flex flex-col min-h-screen transition-colors duration-400">
       {/* Centered Heading */}
       <div className="relative z-10 w-full px-4 md:px-12 pt-16 pb-10 flex flex-col items-center justify-center text-center flex-shrink-0">
-        <h2 className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-3 text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] drop-shadow-sm">
-          My Stack
-        </h2>
+        <SplitTextReveal text="My Stack" className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-3 text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] drop-shadow-sm" />
         <p className="text-neutral-700 dark:text-white/85 text-base md:text-lg max-w-md">
           technologies, frameworks, and tools I use
         </p>
@@ -108,3 +107,4 @@ export function SkillsSection() {
     </SectionWrapper>
   );
 }
+
