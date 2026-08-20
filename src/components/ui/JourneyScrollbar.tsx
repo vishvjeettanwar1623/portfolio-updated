@@ -16,6 +16,7 @@ const SECTIONS: TOCSection[] = [
   { id: "achievements", name: "Achievements" },
   { id: "about", name: "About" },
   { id: "experience", name: "Journey" },
+  { id: "github-activity", name: "Orbit" },
   { id: "contact", name: "Contact" },
 ];
 
