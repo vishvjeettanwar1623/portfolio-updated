@@ -1,15 +1,11 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import TrueFocus from "./TrueFocus";
-import ButtonWithIcon from "./button-with-icon";
-import ShinyText from "./ShinyText";
-import SubtleParticleDust from "./SubtleParticleDust";
 import { MagneticImage } from "./morphing-cursor";
 import { GlassRain } from "./GlassRain";
-
 import { useTheme } from "@/context/ThemeContext";
 
 interface MascotHeroProps {
@@ -28,180 +24,135 @@ export function MascotHero({
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const containerRef = useRef<HTMLDivElement>(null);
-  const surgenaFontClass = "font-surgena";
   const baseDelay = animationDelay > 0 ? animationDelay : 0;
 
-  const mascotDelay = baseDelay;
-  const nameDelay1 = baseDelay + 0.1;
-  const nameDelay2 = baseDelay + 0.25;
-  const nameDelay3 = baseDelay + 0.4;
-  const roleDelay = baseDelay + 0.6;
-  const buttonDelay = baseDelay + 0.85;
-
-  const shinyTextColor = isDark ? "#666666" : "#777777";
-  const shinyTextShine = isDark ? "#ffffff" : "#000000";
+  const handleExploreClick = () => {
+    const target = document.getElementById("projects");
+    if (target) {
+      const topOffset = target.getBoundingClientRect().top + window.scrollY - 40;
+      window.scrollTo({ top: topOffset, behavior: "smooth" });
+    }
+  };
 
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background transition-colors duration-400"
+      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background select-none"
     >
-      {/* Crisp Digital Glass Light Rain Streaks */}
-      <GlassRain className="opacity-80" />
+      {/* 1. ATMOSPHERIC BACKGROUND WITH SUBTLE GLASS LIGHT STREAKS */}
+      <GlassRain className="opacity-70" />
 
-      {/* Ultra-subtle Particle Dust Background */}
-      <SubtleParticleDust />
-
-      {/* Radial Stage Spotlight Behind Mascot */}
+      {/* Stage Radial Spotlight */}
       <div
         className={cn(
           "absolute inset-0 pointer-events-none z-0 transition-opacity duration-500",
           isDark
-            ? "bg-[radial-gradient(circle_at_50%_45%,rgba(255,255,255,0.07)_0%,rgba(0,0,0,0)_65%)]"
-            : "bg-[radial-gradient(circle_at_50%_45%,rgba(0,0,0,0.05)_0%,rgba(255,255,255,0)_65%)]"
+            ? "bg-[radial-gradient(circle_at_50%_45%,rgba(255,255,255,0.08)_0%,rgba(9,9,11,0.98)_70%)]"
+            : "bg-[radial-gradient(circle_at_50%_45%,rgba(0,0,0,0.04)_0%,rgba(255,255,255,0.98)_70%)]"
         )}
       />
 
-      <div className="relative z-10 w-full h-screen flex flex-col items-center overflow-hidden pointer-events-none">
-        {/* Central Mascot Standout */}
+      {/* 2. HERO MAIN CONTENT WRAPPER */}
+      <div className="relative z-10 w-full h-screen flex items-center justify-between px-6 sm:px-12 md:px-16 pointer-events-none overflow-hidden">
+        
+        {/* LEFT COLUMN: STAIR-STEPPED SURGENA TYPOGRAPHY */}
+        <div className="z-30 flex flex-col justify-center pointer-events-none max-w-[45vw] text-left">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.1, delay: baseDelay + 0.1, ease: [0.16, 1, 0.3, 1] }}
+            style={{ fontFamily: "Surgena, sans-serif" }}
+            className="text-[12vw] sm:text-[9vw] md:text-[7vw] lg:text-[6.5vw] tracking-tighter leading-[0.85] text-[#8e8e93] dark:text-[#737373] drop-shadow-sm"
+          >
+            Vishvjeet
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.1, delay: baseDelay + 0.25, ease: [0.16, 1, 0.3, 1] }}
+            style={{ fontFamily: "Surgena, sans-serif" }}
+            className="pl-[1.5vw] sm:pl-[2vw] text-[12vw] sm:text-[9vw] md:text-[7vw] lg:text-[6.5vw] tracking-tighter leading-[0.85] text-[#8e8e93] dark:text-[#737373] drop-shadow-sm"
+          >
+            Singh
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.1, delay: baseDelay + 0.4, ease: [0.16, 1, 0.3, 1] }}
+            style={{ fontFamily: "Surgena, sans-serif" }}
+            className="pl-[3vw] sm:pl-[4vw] text-[12vw] sm:text-[9vw] md:text-[7vw] lg:text-[6.5vw] tracking-tighter leading-[0.85] text-[#8e8e93] dark:text-[#737373] drop-shadow-sm"
+          >
+            Tanwar
+          </motion.div>
+        </div>
+
+        {/* CENTER COLUMN: 3D INTERACTIVE MASCOT WITH NATURAL BOTTOM FOOTING */}
         <motion.div
-          initial={{ opacity: 0, y: "100vh" }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 70, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{
-            duration: 1.5,
-            delay: mascotDelay,
+            duration: 1.4,
+            delay: baseDelay + 0.15,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="absolute bottom-0 z-20 w-auto h-[65vh] md:h-[75vh] aspect-[3/4] md:aspect-[4/5] pointer-events-none flex items-center justify-center"
+          className="absolute left-1/2 -translate-x-1/2 bottom-0 z-20 h-[68vh] md:h-[80vh] aspect-[3/4] md:aspect-[4/5] pointer-events-auto flex items-end justify-center"
         >
           <MagneticImage
             baseImageSrc={mascotSrc}
             hoverImageSrc="/assets/mascot image 2.png"
-            alt="Mascot"
-            lensSize={220}
-            className="w-full h-full flex items-center justify-center pointer-events-auto"
-            imageClassName="object-contain select-none filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
+            alt="Vishvjeet Tanwar Mascot"
+            lensSize={240}
+            className="w-full h-full flex items-end justify-center pointer-events-auto"
+            imageClassName="object-contain select-none max-h-full filter drop-shadow-[0_25px_50px_rgba(0,0,0,0.5)]"
           />
         </motion.div>
 
-        {/* Left Side: Large Staired Typography filling the left hero area */}
-        <div className="absolute top-[32%] md:top-[34%] left-[3vw] md:left-[4vw] z-30 flex flex-col pointer-events-none select-none">
+        {/* RIGHT COLUMN: TRUEFOCUS ON ROLE & PILL BUTTON */}
+        <div className="z-30 flex flex-col items-end text-right pointer-events-auto max-w-[42vw] space-y-12">
+          {/* TrueFocus Focusing 'FULL-STACK' then 'WEB3' */}
           <motion.div
-            initial={{ opacity: 0, x: "-60px" }}
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 1.4,
-              delay: nameDelay1,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-          >
-            <ShinyText
-              text="Vishvjeet"
-              className={cn(
-                "text-[11vw] md:text-[7.2vw] font-bold whitespace-nowrap tracking-tighter leading-[0.85] mb-2 md:mb-3 cursor-default pointer-events-auto drop-shadow-xl",
-                surgenaFontClass
-              )}
-              speed={3}
-              color={shinyTextColor}
-              shineColor={shinyTextShine}
-              spread={100}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: "-60px" }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 1.4,
-              delay: nameDelay2,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="ml-[5vw] md:ml-[6vw]"
-          >
-            <ShinyText
-              text="Singh"
-              className={cn(
-                "text-[11vw] md:text-[7.2vw] font-bold whitespace-nowrap tracking-tighter leading-[0.85] mb-2 md:mb-3 cursor-default pointer-events-auto drop-shadow-xl",
-                surgenaFontClass
-              )}
-              speed={3}
-              color={shinyTextColor}
-              shineColor={shinyTextShine}
-              spread={100}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: "-60px" }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 1.4,
-              delay: nameDelay3,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="ml-[10vw] md:ml-[12vw]"
-          >
-            <ShinyText
-              text="Tanwar"
-              className={cn(
-                "text-[11vw] md:text-[7.2vw] font-bold whitespace-nowrap tracking-tighter leading-[0.85] cursor-default pointer-events-auto drop-shadow-xl",
-                surgenaFontClass
-              )}
-              speed={3}
-              color={shinyTextColor}
-              shineColor={shinyTextShine}
-              spread={100}
-            />
-          </motion.div>
-        </div>
-
-        {/* Middle Right: Role (DESIGNER DEVELOPER) */}
-        <div className="absolute top-[48%] right-[4vw] md:right-[6vw] z-30 flex flex-col items-center justify-center text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 1.0,
-              delay: roleDelay,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="pointer-events-auto flex flex-col items-center justify-center"
+            transition={{ duration: 1.1, delay: baseDelay + 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-wider uppercase font-mono"
           >
             <TrueFocus
               sentence="FULL-STACK WEB3"
               manualMode={false}
-              blurAmount={3}
+              blurAmount={4}
               borderColor={isDark ? "#ffffff" : "#000000"}
-              glowColor="transparent"
-              animationDuration={0.75}
-              pauseBetweenAnimations={3.2}
+              glowColor={isDark ? "rgba(255, 255, 255, 0.35)" : "rgba(0, 0, 0, 0.25)"}
+              animationDuration={0.7}
+              pauseBetweenAnimations={1.6}
             />
+          </motion.div>
+
+          {/* Clean Pill Button matching Reference Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: baseDelay + 0.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <button
+              type="button"
+              onClick={handleExploreClick}
+              className="group flex items-center gap-3 pl-5 pr-2.5 py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 active:scale-95 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.15)] cursor-pointer font-mono select-none"
+            >
+              <span className="text-xs font-bold uppercase tracking-wider">
+                VIEW SELECTED WORK
+              </span>
+              <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+                ↗
+              </span>
+            </button>
           </motion.div>
         </div>
 
-        {/* Bottom Right: Action Button (VIEW SELECTED WORK) */}
-        <div className="absolute bottom-[15%] right-[10vw] md:right-[15vw] z-30 flex items-center justify-end">
-          <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{
-              duration: 1.2,
-              delay: buttonDelay,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="pointer-events-auto"
-          >
-            <ButtonWithIcon
-              label="VIEW SELECTED WORK"
-              onClick={() =>
-                document
-                  .getElementById("projects")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-            />
-          </motion.div>
-        </div>
       </div>
     </div>
   );
 }
+
+export default MascotHero;
