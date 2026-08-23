@@ -7,9 +7,10 @@ const menuItems = [
   { label: "Home", ariaLabel: "Go to home section", link: "#home" },
   { label: "Work", ariaLabel: "View selected engineering work", link: "#projects" },
   { label: "Stack", ariaLabel: "View my engineering stack", link: "#skills" },
-  { label: "Experience", ariaLabel: "View experience and leadership work", link: "#experience" },
-  { label: "Orbit", ariaLabel: "View Commit Orbit and open source telemetry", link: "#github-activity" },
   { label: "Achievements", ariaLabel: "View my achievements", link: "#achievements" },
+  { label: "About", ariaLabel: "Learn more about me", link: "#about" },
+  { label: "Journey", ariaLabel: "View experience and leadership journey", link: "#experience" },
+  { label: "Orbit", ariaLabel: "View Commit Orbit and open source telemetry", link: "#github-activity" },
   { label: "Contact", ariaLabel: "Get in touch", link: "#contact" },
 ];
 
@@ -43,3 +44,5 @@ export function Navbar() {
     />
   );
 }
+
+export default Navbar;

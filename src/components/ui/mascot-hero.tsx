@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import TrueFocus from "./TrueFocus";
+import ButtonWithIcon from "./button-with-icon";
 import { MagneticImage } from "./morphing-cursor";
 import { GlassRain } from "./GlassRain";
 import { useTheme } from "@/context/ThemeContext";
@@ -109,9 +110,8 @@ export function MascotHero({
           />
         </motion.div>
 
-        {/* RIGHT COLUMN: TRUEFOCUS ON ROLE & PILL BUTTON */}
-        <div className="z-30 flex flex-col items-end text-right pointer-events-auto max-w-[42vw] space-y-12">
-          {/* TrueFocus Focusing 'FULL-STACK' then 'WEB3' */}
+        {/* RIGHT COLUMN: TRUEFOCUS ON ROLE */}
+        <div className="z-30 flex flex-col items-end text-right pointer-events-auto max-w-[42vw]">
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -128,29 +128,22 @@ export function MascotHero({
               pauseBetweenAnimations={1.6}
             />
           </motion.div>
-
-          {/* Clean Pill Button matching Reference Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 15 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: baseDelay + 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <button
-              type="button"
-              onClick={handleExploreClick}
-              className="group flex items-center gap-3 pl-5 pr-2.5 py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 active:scale-95 transition-all shadow-[0_4px_25px_rgba(255,255,255,0.15)] cursor-pointer font-mono select-none"
-            >
-              <span className="text-xs font-bold uppercase tracking-wider">
-                VIEW SELECTED WORK
-              </span>
-              <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
-                ↗
-              </span>
-            </button>
-          </motion.div>
         </div>
 
       </div>
+
+      {/* 3. SIGNATURE BUTTON WITH ICON (SHIFTED 10px UP & 10px LEFT) */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: baseDelay + 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute bottom-[50px] sm:bottom-[58px] md:bottom-[74px] right-[50px] sm:right-[74px] md:right-[90px] lg:right-[106px] z-30 pointer-events-auto shadow-[0_6px_30px_rgba(255,255,255,0.2)] rounded-full"
+      >
+        <ButtonWithIcon
+          label="EXPLORE WORKS"
+          onClick={handleExploreClick}
+        />
+      </motion.div>
     </div>
   );
 }
