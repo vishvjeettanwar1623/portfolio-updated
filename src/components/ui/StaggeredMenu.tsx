@@ -320,16 +320,23 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       <header className="staggered-menu-header" aria-label="Main navigation header">
         {/* Logo (Hidden during loading screen to eliminate double-text overlap) */}
         <div
-          className="sm-logo"
+          className="sm-logo "
           aria-label="Logo"
+          
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              window.dispatchEvent(new CustomEvent("open_contact_pass"));
+            }
+          }}
           style={{
             opacity: hideLogo ? 0 : 1,
             transition: 'opacity 0.5s ease',
+            cursor: 'pointer',
           }}
         >
           {logoUrl
             ? <img src={logoUrl} alt="Logo" className="sm-logo-img" draggable={false} />
-            : <span className="sm-logo-text">{logoText ?? 'vishvjeet.me'}</span>
+            : <span className="sm-logo-text hover:opacity-80 transition-opacity">{logoText ?? 'vishvjeet.me'}</span>
           }
         </div>
 
@@ -401,4 +408,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 };
 
 export default StaggeredMenu;
+
+
 
