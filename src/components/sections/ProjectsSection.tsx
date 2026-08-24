@@ -1,4 +1,4 @@
-﻿import { ProjectLiveSandbox } from "@/components/ui/ProjectLiveSandbox";
+import { ProjectLiveSandbox } from "@/components/ui/ProjectLiveSandbox";
 import { SplitTextReveal } from "@/components/ui/SplitTextReveal";
 "use client";
 
@@ -145,7 +145,7 @@ const projects: Project[] = [
     name: "Data Roots",
     category: "DECENTRALIZED P2P",
     tagline: "Sovereign Peer-to-Peer Data Monetization Protocol",
-    image: "/assets/Projects/data_roots.png",
+    image: "/assets/Projects/data_roots.webp",
     domainUrl: "data-roots.vercel.app",
     description:
       "A decentralized P2P data marketplace empowering users to encrypt, control, share, and monetize personal telemetry and structured datasets with Solidity smart contracts and IPFS storage.",
@@ -165,7 +165,7 @@ const projects: Project[] = [
     name: "Promp-IP",
     category: "IP ASSET PROTOCOL",
     tagline: "AI Prompt Ownership & Programmable Licensing Marketplace",
-    image: "/assets/Projects/promp-ip.png",
+    image: "/assets/Projects/promp-ip.webp",
     domainUrl: "promp-ip.protocol.xyz",
     description:
       "An intellectual property licensing marketplace powered by Story Protocol, converting high-performance prompt engineering pipelines into verifiable, royalty-earning programmable IP assets.",
@@ -183,7 +183,7 @@ const projects: Project[] = [
     name: "Questfi",
     category: "WEB3 ESCROW",
     tagline: "Transparent Web3 Bounty & Milestone Protocol",
-    image: "/assets/Projects/questfi.png",
+    image: "/assets/Projects/questfi.webp",
     domainUrl: "questfi.network",
     description:
       "A modern decentralized task and bounty platform connecting open-source developers with verified organizations through automated smart contract milestone escrows.",
@@ -219,7 +219,7 @@ const projects: Project[] = [
     name: "PDF-Chatbot",
     category: "NEURAL RAG",
     tagline: "Interactive AI Document Tutor & Quiz Generator",
-    image: "/assets/Projects/pdf-chatbot.png",
+    image: "/assets/Projects/pdf-chatbot.webp",
     domainUrl: "pdfchatbot.app",
     description:
       "A document intelligence application that parses academic textbooks, generates localized vector embeddings, and creates interactive Q&A sessions with dynamic practice quizzes.",

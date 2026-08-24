@@ -34,7 +34,7 @@ export function GlassRain({ className = "" }: { className?: string }) {
     let isMouseActive = false;
 
     // Create rain streaks
-    const streakCount = Math.min(80, Math.floor(width / 18));
+    const streakCount = Math.min(35, Math.floor(width / 35));
     const streaks: RainStreak[] = [];
 
     const createStreak = (initialY = false): RainStreak => {
