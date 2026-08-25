@@ -305,6 +305,10 @@ export function MagneticImage({
         ref={imgRef}
         src={baseImageSrc}
         alt={alt}
+        // @ts-ignore
+        fetchPriority="high"
+        loading="eager"
+        decoding="async"
         className={cn("w-full h-full object-contain pointer-events-none", imageClassName)}
       />
 
@@ -333,6 +337,8 @@ export function MagneticImage({
           <img
             src={hoverImageSrc}
             alt={`${alt} 2`}
+            loading="lazy"
+            decoding="async"
             className={cn("w-full h-full object-contain pointer-events-none scale-[2.25] origin-center", imageClassName)}
           />
         </div>

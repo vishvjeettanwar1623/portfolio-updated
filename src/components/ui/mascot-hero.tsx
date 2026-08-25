@@ -1,13 +1,13 @@
-﻿"use client";
+"use client";
 
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
-import { useRef } from "react";
-import { cn } from "@/lib/utils";
-import TrueFocus from "./TrueFocus";
-import ButtonWithIcon from "./button-with-icon";
-import { MagneticImage } from "./morphing-cursor";
-import { GlassRain } from "./GlassRain";
 import { useTheme } from "@/context/ThemeContext";
+import { GlassRain } from "./GlassRain";
+import TrueFocus from "./TrueFocus";
+import { MagneticImage } from "./morphing-cursor";
+import ButtonWithIcon from "./button-with-icon";
+import { cn } from "@/lib/utils";
 
 interface MascotHeroProps {
   name?: string;
@@ -19,7 +19,7 @@ interface MascotHeroProps {
 export function MascotHero({
   name = "Vishvjeet Singh Tanwar",
   badge = "Full-stack & Web3 Developer",
-  mascotSrc = "/assets/Mascot Image.png?v=2",
+  mascotSrc = "/assets/mascot-image.webp",
   animationDelay = 0.2,
 }: MascotHeroProps) {
   const { theme } = useTheme();
@@ -59,9 +59,9 @@ export function MascotHero({
         {/* LEFT COLUMN: STAIR-STEPPED SURGENA TYPOGRAPHY */}
         <div className="z-30 flex flex-col justify-center pointer-events-none max-w-[45vw] text-left">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 1, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.1, delay: baseDelay + 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             style={{ fontFamily: "Surgena, sans-serif" }}
             className="text-[12vw] sm:text-[9vw] md:text-[7vw] lg:text-[6.5vw] tracking-tighter leading-[0.85] text-[#8e8e93] dark:text-[#737373] drop-shadow-sm"
           >
@@ -69,9 +69,9 @@ export function MascotHero({
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 1, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.1, delay: baseDelay + 0.25, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
             style={{ fontFamily: "Surgena, sans-serif" }}
             className="pl-[1.5vw] sm:pl-[2vw] text-[12vw] sm:text-[9vw] md:text-[7vw] lg:text-[6.5vw] tracking-tighter leading-[0.85] text-[#8e8e93] dark:text-[#737373] drop-shadow-sm"
           >
@@ -79,9 +79,9 @@ export function MascotHero({
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 1, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.1, delay: baseDelay + 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             style={{ fontFamily: "Surgena, sans-serif" }}
             className="pl-[3vw] sm:pl-[4vw] text-[12vw] sm:text-[9vw] md:text-[7vw] lg:text-[6.5vw] tracking-tighter leading-[0.85] text-[#8e8e93] dark:text-[#737373] drop-shadow-sm"
           >
@@ -91,18 +91,17 @@ export function MascotHero({
 
         {/* CENTER COLUMN: 3D INTERACTIVE MASCOT WITH NATURAL BOTTOM FOOTING */}
         <motion.div
-          initial={{ opacity: 0, y: 70, scale: 0.95 }}
+          initial={{ opacity: 1, y: 15, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{
-            duration: 1.4,
-            delay: baseDelay + 0.15,
+            duration: 0.6,
             ease: [0.16, 1, 0.3, 1],
           }}
           className="absolute left-1/2 -translate-x-1/2 bottom-0 z-20 h-[68vh] md:h-[80vh] aspect-[3/4] md:aspect-[4/5] pointer-events-auto flex items-end justify-center"
         >
           <MagneticImage
             baseImageSrc={mascotSrc}
-            hoverImageSrc="/assets/mascot image 2.png"
+            hoverImageSrc="/assets/mascot-image-2.webp"
             alt="Vishvjeet Tanwar Mascot"
             lensSize={240}
             className="w-full h-full flex items-end justify-center pointer-events-auto"
@@ -113,9 +112,9 @@ export function MascotHero({
         {/* RIGHT COLUMN: TRUEFOCUS ON ROLE */}
         <div className="z-30 flex flex-col items-end text-right pointer-events-auto max-w-[42vw]">
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 1, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.1, delay: baseDelay + 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-wider uppercase font-mono"
           >
             <TrueFocus
@@ -134,9 +133,9 @@ export function MascotHero({
 
       {/* 3. SIGNATURE BUTTON WITH ICON (SHIFTED 10px UP & 10px LEFT) */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: baseDelay + 0.5, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 1, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         className="absolute bottom-[50px] sm:bottom-[58px] md:bottom-[74px] right-[50px] sm:right-[74px] md:right-[90px] lg:right-[106px] z-30 pointer-events-auto shadow-[0_6px_30px_rgba(255,255,255,0.2)] rounded-full"
       >
         <ButtonWithIcon
