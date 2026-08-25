@@ -10,17 +10,17 @@ const designs = [
   {
     name: "404 Error Redesigned",
     tag: "UX/UI",
-    image: "/assets/designs/Design-1.png",
+    image: "/assets/designs/Design-1.webp",
   },
   {
     name: "Animated & Cartonic Loading Screen",
     tag: "UX/UI",
-    image: "/assets/designs/Design-2.png",
+    image: "/assets/designs/Design-2.webp",
   },
   {
     name: "Game View Page",
     tag: "UX/UI",
-    image: "/assets/designs/Design-3.png",
+    image: "/assets/designs/Design-3.webp",
   },
 ];
 
@@ -163,182 +163,3 @@ export function DesignsSection() {
                     animate={{
                       y: hoveredIndex === 0 ? 0 : 5,
                       opacity: hoveredIndex === 0 ? 1 : 0.75,
-                    }}
-                    transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  >
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/95 mb-1 font-bold">
-                      {designs[0].tag}
-                    </p>
-                    <h3 className="text-sm md:text-base font-bold text-white leading-tight">
-                      {designs[0].name}
-                    </h3>
-                  </motion.div>
-                </GlareHover>
-              </div>
-            </motion.div>
-
-            {/* Card 2 (Center Lifts Forward) */}
-            <motion.div
-              onMouseEnter={() => handleEnter(1)}
-              onMouseLeave={handleLeave}
-              onClick={() => setHoveredIndex(hoveredIndex === 1 ? null : 1)}
-              style={{
-                zIndex: hoveredIndex === 1 ? 50 : 20,
-                y: hoveredIndex === 1 ? -18 : yCenter,
-                scale: hoveredIndex === 1 ? 1.5 : scaleCenter,
-                opacity: hoveredIndex !== null && hoveredIndex !== 1 ? 0.5 : opacityCenter,
-                filter: hoveredIndex !== null && hoveredIndex !== 1
-                  ? "blur(3px) brightness(0.45)"
-                  : "blur(0px) brightness(1)",
-                willChange: "transform, filter, opacity",
-              }}
-              transition={{
-                duration: 0.55,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-              className="relative w-full md:flex-1 cursor-pointer transform-gpu"
-            >
-              <div
-                className="relative w-full overflow-hidden rounded-2xl border transition-all duration-500 ease-out"
-                style={{
-                  aspectRatio: "16 / 10",
-                  borderColor: hoveredIndex === 1 ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.08)",
-                  boxShadow: hoveredIndex === 1 ? "0 24px 64px rgba(0,0,0,0.55)" : "0 8px 24px rgba(0,0,0,0.2)",
-                }}
-              >
-                <GlareHover
-                  glareOpacity={0.4}
-                  glareSize={200}
-                  glareAngle={-45}
-                  transitionDuration={600}
-                  className="w-full h-full"
-                >
-                  <motion.div
-                    className="absolute inset-0"
-                    animate={{ scale: hoveredIndex === 1 ? 1.06 : 1 }}
-                    transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  >
-                    <Image
-                      src={designs[1].image}
-                      alt={designs[1].name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                  </motion.div>
-
-                  <motion.div
-                    className="absolute inset-0"
-                    animate={{
-                      background: hoveredIndex === 1
-                        ? "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%)"
-                        : "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 40%)",
-                    }}
-                    transition={{ duration: 0.55, ease: "easeInOut" }}
-                  />
-
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 p-4"
-                    animate={{
-                      y: hoveredIndex === 1 ? 0 : 5,
-                      opacity: hoveredIndex === 1 ? 1 : 0.75,
-                    }}
-                    transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  >
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/95 mb-1 font-bold">
-                      {designs[1].tag}
-                    </p>
-                    <h3 className="text-sm md:text-base font-bold text-white leading-tight">
-                      {designs[1].name}
-                    </h3>
-                  </motion.div>
-                </GlareHover>
-              </div>
-            </motion.div>
-
-            {/* Card 3 (Right Fan-Out) */}
-            <motion.div
-              onMouseEnter={() => handleEnter(2)}
-              onMouseLeave={handleLeave}
-              onClick={() => setHoveredIndex(hoveredIndex === 2 ? null : 2)}
-              style={{
-                zIndex: hoveredIndex === 2 ? 50 : 10,
-                x: hoveredIndex === 2 ? 0 : xRight,
-                rotate: hoveredIndex === 2 ? 0 : rotateRight,
-                rotateY: hoveredIndex === 2 ? 0 : rotateYRight,
-                opacity: hoveredIndex !== null && hoveredIndex !== 2 ? 0.5 : opacityRight,
-                scale: hoveredIndex === 2 ? 1.5 : 1,
-                filter: hoveredIndex !== null && hoveredIndex !== 2
-                  ? "blur(3px) brightness(0.45)"
-                  : "blur(0px) brightness(1)",
-                willChange: "transform, filter, opacity",
-              }}
-              transition={{
-                duration: 0.55,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-              className="relative w-full md:flex-1 cursor-pointer transform-gpu"
-            >
-              <div
-                className="relative w-full overflow-hidden rounded-2xl border transition-all duration-500 ease-out"
-                style={{
-                  aspectRatio: "16 / 10",
-                  borderColor: hoveredIndex === 2 ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.08)",
-                  boxShadow: hoveredIndex === 2 ? "0 24px 64px rgba(0,0,0,0.55)" : "0 8px 24px rgba(0,0,0,0.2)",
-                }}
-              >
-                <GlareHover
-                  glareOpacity={0.4}
-                  glareSize={200}
-                  glareAngle={-45}
-                  transitionDuration={600}
-                  className="w-full h-full"
-                >
-                  <motion.div
-                    className="absolute inset-0"
-                    animate={{ scale: hoveredIndex === 2 ? 1.06 : 1 }}
-                    transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  >
-                    <Image
-                      src={designs[2].image}
-                      alt={designs[2].name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                  </motion.div>
-
-                  <motion.div
-                    className="absolute inset-0"
-                    animate={{
-                      background: hoveredIndex === 2
-                        ? "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%)"
-                        : "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 40%)",
-                    }}
-                    transition={{ duration: 0.55, ease: "easeInOut" }}
-                  />
-
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 p-4"
-                    animate={{
-                      y: hoveredIndex === 2 ? 0 : 5,
-                      opacity: hoveredIndex === 2 ? 1 : 0.75,
-                    }}
-                    transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  >
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/95 mb-1 font-bold">
-                      {designs[2].tag}
-                    </p>
-                    <h3 className="text-sm md:text-base font-bold text-white leading-tight">
-                      {designs[2].name}
-                    </h3>
-                  </motion.div>
-                </GlareHover>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </SectionWrapper>
-  );
-}
