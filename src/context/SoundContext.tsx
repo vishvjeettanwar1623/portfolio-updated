@@ -19,6 +19,7 @@ const SoundContext = createContext<SoundContextType>({
 export function SoundProvider({ children }: { children: React.ReactNode }) {
   const [isSoundEnabled, setIsSoundEnabled] = useState<boolean>(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const userInteractedRef = useRef<boolean>(false);
 
   useEffect(() => {
     try {
@@ -27,23 +28,45 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
         setIsSoundEnabled(saved === "true");
       }
     } catch {}
+
+    // Unlock AudioContext on first user gesture to comply with Chrome autoplay policy
+    const unlockAudio = () => {
+      userInteractedRef.current = true;
+      if (audioCtxRef.current && audioCtxRef.current.state === "suspended") {
+        audioCtxRef.current.resume().catch(() => {});
+      }
+    };
+
+    window.addEventListener("pointerdown", unlockAudio, { once: true, passive: true });
+    window.addEventListener("keydown", unlockAudio, { once: true, passive: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", unlockAudio);
+      window.removeEventListener("keydown", unlockAudio);
+    };
   }, []);
 
   const getAudioContext = useCallback(() => {
     if (typeof window === "undefined") return null;
+
     if (!audioCtxRef.current) {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (AudioCtx) {
         audioCtxRef.current = new AudioCtx();
       }
     }
-    if (audioCtxRef.current && audioCtxRef.current.state === "suspended") {
-      audioCtxRef.current.resume();
+
+    if (audioCtxRef.current && audioCtxRef.current.state === "suspended" && userInteractedRef.current) {
+      audioCtxRef.current.resume().catch(() => {});
     }
+
     return audioCtxRef.current;
   }, []);
 
   const toggleSound = useCallback(() => {
+    userInteractedRef.current = true;
     setIsSoundEnabled((prev) => {
       const next = !prev;
       try {
@@ -52,7 +75,7 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
       if (next) {
         setTimeout(() => {
           const ctx = getAudioContext();
-          if (ctx) {
+          if (ctx && ctx.state !== "suspended") {
             const now = ctx.currentTime;
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
@@ -76,14 +99,13 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
     (type: SoundType = "click") => {
       if (!isSoundEnabled) return;
       const ctx = getAudioContext();
-      if (!ctx) return;
+      if (!ctx || ctx.state === "suspended") return;
 
       const now = ctx.currentTime;
 
       try {
         switch (type) {
           case "hover": {
-            // Crisp, tactile micro tick
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.type = "triangle";
@@ -99,140 +121,83 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
           }
 
           case "click": {
-            // High-precision mechanical switch click
-            const osc1 = ctx.createOscillator();
-            const osc2 = ctx.createOscillator();
+            const osc = ctx.createOscillator();
             const gain = ctx.createGain();
-
-            osc1.type = "sine";
-            osc2.type = "triangle";
-            osc1.frequency.setValueAtTime(1100, now);
-            osc2.frequency.setValueAtTime(450, now);
-            osc1.frequency.exponentialRampToValueAtTime(320, now + 0.045);
-            osc2.frequency.exponentialRampToValueAtTime(180, now + 0.045);
-
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(800, now);
+            osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
             gain.gain.setValueAtTime(0.08, now);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
-
-            osc1.connect(gain);
-            osc2.connect(gain);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+            osc.connect(gain);
             gain.connect(ctx.destination);
-
-            osc1.start(now);
-            osc2.start(now);
-            osc1.stop(now + 0.05);
-            osc2.stop(now + 0.05);
+            osc.start(now);
+            osc.stop(now + 0.06);
             break;
           }
 
           case "switch": {
-            // Resonant acoustic glass chime
-            const osc1 = ctx.createOscillator();
-            const osc2 = ctx.createOscillator();
+            const osc = ctx.createOscillator();
             const gain = ctx.createGain();
-
-            osc1.type = "sine";
-            osc2.type = "triangle";
-            osc1.frequency.setValueAtTime(587.33, now);
-            osc2.frequency.setValueAtTime(1174.66, now);
-            osc1.frequency.exponentialRampToValueAtTime(440, now + 0.09);
-            osc2.frequency.exponentialRampToValueAtTime(880, now + 0.09);
-
-            gain.gain.setValueAtTime(0.09, now);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
-
-            osc1.connect(gain);
-            osc2.connect(gain);
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(440, now);
+            osc.frequency.exponentialRampToValueAtTime(660, now + 0.06);
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+            osc.connect(gain);
             gain.connect(ctx.destination);
-
-            osc1.start(now);
-            osc2.start(now);
-            osc1.stop(now + 0.1);
-            osc2.stop(now + 0.1);
+            osc.start(now);
+            osc.stop(now + 0.08);
             break;
           }
 
           case "expand": {
-            // Rich upward acoustic harmonic sweep
-            const osc1 = ctx.createOscillator();
-            const osc2 = ctx.createOscillator();
+            const osc = ctx.createOscillator();
             const gain = ctx.createGain();
-
-            osc1.type = "sine";
-            osc2.type = "sine";
-            osc1.frequency.setValueAtTime(260, now);
-            osc1.frequency.exponentialRampToValueAtTime(680, now + 0.09);
-            osc2.frequency.setValueAtTime(520, now);
-            osc2.frequency.exponentialRampToValueAtTime(1040, now + 0.09);
-
-            gain.gain.setValueAtTime(0.08, now);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
-
-            osc1.connect(gain);
-            osc2.connect(gain);
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.exponentialRampToValueAtTime(600, now + 0.12);
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+            osc.connect(gain);
             gain.connect(ctx.destination);
-
-            osc1.start(now);
-            osc2.start(now);
-            osc1.stop(now + 0.1);
-            osc2.stop(now + 0.1);
+            osc.start(now);
+            osc.stop(now + 0.15);
             break;
           }
 
           case "close": {
-            // Rich downward acoustic tap
-            const osc1 = ctx.createOscillator();
-            const osc2 = ctx.createOscillator();
+            const osc = ctx.createOscillator();
             const gain = ctx.createGain();
-
-            osc1.type = "sine";
-            osc2.type = "sine";
-            osc1.frequency.setValueAtTime(580, now);
-            osc1.frequency.exponentialRampToValueAtTime(220, now + 0.08);
-            osc2.frequency.setValueAtTime(880, now);
-            osc2.frequency.exponentialRampToValueAtTime(330, now + 0.08);
-
-            gain.gain.setValueAtTime(0.07, now);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
-
-            osc1.connect(gain);
-            osc2.connect(gain);
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(600, now);
+            osc.frequency.exponentialRampToValueAtTime(300, now + 0.1);
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+            osc.connect(gain);
             gain.connect(ctx.destination);
-
-            osc1.start(now);
-            osc2.start(now);
-            osc1.stop(now + 0.09);
-            osc2.stop(now + 0.09);
+            osc.start(now);
+            osc.stop(now + 0.12);
             break;
           }
 
           case "theme": {
-            // Celestial dual-tone melodic chime
-            const osc1 = ctx.createOscillator();
-            const osc2 = ctx.createOscillator();
+            const osc = ctx.createOscillator();
             const gain = ctx.createGain();
-
-            osc1.type = "sine";
-            osc2.type = "sine";
-            osc1.frequency.setValueAtTime(523.25, now); // C5
-            osc1.frequency.setValueAtTime(783.99, now + 0.06); // G5
-            osc2.frequency.setValueAtTime(1046.5, now + 0.06); // C6
-
-            gain.gain.setValueAtTime(0.08, now);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
-
-            osc1.connect(gain);
-            osc2.connect(gain);
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(520, now);
+            osc.frequency.exponentialRampToValueAtTime(780, now + 0.09);
+            gain.gain.setValueAtTime(0.07, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+            osc.connect(gain);
             gain.connect(ctx.destination);
-
-            osc1.start(now);
-            osc2.start(now + 0.06);
-            osc1.stop(now + 0.22);
-            osc2.stop(now + 0.22);
+            osc.start(now);
+            osc.stop(now + 0.12);
             break;
           }
         }
-      } catch {}
+      } catch {
+        // Silently ignore audio playback errors
+      }
     },
     [isSoundEnabled, getAudioContext]
   );
