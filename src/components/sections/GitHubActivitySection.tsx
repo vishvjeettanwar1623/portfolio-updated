@@ -1,10 +1,14 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, GitCommit, Flame, ArrowUpRight, GitBranch, Terminal } from "lucide-react";
 import { useSound } from "@/context/SoundContext";
-import { SplitTextReveal } from "@/components/ui/SplitTextReveal";
+import {
+  TextStaggerHover,
+  TextStaggerHoverActive,
+  TextStaggerHoverHidden,
+} from "@/components/ui/text-stagger-hover";
 import { SectionWrapper } from "@/components/sections/SectionWrapper";
 
 interface CommitRecord {
@@ -471,10 +475,14 @@ export function GitHubActivitySection() {
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         {/* Section Header */}
         <div className="mb-14 text-center max-w-3xl mx-auto">
-          <SplitTextReveal
-            text="Commit Orbit"
-            className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase tracking-[2px] sm:tracking-[4px] text-foreground font-[family-name:var(--font-audiowide)] drop-shadow-md"
-          />
+          <TextStaggerHover as="h2" className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase tracking-[2px] sm:tracking-[4px] text-foreground font-[family-name:var(--font-audiowide)] drop-shadow-md">
+            <TextStaggerHoverActive animation="top">
+              Commit Orbit
+            </TextStaggerHoverActive>
+            <TextStaggerHoverHidden animation="bottom">
+              Commit Orbit
+            </TextStaggerHoverHidden>
+          </TextStaggerHover>
         </div>
 
         {/* 3D Holographic Viewport & Live Commit Telemetry Grid */}
