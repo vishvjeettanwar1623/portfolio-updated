@@ -1,10 +1,16 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import { WavyBackground } from "@/components/ui/wavy-background";
-import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, ArrowUpRight } from "lucide-react";
+import {
+  TextStaggerHover,
+  TextStaggerHoverActive,
+  TextStaggerHoverHidden,
+} from "@/components/ui/text-stagger-hover";
+import { LoopingWords } from "@/components/ui/looping-words-with-gsap";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -58,7 +64,7 @@ export function Footer() {
     <footer
       id="contact"
       onMouseMove={handleMouseMove}
-      className="relative border-t border-foreground/10 bg-background transition-colors duration-400 overflow-visible min-h-[360px] flex flex-col justify-between py-12 md:py-16"
+      className="relative border-t border-foreground/10 bg-background transition-colors duration-400 overflow-visible min-h-[520px] flex flex-col justify-between py-16 md:py-24"
     >
       <WavyBackground />
 
@@ -101,20 +107,54 @@ export function Footer() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="container relative z-10 mx-auto px-6 flex flex-col justify-between flex-grow max-w-6xl"
       >
-        {/* 2-Column Layout */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-6">
+        {/* SINGLE-LINE BANNER WITH LOOPING WORDS */}
+        <div className="w-full flex items-center justify-center text-center my-6 sm:my-8 overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-row flex-nowrap items-center justify-center gap-1 sm:gap-2 md:gap-3 max-w-full overflow-hidden"
+          >
+            <span className="text-xs sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-black uppercase font-[family-name:var(--font-audiowide)] tracking-tight text-neutral-900 dark:text-white whitespace-nowrap select-none flex-shrink-0">
+              CURRENTLY DOING SOMETHING
+            </span>
+
+            {/* Inline Looping Dynamic Focus Words */}
+            <LoopingWords
+              words={[
+                "EXTRAORDINARY",
+                "DECENTRALIZED",
+                "IMMERSIVE",
+                "FUTURE-PROOF",
+                "IMPACTFUL",
+                "CREATIVE",
+              ]}
+              fontFamily="var(--font-audiowide)"
+              className="text-xs sm:text-base md:text-xl lg:text-2xl xl:text-3xl flex-shrink-0"
+            />
+          </motion.div>
+        </div>
+
+        {/* 2-Column Bottom Bar Layout */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-6 pt-6 border-t border-foreground/10">
           {/* Left Column: Name & Tagline */}
           <div className="flex flex-col gap-2 text-center md:text-left">
-            <motion.h2
+            <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ x: 4, scale: 1.02 }}
-              className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] tracking-tight whitespace-nowrap cursor-default transition-transform duration-300"
             >
-              Vishvjeet Singh Tanwar
-            </motion.h2>
+              <TextStaggerHover as="h2" className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] tracking-tight whitespace-nowrap cursor-pointer">
+                <TextStaggerHoverActive animation="top">
+                  Vishvjeet Singh Tanwar
+                </TextStaggerHoverActive>
+                <TextStaggerHoverHidden animation="bottom">
+                  Vishvjeet Singh Tanwar
+                </TextStaggerHoverHidden>
+              </TextStaggerHover>
+            </motion.div>
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -171,6 +211,7 @@ export function Footer() {
             </div>
           </div>
         </div>
+
         {/* Expanding Divider Line */}
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
@@ -198,8 +239,3 @@ export function Footer() {
 }
 
 export default Footer;
-
-
-
-
-
