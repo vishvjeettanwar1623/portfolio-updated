@@ -1,8 +1,12 @@
-﻿import { SplitTextReveal } from "@/components/ui/SplitTextReveal";
 "use client";
 
 import { SectionWrapper } from "@/components/sections/SectionWrapper";
 import FlowingMenu from "@/components/ui/FlowingMenu";
+import {
+  TextStaggerHover,
+  TextStaggerHoverActive,
+  TextStaggerHoverHidden,
+} from "@/components/ui/text-stagger-hover";
 import { Github } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
@@ -84,9 +88,16 @@ export function SkillsSection() {
 
   return (
     <SectionWrapper id="skills" className="pb-12 bg-background relative overflow-hidden flex flex-col min-h-screen transition-colors duration-400">
-      {/* Centered Heading */}
+      {/* Centered Heading with TextStaggerHover */}
       <div className="relative z-10 w-full px-4 md:px-12 pt-16 pb-10 flex flex-col items-center justify-center text-center flex-shrink-0">
-        <SplitTextReveal text="My Stack" className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-3 text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] drop-shadow-sm" />
+        <TextStaggerHover as="h2" className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-3 text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] drop-shadow-sm">
+          <TextStaggerHoverActive animation="top">
+            My Stack
+          </TextStaggerHoverActive>
+          <TextStaggerHoverHidden animation="bottom">
+            My Stack
+          </TextStaggerHoverHidden>
+        </TextStaggerHover>
         <p className="text-neutral-700 dark:text-white/85 text-base md:text-lg max-w-md">
           technologies, frameworks, and tools I use
         </p>
@@ -107,4 +118,3 @@ export function SkillsSection() {
     </SectionWrapper>
   );
 }
-
