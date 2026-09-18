@@ -23,15 +23,15 @@ export function LoadingScreen({ onComplete }: { onComplete?: () => void }) {
       return;
     }
 
-    // Check if user already saw full intro in this session
-    const hasVisited = typeof window !== "undefined" && sessionStorage.getItem("portfolio_intro_seen");
-    const duration = hasVisited ? 150 : 350; // Snappy timing
+    // Minimum duration of 3 seconds (3000ms)
+    const duration = 3000;
 
     const startTime = performance.now();
 
     const updateCounter = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const rawProgress = Math.min(elapsed / duration, 1);
+      // Smooth cubic-out easing for realistic loading acceleration & deceleration
       const eased = 1 - Math.pow(1 - rawProgress, 3);
       const currentVal = Math.floor(eased * 100);
 
@@ -45,7 +45,7 @@ export function LoadingScreen({ onComplete }: { onComplete?: () => void }) {
         } catch {}
         setTimeout(() => {
           setIsExiting(true);
-        }, 30);
+        }, 120);
       }
     };
 
