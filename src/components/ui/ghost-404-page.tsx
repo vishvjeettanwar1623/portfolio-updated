@@ -63,9 +63,9 @@ export function NotFound() {
   const isMaintenance = MAINTENANCE_MODE;
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-between py-20 px-4 ${isMaintenance ? 'bg-[#050505]' : 'bg-white'}`}>
-      <div /> {}
-      
+    <div className="min-h-screen flex flex-col items-center justify-between py-20 px-4 bg-background text-foreground select-none">
+      <div />
+
       <AnimatePresence mode="wait">
         <motion.div 
           className="text-center"
@@ -74,7 +74,6 @@ export function NotFound() {
           animate="visible"
           exit="hidden"
         >
-          {}
           <div className="flex items-center justify-center gap-4 md:gap-8 mb-4">
             {["B", "O", "O", "M"].map((letter, i) => (
               <motion.span
@@ -82,9 +81,7 @@ export function NotFound() {
                 custom={i}
                 variants={letterVariants}
                 animate={["visible", "floating"]}
-                className={`text-[90px] md:text-[180px] lg:text-[220px] font-black select-none tracking-tighter ${
-                  isMaintenance ? 'text-primary' : 'text-[#222222]'
-                }`}
+                className="text-[90px] md:text-[180px] lg:text-[220px] font-black select-none tracking-tighter text-neutral-800 dark:text-neutral-200 font-[family-name:var(--font-audiowide)]"
               >
                 {letter}
               </motion.span>
@@ -93,18 +90,17 @@ export function NotFound() {
         </motion.div>
       </AnimatePresence>
 
-      {}
       <motion.div 
         className="text-center w-full max-w-2xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.8 }}
       >
-        <h1 className={`text-3xl md:text-5xl font-bold mb-4 opacity-90 select-none ${isMaintenance ? 'text-white' : 'text-[#222222]'}`}>
+        <h1 className="text-3xl md:text-5xl font-bold mb-4 opacity-90 select-none text-foreground font-[family-name:var(--font-audiowide)]">
           {isMaintenance ? "Under Maintenance" : "Boo! Page missing!"}
         </h1>
         
-        <p className={`text-lg md:text-xl mb-10 opacity-60 select-none ${isMaintenance ? 'text-white/70' : 'text-[#222222]'}`}>
+        <p className="text-lg md:text-xl mb-10 text-foreground/60 select-none">
           {isMaintenance 
             ? "I'm currently upgrading the core systems. Come back soon for something epic!" 
             : "Whoops! This page must be a ghost - it's not here!"}
@@ -114,9 +110,9 @@ export function NotFound() {
           {!isMaintenance ? (
             <Link 
               href="/"
-              className="inline-block bg-[#222222] text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-[#000000] transition-colors select-none"
+              className="inline-block bg-neutral-900 text-white dark:bg-white dark:text-black px-8 py-3.5 rounded-full text-sm font-mono font-semibold tracking-widest uppercase hover:opacity-90 transition-all select-none shadow-lg cursor-pointer"
             >
-              Find shelter
+              Return Home
             </Link>
           ) : (
             <>
