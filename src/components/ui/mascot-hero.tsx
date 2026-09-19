@@ -4,28 +4,27 @@ import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
 import { GlassRain } from "./GlassRain";
-import TrueFocus from "./TrueFocus";
-import { MagneticImage } from "./morphing-cursor";
 import ButtonWithIcon from "./button-with-icon";
+import { IDCardLanyard } from "./id-card-lanyard";
+import { LayeredText } from "./layered-text";
 import { cn } from "@/lib/utils";
 
-interface MascotHeroProps {
+interface HeroProps {
   name?: string;
   badge?: string;
-  mascotSrc?: string;
+  avatarSrc?: string;
   animationDelay?: number;
 }
 
 export function MascotHero({
   name = "Vishvjeet Singh Tanwar",
-  badge = "Full-stack & Web3 Developer",
-  mascotSrc = "/assets/mascot-image.webp",
+  badge = "Designer & Builder",
+  avatarSrc = "/assets/img.png",
   animationDelay = 0.2,
-}: MascotHeroProps) {
+}: HeroProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const containerRef = useRef<HTMLDivElement>(null);
-  const baseDelay = animationDelay > 0 ? animationDelay : 0;
 
   const handleExploreClick = () => {
     const target = document.getElementById("projects");
@@ -34,6 +33,16 @@ export function MascotHero({
       window.scrollTo({ top: topOffset, behavior: "smooth" });
     }
   };
+
+  const layeredNameLines = [
+    { top: "\u00A0", bottom: "VISHVJEET" },
+    { top: "VISHVJEET", bottom: "SINGH" },
+    { top: "SINGH", bottom: "TANWAR" },
+    { top: "TANWAR", bottom: "DESIGNER" },
+    { top: "DESIGNER", bottom: "BUILDER" },
+    { top: "BUILDER", bottom: "WEB3 DEV" },
+    { top: "WEB3 DEV", bottom: "\u00A0" },
+  ];
 
   return (
     <div
@@ -46,97 +55,65 @@ export function MascotHero({
       {/* Stage Radial Spotlight */}
       <div
         className={cn(
-          "absolute inset-0 pointer-events-none z-0 transition-opacity duration-500",
-          isDark
-            ? "bg-[radial-gradient(circle_at_50%_45%,rgba(255,255,255,0.08)_0%,rgba(9,9,11,0.98)_70%)]"
-            : "bg-[radial-gradient(circle_at_50%_45%,rgba(0,0,0,0.04)_0%,rgba(255,255,255,0.98)_70%)]"
+          "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[550px] pointer-events-none rounded-full blur-[140px] transition-all duration-700",
+          isDark ? "bg-white/[0.04]" : "bg-black/[0.03]"
         )}
       />
 
-      {/* 2. HERO MAIN CONTENT WRAPPER */}
-      <div className="relative z-10 w-full h-screen flex items-center justify-between px-6 sm:px-12 md:px-16 pointer-events-none overflow-hidden">
+      {/* 2. MAIN 2-COLUMN HERO LAYOUT */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-12 flex flex-col md:flex-row items-center justify-between min-h-screen pt-20 pb-16 pointer-events-none">
         
-        {/* LEFT COLUMN: STAIR-STEPPED SURGENA TYPOGRAPHY */}
-        <div className="z-30 flex flex-col justify-center pointer-events-none max-w-[45vw] text-left">
+        {/* LEFT COLUMN: 46% WIDTH - LAYERED ISOMETRIC SKEW TYPOGRAPHY */}
+        <div className="w-full md:w-[48%] lg:w-[45%] flex flex-col justify-center items-start z-20 py-8 pointer-events-auto">
           <motion.div
-            initial={{ opacity: 1, x: -10 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{ fontFamily: "Surgena, sans-serif" }}
-            className="text-[12vw] sm:text-[9vw] md:text-[7vw] lg:text-[6.5vw] tracking-tighter leading-[0.85] text-[#8e8e93] dark:text-[#737373] drop-shadow-sm"
+            transition={{ duration: 0.8, delay: animationDelay, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full flex flex-col items-start"
           >
-            Vishvjeet
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 1, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-            style={{ fontFamily: "Surgena, sans-serif" }}
-            className="pl-[1.5vw] sm:pl-[2vw] text-[12vw] sm:text-[9vw] md:text-[7vw] lg:text-[6.5vw] tracking-tighter leading-[0.85] text-[#8e8e93] dark:text-[#737373] drop-shadow-sm"
-          >
-            Singh
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 1, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            style={{ fontFamily: "Surgena, sans-serif" }}
-            className="pl-[3vw] sm:pl-[4vw] text-[12vw] sm:text-[9vw] md:text-[7vw] lg:text-[6.5vw] tracking-tighter leading-[0.85] text-[#8e8e93] dark:text-[#737373] drop-shadow-sm"
-          >
-            Tanwar
-          </motion.div>
-        </div>
-
-        {/* CENTER COLUMN: 3D INTERACTIVE MASCOT WITH NATURAL BOTTOM FOOTING */}
-        <motion.div
-          initial={{ opacity: 1, y: 15, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{
-            duration: 0.6,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          className="absolute left-1/2 -translate-x-1/2 bottom-0 z-20 h-[68vh] md:h-[80vh] aspect-[3/4] md:aspect-[4/5] pointer-events-auto flex items-end justify-center"
-        >
-          <MagneticImage
-            baseImageSrc={mascotSrc}
-            hoverImageSrc="/assets/mascot-image-2.webp"
-            alt="Vishvjeet Tanwar Mascot"
-            lensSize={240}
-            className="w-full h-full flex items-end justify-center pointer-events-auto"
-            imageClassName="object-contain select-none max-h-full filter drop-shadow-[0_25px_50px_rgba(0,0,0,0.5)]"
-          />
-        </motion.div>
-
-        {/* RIGHT COLUMN: TRUEFOCUS ON ROLE */}
-        <div className="z-30 flex flex-col items-end text-right pointer-events-auto max-w-[42vw]">
-          <motion.div
-            initial={{ opacity: 1, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-wider uppercase font-mono"
-          >
-            <TrueFocus
-              sentence="FULL-STACK WEB3"
-              manualMode={false}
-              blurAmount={4}
-              borderColor={isDark ? "#ffffff" : "#000000"}
-              glowColor={isDark ? "rgba(255, 255, 255, 0.35)" : "rgba(0, 0, 0, 0.25)"}
-              animationDuration={0.7}
-              pauseBetweenAnimations={1.6}
+            <LayeredText
+              lines={layeredNameLines}
+              fontSize="100px"
+              fontSizeMd="52px"
+              lineHeight={84}
+              lineHeightMd={46}
+              className="py-2"
             />
           </motion.div>
         </div>
 
+        {/* RIGHT COLUMN: Spacer to preserve grid balance */}
+        <div className="w-full md:w-[52%] lg:w-[55%] h-[400px] md:h-screen pointer-events-none" />
       </div>
 
-      {/* 3. SIGNATURE BUTTON WITH ICON (SHIFTED 10px UP & 10px LEFT) */}
+      {/* 3. INTERACTIVE 3D ID CARD LANYARD (Mounted at Hero Root Level - Zero Boundary Clipping) */}
+      <IDCardLanyard
+        name={name}
+        role={badge}
+        brand="VISHVJEET"
+        brandTagline="Designer & Developer"
+        pillars={["Design", "Code", "Ship"]}
+        location="Noida, UP"
+        idNumber="VT-2026"
+        validThru="03/2005"
+        avatarUrl="/assets/img.png"
+        site="vishvjeet.me"
+        githubUrl="https://github.com/vishvjeettanwar1623"
+        linkedinUrl="https://www.linkedin.com/in/vishvjeet-tanwar/"
+        twitterUrl="https://x.com/VishvjeetTanwar"
+        anchorX="82%"
+        anchorY={52}
+        zIndex={25}
+        position="absolute"
+        showHint={false}
+      />
+
+      {/* 3. SIGNATURE BUTTON WITH ICON AT BOTTOM RIGHT */}
       <motion.div
         initial={{ opacity: 1, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute bottom-[50px] sm:bottom-[58px] md:bottom-[74px] right-[50px] sm:right-[74px] md:right-[90px] lg:right-[106px] z-30 pointer-events-auto shadow-[0_6px_30px_rgba(255,255,255,0.2)] rounded-full"
+        transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute bottom-[40px] sm:bottom-[50px] md:bottom-[60px] right-[30px] sm:right-[50px] md:right-[70px] z-30 pointer-events-auto shadow-[0_6px_30px_rgba(255,255,255,0.2)] rounded-full"
       >
         <ButtonWithIcon
           label="EXPLORE WORKS"
