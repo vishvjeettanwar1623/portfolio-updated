@@ -6,11 +6,7 @@ import { cn } from "@/lib/utils";
 export function WavyBackground({ className }: { className?: string }) {
   return (
     <div className={cn("absolute inset-0 w-full h-[150%] overflow-hidden pointer-events-none z-0", className)}>
-      {}
-      <div className="absolute inset-0 w-full h-full bg-[#1a1a1a] shadow-[inset_0_40px_50px_rgba(0,0,0,0.8)]">
-        
-        {}
-        {}
+      <div className="absolute inset-0 w-full h-full bg-neutral-200/70 dark:bg-[#1a1a1a] shadow-[inset_0_40px_50px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_40px_50px_rgba(0,0,0,0.8)] transition-colors duration-400">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
