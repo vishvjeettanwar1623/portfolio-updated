@@ -11,6 +11,7 @@ import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { JourneyScrollbar } from "@/components/ui/JourneyScrollbar";
 import { SoundToggle } from "@/components/ui/SoundToggle";
 import { NFCContactModal } from "@/components/ui/NFCContactModal";
+import { SwarmMotionButton } from "@/components/ui/SwarmMotionButton";
 
 import { useTheme } from "@/context/ThemeContext";
 
@@ -67,59 +68,3 @@ export default function Home() {
     <ClickSpark
       sparkColor={isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.8)"}
       sparkSize={12}
-      sparkRadius={20}
-      sparkCount={10}
-      duration={500}
-    >
-      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
-
-      <main className="relative min-h-screen bg-background text-foreground selection:bg-primary/30">
-        <Navbar />
-        <JourneyScrollbar />
-                <NFCContactModal />
-
-        <HeroSection />
-        <VelocityMarquee />
-
-        <div className="relative w-full">
-          <div className="relative pt-24 pb-48 z-10 pointer-events-auto">
-            <LazyRender id="projects" skeletonType="projects" height="120vh">
-              <ProjectsSection />
-            </LazyRender>
-
-            <LazyRender height="150vh">
-              <DesignsSection />
-            </LazyRender>
-          </div>
-        </div>
-
-        <LazyRender id="skills" skeletonType="skills" height="100vh">
-          <SkillsSection />
-        </LazyRender>
-
-        <LazyRender id="achievements" skeletonType="achievements" height="100vh">
-          <AchievementsSection />
-        </LazyRender>
-
-        {/* Animating Text Section (About) */}
-        <LazyRender id="about" skeletonType="about" height="80vh">
-          <AboutSection />
-        </LazyRender>
-
-        {/* My Journey (Experience Section) */}
-        <LazyRender id="experience" skeletonType="experience" height="200vh">
-          <ExperienceSection />
-        </LazyRender>
-
-        {/* 3D Holographic GitHub Activity Section - Placed Below My Journey */}
-        <LazyRender id="github-activity" height="90vh">
-          <GitHubActivitySection />
-        </LazyRender>
-
-        {/* Contact (Footer) */}
-        <Footer />
-      </main>
-    </ClickSpark>
-  );
-}
-

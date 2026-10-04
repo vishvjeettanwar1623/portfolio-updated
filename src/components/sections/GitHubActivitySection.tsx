@@ -151,6 +151,7 @@ const REAL_REPOS = [
 export function GitHubActivitySection() {
   const { playSound } = useSound();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
   const [hoveredCommit, setHoveredCommit] = useState<ProjectedNode | null>(null);
   const [commits, setCommits] = useState<CommitRecord[]>(FALLBACK_REAL_COMMITS);
   const [liveStats, setLiveStats] = useState({ totalCommits: 640, streak: 24 });
@@ -165,54 +166,68 @@ export function GitHubActivitySection() {
   const lastMouseRef = useRef({ x: 0, y: 0 });
   const velocityRef = useRef({ x: 0.002, y: 0.004 });
 
-  // Fetch Live Public Events from GitHub API on mount
+  // Fetch Live Public Events from GitHub API — only once section is visible
   useEffect(() => {
-    fetch("https://api.github.com/users/vishvjeettanwar1623/events/public")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          const parsed: CommitRecord[] = [];
+    const section = sectionRef.current;
+    if (!section) return;
 
-          data.forEach((ev: any, idx: number) => {
-            const dateObj = new Date(ev.created_at || Date.now());
-            const date = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-            const time = dateObj.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
 
-            if (ev.payload?.commits && Array.isArray(ev.payload.commits)) {
-              ev.payload.commits.forEach((c: any, cIdx: number) => {
-                parsed.push({
-                  id: `live-${idx}-${cIdx}`,
-                  sha: (c.sha || "HEAD").substring(0, 7),
-                  repo: ev.repo?.name || "vishvjeettanwar1623/repository",
-                  message: c.message || "update repository codebase",
-                  date,
-                  time,
-                  url: `https://github.com/${ev.repo?.name || "vishvjeettanwar1623"}`,
-                  type: "PushEvent",
-                });
+        fetch("https://api.github.com/users/vishvjeettanwar1623/events/public")
+          .then((res) => res.json())
+          .then((data) => {
+            if (Array.isArray(data) && data.length > 0) {
+              const parsed: CommitRecord[] = [];
+
+              data.forEach((ev: any, idx: number) => {
+                const dateObj = new Date(ev.created_at || Date.now());
+                const date = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+                const time = dateObj.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+
+                if (ev.payload?.commits && Array.isArray(ev.payload.commits)) {
+                  ev.payload.commits.forEach((c: any, cIdx: number) => {
+                    parsed.push({
+                      id: `live-${idx}-${cIdx}`,
+                      sha: (c.sha || "HEAD").substring(0, 7),
+                      repo: ev.repo?.name || "vishvjeettanwar1623/repository",
+                      message: c.message || "update repository codebase",
+                      date,
+                      time,
+                      url: `https://github.com/${ev.repo?.name || "vishvjeettanwar1623"}`,
+                      type: "PushEvent",
+                    });
+                  });
+                } else {
+                  parsed.push({
+                    id: `live-${idx}`,
+                    sha: "HEAD",
+                    repo: ev.repo?.name || "vishvjeettanwar1623/repository",
+                    message: `${ev.type === "CreateEvent" ? "create branch / repository" : ev.type || "code update"}`,
+                    date,
+                    time,
+                    url: `https://github.com/${ev.repo?.name || "vishvjeettanwar1623"}`,
+                    type: ev.type || "Event",
+                  });
+                }
               });
-            } else {
-              parsed.push({
-                id: `live-${idx}`,
-                sha: "HEAD",
-                repo: ev.repo?.name || "vishvjeettanwar1623/repository",
-                message: `${ev.type === "CreateEvent" ? "create branch / repository" : ev.type || "code update"}`,
-                date,
-                time,
-                url: `https://github.com/${ev.repo?.name || "vishvjeettanwar1623"}`,
-                type: ev.type || "Event",
-              });
+
+              if (parsed.length > 0) {
+                setCommits([...parsed, ...FALLBACK_REAL_COMMITS]);
+              }
             }
+          })
+          .catch(() => {
+            // Fallback already pre-populated
           });
+      },
+      { threshold: 0.05 }
+    );
 
-          if (parsed.length > 0) {
-            setCommits([...parsed, ...FALLBACK_REAL_COMMITS]);
-          }
-        }
-      })
-      .catch(() => {
-        // Fallback already pre-populated
-      });
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   // Generate 3D Spherical Coordinate Constellation Nodes
@@ -472,7 +487,7 @@ export function GitHubActivitySection() {
 
   return (
     <SectionWrapper id="github-activity" className="py-24 bg-background relative overflow-hidden font-mono">
-      <div className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+      <div ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         {/* Section Header */}
         <div className="mb-14 text-center max-w-3xl mx-auto">
           <TextStaggerHover as="h2" className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase tracking-[2px] sm:tracking-[4px] text-foreground font-[family-name:var(--font-audiowide)] drop-shadow-md">

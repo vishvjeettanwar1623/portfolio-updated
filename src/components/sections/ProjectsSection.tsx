@@ -305,8 +305,6 @@ export function ProjectsSection() {
         {/* PROGRESSIVE CAROUSEL SLIDER */}
         <div className="w-full">
           <ProgressSlider
-            duration={5500}
-            fastDuration={350}
             activeSlider={projects[0].id}
             className="w-full rounded-2xl md:rounded-3xl border border-foreground/15 bg-neutral-950/80 backdrop-blur-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
           >
