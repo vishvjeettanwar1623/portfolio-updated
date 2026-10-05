@@ -17,7 +17,8 @@ const IconImg = ({ src, invert }: { src: string; invert?: boolean }) => (
   </div>
 );
 
-const skillCategories = [
+// Defined as a factory so icons are instantiated lazily inside the component, not at module load
+const getSkillCategories = () => [
   {
     category: "LANGUAGES",
     items: [
@@ -85,6 +86,7 @@ const skillCategories = [
 export function SkillsSection() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const skillCategories = getSkillCategories();
 
   return (
     <SectionWrapper id="skills" className="pb-12 bg-background relative overflow-hidden flex flex-col min-h-screen transition-colors duration-400">
