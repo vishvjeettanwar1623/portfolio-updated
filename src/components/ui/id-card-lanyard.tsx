@@ -121,16 +121,6 @@ const CSS = `
   -webkit-transform:rotateY(180deg);
 }
 
-.idcl-holo{
-  position:absolute; top:16px; bottom:16px; right:6px; width:7px; border-radius:6px;
-  background:repeating-linear-gradient(125deg, #eef1f7 0%, #cfd6e4 10%, #b9c2d6 20%, #e7ebf3 30%, #eef1f7 40%);
-  background-size:220% 220%;
-  animation:idcl-foil 7s linear infinite;
-  box-shadow:inset 0 0 0 1px rgba(0,0,0,.1), 0 0 7px rgba(255,255,255,.3);
-}
-@keyframes idcl-foil{ to{ background-position:220% 0%; } }
-@media (prefers-reduced-motion: reduce){ .idcl-holo{ animation:none; } }
-
 .idcl-hole{ width:38px; height:11px; background:var(--idcl-card-ink); border-radius:6px; margin:0 auto 12px; flex-shrink:0; opacity:.85; }
 
 .idcl-header{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
@@ -738,7 +728,6 @@ export function IDCardLanyard({
           <div className="idcl-flipper" ref={flipperRef}>
             <div className="idcl-face idcl-front">
               <div className="idcl-hole" />
-              <div className="idcl-holo" />
 
               <div className="idcl-header">
                 <div className="idcl-brand">
@@ -817,7 +806,6 @@ export function IDCardLanyard({
 
             <div className="idcl-face idcl-back">
               <div className="idcl-hole" />
-              <div className="idcl-holo" />
               <div className="idcl-stripe" />
 
               <div className="idcl-idnum">
