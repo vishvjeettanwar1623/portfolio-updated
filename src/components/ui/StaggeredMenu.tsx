@@ -267,6 +267,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     const target = !openRef.current;
     openRef.current = target;
     setOpen(target);
+    if (typeof document !== 'undefined') {
+      document.body.classList.toggle('menu-open', target);
+      window.dispatchEvent(new CustomEvent('portfolio_menu_toggle', { detail: { isOpen: target } }));
+    }
     if (target) { onMenuOpen?.(); playOpen(); }
     else { onMenuClose?.(); playClose(); }
     animateIcon(target);
@@ -278,6 +282,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     if (!openRef.current) return;
     openRef.current = false;
     setOpen(false);
+    if (typeof document !== 'undefined') {
+      document.body.classList.remove('menu-open');
+      window.dispatchEvent(new CustomEvent('portfolio_menu_toggle', { detail: { isOpen: false } }));
+    }
     onMenuClose?.();
     playClose();
     animateIcon(false);
@@ -318,14 +326,18 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       </div>
 
       <header className="staggered-menu-header" aria-label="Main navigation header">
-        {/* Logo (Hidden during loading screen to eliminate double-text overlap) */}
+        {/* Logo */}
         <div
           className="sm-logo "
           aria-label="Logo"
-          
           onClick={() => {
             if (typeof window !== "undefined") {
-              window.dispatchEvent(new CustomEvent("open_contact_pass"));
+              const home = document.getElementById("home") || document.querySelector("main");
+              if (home) {
+                home.scrollIntoView({ behavior: "smooth" });
+              } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
             }
           }}
           style={{
@@ -342,7 +354,14 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
         <div className="sm-header-controls flex items-center">
           <SoundToggle />
-          <div id="theme-toggle-anchor" data-theme-toggle className="mr-6 sm:mr-10 md:mr-16 lg:mr-24 flex items-center">
+          <div
+            id="theme-toggle-anchor"
+            data-theme-toggle
+            className={`mr-6 sm:mr-10 md:mr-16 lg:mr-24 flex items-center transition-all duration-300 ${
+              open ? "opacity-0 pointer-events-none invisible" : "opacity-100 visible"
+            }`}
+            aria-hidden={open}
+          >
             <ThemeToggle />
           </div>
           <button

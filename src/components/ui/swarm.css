@@ -1,0 +1,75 @@
+/* Swarm rebuild: muted palette, no glows, measured motion */
+
+/* Text and media vanish completely until built. Panels (cards, buttons) only lose their own chrome,
+   so their children can be built independently. */
+body.swarming [data-sw="text"]:not([data-sw-built]),
+body.swarming [data-sw="media"]:not([data-sw-built]) { opacity: 0 !important; }
+body.swarming [data-sw="box"]:not([data-sw-built]) {
+  background: none !important; border-color: transparent !important;
+  box-shadow: none !important; backdrop-filter: none !important;
+}
+body.swarming [data-sw] {
+  transition: opacity 0.5s ease, background-color 0.7s ease, border-color 0.7s ease, box-shadow 0.7s ease;
+}
+
+.sw-layer { position: fixed; inset: 0; z-index: 9998; pointer-events: none; overflow: hidden; }
+
+.sw-cur { position: absolute; left: 0; top: 0; will-change: transform; }
+.sw-cur svg { width: 20px; height: 20px; display: block; fill: var(--c); stroke: rgba(0, 0, 0, 0.65); stroke-width: 1.2; paint-order: stroke; transform: rotate(var(--rot, 0deg)) scale(var(--s, 1)); transition: transform 0.1s linear; transform-origin: 3px 3px; }
+.sw-cur span {
+  position: absolute; left: 16px; top: 18px; padding: 1px 7px 1px 6px; white-space: nowrap;
+  font: 500 10px/1.5 var(--font-syne-mono, ui-monospace, monospace); letter-spacing: 0.02em;
+  background: rgba(14, 14, 14, 0.78); color: var(--c); border-left: 2px solid var(--c);
+  backdrop-filter: blur(4px);
+}
+.sw-title {
+  position: fixed; left: 50%; top: 34%; transform: translateX(-50%); padding: 8px 18px; border-radius: 999px;
+  background: rgba(14, 14, 14, 0.78); color: #f4f4f5; backdrop-filter: blur(8px); white-space: nowrap;
+  font: 500 12px/1.4 var(--font-syne-mono, ui-monospace, monospace); letter-spacing: 0.28em; text-transform: uppercase;
+  animation: sw-title 2.2s ease both;
+}
+@keyframes sw-title { 0% { opacity: 0; transform: translate(-50%, 8px); } 20%, 75% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; } }
+
+/* frame being dragged out, then kept as a blueprint; corner handles like a design tool */
+.sw-box {
+  position: fixed; border: 1px dashed var(--c); transition: opacity 0.45s ease;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / 7px 7px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 7px 7px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 7px 7px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 7px 7px no-repeat,
+    color-mix(in srgb, var(--c) 10%, transparent);
+}
+.sw-box.bp { border-style: solid; border-color: color-mix(in srgb, var(--c) 70%, transparent); }
+.sw-box i {
+  position: absolute; right: 0; bottom: -22px; padding: 1px 6px; white-space: nowrap; font-style: normal;
+  font: 400 11px/1.4 var(--font-syne-mono, ui-monospace, monospace);
+  background: var(--c); color: #111;
+}
+
+.sw-box.bp i { bottom: -16px; font-size: 10px; background: transparent; color: var(--c); padding: 0 2px; opacity: 0.8; }
+.sw-caret.blink { animation: sw-caret-blink 0.32s steps(1) 2; }
+@keyframes sw-caret-blink { 50% { opacity: 0; } }
+.sw-ripple { position: fixed; width: 28px; height: 28px; margin: -14px 0 0 -14px; border: 1px solid var(--c); border-radius: 50%; animation: sw-ripple 0.5s ease-out forwards; }
+@keyframes sw-ripple { from { transform: scale(0.2); opacity: 0.9; } to { transform: scale(1.4); opacity: 0; } }
+.sw-caret { position: fixed; width: 2px; background: var(--c); }
+.sw-scan { position: fixed; height: 2px; background: var(--c); }
+
+.sw-bar {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 9999; overflow: hidden;
+  display: flex; align-items: center; gap: 2px; max-width: calc(100% - 24px);
+  padding: 2px 6px 2px 18px; border-radius: 999px; background: rgba(14, 14, 14, 0.78); color: #f4f4f5;
+  border: 1px solid rgba(255, 255, 255, 0.16); backdrop-filter: blur(12px);
+  font: 400 12px/1.4 var(--font-syne-mono, ui-monospace, monospace);
+}
+.sw-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(255, 255, 255, 0.1); }
+.sw-prog i { display: block; height: 100%; width: 0; background: #f4f4f5; transition: width 0.3s ease; }
+.sw-pct { font-variant-numeric: tabular-nums; min-width: 3.2ch; margin-right: 6px; }
+.sw-msg { opacity: 0.65; margin-right: 6px; white-space: nowrap; }
+.sw-hint { opacity: 0.4; font-size: 11px; margin: 0 10px 0 6px; white-space: nowrap; }
+.sw-bar button { min-height: 44px; padding: 0 12px; border-radius: 999px; background: none; border: 0; color: inherit; cursor: pointer; font: inherit; }
+.sw-bar button:hover { background: rgba(255, 255, 255, 0.1); }
+.sw-bar button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+@media (max-width: 900px) { .sw-hint { display: none; } }
+
+@media (prefers-reduced-motion: reduce) { body.swarming [data-sw] { transition: none; }  }
