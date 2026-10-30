@@ -41,6 +41,17 @@ const COLORS = ["#e07a5f", "#d9a441", "#81b29a", "#c8553d", "#e5c9a0", "#a3b18a"
 const IGNORE =
   '[data-sw-ignore],.staggered-menu-wrapper,.sw-layer,.sw-bar,dialog,[aria-hidden="true"],script,style,noscript,svg *';
 /* Split-text headings (one span per word or letter, hover-roll duplicates) must be built as ONE block. */
+/**
+ * Pieces the generic scan can't see on its own (fixed headers, canvas drawings, 3D cards, rotating text).
+ * Each is built as ONE block and its insides are skipped. Add `data-swarm="text|media|box"` to any element
+ * to opt it in the same way.
+ */
+const FORCE: [string, Kind][] = [
+  [".staggered-menu-header", "media"], // navbar
+  [".idcl-card", "media"], // lanyard ID card
+  [".idcl-rope", "media"], // lanyard string (canvas)
+  ["#about .select-none", "text"], // rotating About text (one span per character)
+];
 const READ = "h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,label";
 const ACT = "a,button";
 
@@ -168,11 +179,31 @@ function scan(root: Element) {
     fixedCache.set(e, v);
     return v;
   };
+  const forceTag = (el: HTMLElement, kind: Kind) => {
+    if (seen.has(el) || el.closest(".sw-layer,[data-sw-ignore]")) return;
+    const r = el.getBoundingClientRect();
+    if (r.width < 4 || r.height < 4) return;
+    seen.add(el);
+    el.setAttribute("data-sw", kind);
+    el.setAttribute("data-sw-force", "");
+    all.push(el);
+    queue.push(el);
+  };
+  const forced: [string, Kind][] = [...FORCE, ["[data-swarm]", "text"]];
+  for (const [sel, kind] of forced) {
+    const hits = Array.from(root.querySelectorAll<HTMLElement>(sel));
+    if (root instanceof HTMLElement && root.matches(sel)) hits.unshift(root);
+    for (const el of hits) {
+      const k = sel === "[data-swarm]" ? ((el.getAttribute("data-swarm") as Kind) || kind) : kind;
+      forceTag(el, k);
+    }
+  }
   const els: Element[] = [root, ...Array.from(root.querySelectorAll("*"))];
   for (const el of els) {
     if (!(el instanceof HTMLElement) || el === m) continue;
+    if (el.closest("[data-sw-force]")) continue; // part of a block that is built as one piece
     if (el.closest(IGNORE)) continue;
-    const media = el.matches("img,video");
+    const media = el.matches("img,video,canvas");
     const own = !media && Array.from(el.childNodes).some((n) => n.nodeType === 3 && !!n.textContent?.trim());
     let kind: Kind;
     let t: HTMLElement | null = el;
@@ -181,6 +212,8 @@ function scan(root: Element) {
       kind = "text";
       const blk = el.closest<HTMLElement>(READ) ?? el.closest<HTMLElement>(ACT);
       if (blk && blk !== m && m.contains(blk)) t = blk;
+      // one-character fragments (per-letter spans in a flex row) belong to their parent line
+      if (t === el && (el.textContent || "").trim().length <= 2 && el.parentElement && el.parentElement !== m) t = el.parentElement;
       // climb out of inline, inline-block and inline-flex fragments (words, letters, wrappers)
       while (t && t !== m && getComputedStyle(t).display.startsWith("inline")) t = t.parentElement;
     } else {
@@ -189,8 +222,11 @@ function scan(root: Element) {
     }
     if (!t || t === m || seen.has(t) || !m.contains(t)) continue;
     if (t.closest(IGNORE) || isFixed(t)) continue;
+    // new content inside a block that is already built (a re-render or rotating text) is not rebuilt
+    if (t.parentElement?.closest('[data-sw-built][data-sw="text"],[data-sw-built][data-sw="media"]')) continue;
     const r = t.getBoundingClientRect();
     if (r.width < 4 || r.height < 4 || r.height > innerHeight * 1.5) continue;
+    if (el.matches("canvas") && r.width >= innerWidth * 0.97 && r.height >= innerHeight * 0.6) continue; // full-screen backgrounds
     if (kind === "box") {
       const fullBleed = r.width >= innerWidth * 0.97 && r.height >= innerHeight * 0.5;
       if (r.width < 40 || r.height < 28 || r.height > innerHeight * 1.2 || fullBleed) continue;
@@ -244,7 +280,7 @@ function pace(): number {
  */
 function rectOf(t: HTMLElement): DOMRect {
   const box = t.getBoundingClientRect();
-  if (t.matches("img,video") || t.getAttribute("data-sw") === "box") return box;
+  if (t.matches("img,video,canvas") || t.getAttribute("data-sw") !== "text") return box;
   const rg = document.createRange();
   rg.selectNodeContents(t);
   const g = rg.getBoundingClientRect();
@@ -454,47 +490,52 @@ async function build(c: Cur, t: HTMLElement, sp: number) {
   );
   if (!live || !layer) return;
 
-  /* 1. drag out the frame */
-  const box = div("sw-box");
-  const badge = document.createElement("i");
-  box.style.setProperty("--c", color);
-  box.appendChild(badge);
+  /* 1. drag out the frame (skipped for huge media, where a frame would just cover the screen) */
+  const big = start.width * start.height > innerWidth * innerHeight * 0.45;
+  let box: HTMLElement | null = null;
   opts.sound?.("press");
-  (c.el.firstElementChild as HTMLElement).style.setProperty("--s", "0.8");
+  const arrow = c.el.firstElementChild as HTMLElement;
+  arrow.style.setProperty("--s", "0.8");
   const rp = div("sw-ripple"); // click feedback at the press point
   rp.style.setProperty("--c", color);
   rp.style.left = `${c.x}px`;
   rp.style.top = `${c.y}px`;
   setTimeout(() => rp.remove(), 520);
-  const diag = Math.hypot(start.width, start.height);
-  await tween(
-    Math.max(130, (Math.min(700, 220 + diag * 0.55) / sp) * jitter()),
-    (k, tt) => {
-      const q = rectOf(t);
-      const cw = q.width * k;
-      // height lags a touch behind width, so the drag path curves instead of running dead straight
-      const ch = q.height * easeOutBack(Math.min(1, Math.max(0, tt * 1.12 - 0.06)));
-      box.style.left = `${q.left}px`;
-      box.style.top = `${q.top}px`;
-      box.style.width = `${cw}px`;
-      box.style.height = `${ch}px`;
-      c.x = q.left + cw;
-      c.y = q.top + ch;
-      put(c);
-      badge.textContent = `${Math.round(cw)} × ${Math.round(ch)}`;
-    },
-    easeOutBack
-  );
-  (c.el.firstElementChild as HTMLElement).style.removeProperty("--s");
+  if (!big) {
+    const bx = div("sw-box");
+    box = bx;
+    const badge = document.createElement("i");
+    bx.style.setProperty("--c", color);
+    bx.appendChild(badge);
+    const diag = Math.hypot(start.width, start.height);
+    await tween(
+      Math.max(130, (Math.min(700, 220 + diag * 0.55) / sp) * jitter()),
+      (k, tt) => {
+        const q = rectOf(t);
+        const cw = q.width * k;
+        // height lags a touch behind width, so the drag path curves instead of running dead straight
+        const ch = q.height * easeOutBack(Math.min(1, Math.max(0, tt * 1.12 - 0.06)));
+        bx.style.left = `${q.left}px`;
+        bx.style.top = `${q.top}px`;
+        bx.style.width = `${cw}px`;
+        bx.style.height = `${ch}px`;
+        c.x = q.left + cw;
+        c.y = q.top + ch;
+        put(c);
+        badge.textContent = `${Math.round(cw)} × ${Math.round(ch)}`;
+      },
+      easeOutBack
+    );
+    /* 2. the frame stays as a blueprint while the content is created inside it */
+    bx.classList.add("bp");
+    if (start.width >= 120 && start.height >= 24) {
+      badge.textContent = kind === "text" ? t.tagName.toLowerCase() : kind === "media" ? "image" : "box";
+    } else badge.style.display = "none";
+    blueprints.set(t, bx);
+  }
+  arrow.style.removeProperty("--s");
   opts.sound?.("release");
   if (!live) return;
-
-  /* 2. the frame stays as a blueprint while the content is created inside it */
-  box.classList.add("bp");
-  if (start.width >= 120 && start.height >= 24) {
-    badge.textContent = kind === "text" ? t.tagName.toLowerCase() : kind === "media" ? "image" : "box";
-  } else badge.style.display = "none";
-  blueprints.set(t, box);
   await sleep(90 / sp);
   if (!live) return;
 
@@ -510,8 +551,11 @@ async function build(c: Cur, t: HTMLElement, sp: number) {
   builtN++;
   progress();
   blueprints.delete(t);
-  box.style.opacity = "0";
-  setTimeout(() => box.remove(), 450);
+  if (box) {
+    const done = box;
+    done.style.opacity = "0";
+    setTimeout(() => done.remove(), 450);
+  }
 }
 
 async function worker(c: Cur) {
