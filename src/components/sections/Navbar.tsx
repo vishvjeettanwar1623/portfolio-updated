@@ -1,7 +1,8 @@
-﻿"use client";
+"use client";
 
 import StaggeredMenu from "@/components/ui/StaggeredMenu";
 import { useTheme } from "@/context/ThemeContext";
+import { SITE_CONFIG } from "@/config/site";
 
 const menuItems = [
   { label: "Home", ariaLabel: "Go to home section", link: "#home" },
@@ -15,10 +16,10 @@ const menuItems = [
 ];
 
 const socialItems = [
-  { label: "GitHub", link: "https://github.com/vishvjeettanwar1623" },
-  { label: "LinkedIn", link: "https://www.linkedin.com/in/vishvjeet-tanwar/" },
-  { label: "Resume", link: "/resume.pdf" },
-  { label: "Email me", link: "mailto:sbvj727@gmail.com" },
+  { label: SITE_CONFIG.socials.github.label, link: SITE_CONFIG.socials.github.href },
+  { label: SITE_CONFIG.socials.linkedin.label, link: SITE_CONFIG.socials.linkedin.href },
+  { label: SITE_CONFIG.socials.resume.label, link: SITE_CONFIG.socials.resume.href },
+  { label: "Email me", link: `mailto:${SITE_CONFIG.email}` },
 ];
 
 export function Navbar() {
