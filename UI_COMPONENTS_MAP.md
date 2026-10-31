@@ -110,7 +110,6 @@ This document provides a comprehensive breakdown of every file in the **vishvjee
 ### `src/components/sections/AboutSection.tsx`
 * **Purpose**: Biography, personal philosophy, and engineering mindset.
 * **What it does**:
-  * Uses `TrueFocus` magnetic word focus to highlight keywords in the biography.
   * Showcases core engineering principles, academic standing, and problem-solving philosophy.
 * **Where used**: Loaded inside `LazyRender id="about"` in `page.tsx`.
 
@@ -248,35 +247,15 @@ This document provides a comprehensive breakdown of every file in the **vishvjee
 * **What it does**: Triggers particle swarm build animation and visual state changes (PLAY / STOP).
 * **Where used**: Mounted fixed in the bottom-right corner next to `SoundToggle` in `src/app/page.tsx`.
 
-### `src/components/ui/TrueFocus.tsx` & `TrueFocus.css`
-* **Purpose**: Word-by-word magnetic focus highlight box.
-* **What it does**: Animates a glowing border box that moves from word to word across text on hover or auto-interval.
-* **Where used**: Highlight words inside `src/components/sections/AboutSection.tsx`.
-
-### `src/components/ui/ShinyText.tsx` & `ShinyText.css`
-* **Purpose**: Metallic light-sweep shimmer effect across text.
-* **What it does**: Uses CSS background clip with linear gradient animation to create a traveling shine across text.
-* **Where used**: Hero name headline and special badge accents.
-
 ### `src/components/ui/scroll-based-velocity.tsx`
 * **Purpose**: Velocity-sensitive infinite text ticker.
 * **What it does**: Accelerates text marquee scroll speed dynamically based on how fast the user is scrolling the page.
 * **Where used**: Engine for `src/components/sections/VelocityMarquee.tsx`.
 
-### `src/components/ui/TiltCard.tsx`
-* **Purpose**: 3D perspective mouse tilt container.
-* **What it does**: Calculates cursor X/Y coordinates relative to card center and rotates the card along X and Y axes with smooth spring damping.
-* **Where used**: Reusable card wrapper for interactive items.
-
 ### `src/components/ui/GlareHover.tsx` & `GlareHover.css`
 * **Purpose**: Holographic glare reflection on mouse hover.
 * **What it does**: Projects an radial light spot across card surfaces as the cursor moves.
 * **Where used**: Card micro-interactions.
-
-### `src/components/ui/ScrollStack.tsx` & `ScrollStack.css`
-* **Purpose**: Sticky stacking card deck animation.
-* **What it does**: Stacks consecutive cards on top of each other as the user scrolls down the page.
-* **Where used**: Reusable layout container.
 
 ### `src/components/ui/timeline.tsx`
 * **Purpose**: Vertical milestone timeline with scroll-progress laser beam.
@@ -297,16 +276,6 @@ This document provides a comprehensive breakdown of every file in the **vishvjee
 * **Purpose**: Multi-layer depth parallax container.
 * **What it does**: Moves background and foreground elements at differential speeds based on scroll offset.
 * **Where used**: Hero and transition sections.
-
-### `src/components/ui/morphing-cursor.tsx`
-* **Purpose**: Custom mouse cursor with elastic trailing ring.
-* **What it does**: Replaces default mouse cursor with an animated follower that morphs size and shape when hovering clickable buttons.
-* **Where used**: Viewport-wide cursor accessory.
-
-### `src/components/ui/ProjectLiveSandbox.tsx`
-* **Purpose**: Modal iframe for live project testing.
-* **What it does**: Opens live external project URLs in an embedded sandboxed preview window inside the portfolio.
-* **Where used**: Optional preview trigger in project showcases.
 
 ### `src/components/ui/button.tsx` & `button-with-icon.tsx`
 * **Purpose**: Base design system button primitives with variant styling (primary, outline, ghost).
@@ -391,7 +360,6 @@ This document provides a comprehensive breakdown of every file in the **vishvjee
 | `SoundToggle.tsx` | Audio Mute/Unmute Switch | Inside `Navbar.tsx` |
 | `ThemeToggle.tsx` | Light/Dark Theme Switch | Inside `Navbar.tsx` |
 | `SwarmMotionButton.tsx` | Agent Swarm Motion Trigger | Floating widget in `page.tsx` |
-| `TrueFocus.tsx` | Magnetic Focus Highlight Box | Inside `AboutSection.tsx` |
 | `SoundContext.tsx` | Web Audio Synthesizer | Global provider in `layout.tsx` |
 | `ThemeContext.tsx` | Theme State Manager | Global provider in `layout.tsx` |
 | `utils.ts` | Tailwind Class Merger (`cn`) | Shared utility across all UI files |
