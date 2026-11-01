@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { SITE_CONFIG } from "@/config/site";
 
 export interface IDCardLanyardProps {
   /** Full name shown on the card and used for the back-face signature. */
@@ -217,20 +218,20 @@ const CSS = `
 `;
 
 export function IDCardLanyard({
-  name = "Vishvjeet Singh Tanwar",
-  role = "Designer & Builder",
+  name = SITE_CONFIG.name,
+  role = SITE_CONFIG.badge,
   brand = "VISHVJEET",
   brandTagline = "Designer & Developer",
   pillars = ["Design", "Code", "Ship"],
-  location = "Noida, UP",
+  location = SITE_CONFIG.location,
   idNumber = "VT-2026",
   validThru = "03/2005",
   avatarUrl = "/assets/img.png",
   site = "vishvjeet.me",
-  githubUrl,
-  linkedinUrl,
+  githubUrl = SITE_CONFIG.socials.github.href,
+  linkedinUrl = SITE_CONFIG.socials.linkedin.href,
   instagramUrl,
-  twitterUrl,
+  twitterUrl = SITE_CONFIG.socials.twitter.href,
   anchorX = "46%",
   anchorY = 4,
   zIndex = 25,
