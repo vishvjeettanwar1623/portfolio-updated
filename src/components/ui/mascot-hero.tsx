@@ -8,6 +8,7 @@ import ButtonWithIcon from "./button-with-icon";
 import { IDCardLanyard } from "./id-card-lanyard";
 import { LayeredText } from "./layered-text";
 import { cn } from "@/lib/utils";
+import { SITE_CONFIG } from "@/config/site";
 
 interface HeroProps {
   name?: string;
@@ -17,8 +18,8 @@ interface HeroProps {
 }
 
 export function MascotHero({
-  name = "Vishvjeet Singh Tanwar",
-  badge = "Designer & Builder",
+  name = SITE_CONFIG.name,
+  badge = SITE_CONFIG.badge,
   avatarSrc = "/assets/img.png",
   animationDelay = 0.2,
 }: HeroProps) {
