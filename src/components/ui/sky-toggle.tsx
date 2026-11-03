@@ -59,4 +59,5 @@ export const Switch = ({ className = "", size = "15px" }: SwitchProps) => {
   );
 };
 
+export const ThemeToggle = Switch;
 export default Switch;
