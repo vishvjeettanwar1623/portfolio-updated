@@ -2,7 +2,8 @@
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import ThemeToggle from './ThemeToggle';
+import ThemeToggle from './sky-toggle';
+import { emitPortfolioEvent } from '@/lib/events';
 import SoundToggle from './SoundToggle';
 import './StaggeredMenu.css';
 
@@ -269,7 +270,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     setOpen(target);
     if (typeof document !== 'undefined') {
       document.body.classList.toggle('menu-open', target);
-      window.dispatchEvent(new CustomEvent('portfolio_menu_toggle', { detail: { isOpen: target } }));
+      emitPortfolioEvent('portfolio_menu_toggle', { isOpen: target });
     }
     if (target) { onMenuOpen?.(); playOpen(); }
     else { onMenuClose?.(); playClose(); }
@@ -284,7 +285,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     setOpen(false);
     if (typeof document !== 'undefined') {
       document.body.classList.remove('menu-open');
-      window.dispatchEvent(new CustomEvent('portfolio_menu_toggle', { detail: { isOpen: false } }));
+      emitPortfolioEvent('portfolio_menu_toggle', { isOpen: false });
     }
     onMenuClose?.();
     playClose();
