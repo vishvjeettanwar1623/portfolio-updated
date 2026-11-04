@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSound } from "@/context/SoundContext";
 import { isSwarmRunning, startSwarm, stopSwarm } from "@/lib/swarm";
+import { subscribePortfolioEvent } from "@/lib/events";
 import "./swarm.css";
 
 type Props = { ready?: boolean }; // accepted for compatibility, not needed
@@ -43,12 +44,15 @@ export function SwarmMotionButton(_props: Props) {
   }, [playSound]);
 
   useEffect(() => {
-    const onMenu = (e: Event) => setIsMenuOpen(Boolean((e as CustomEvent<{ isOpen: boolean }>).detail?.isOpen));
-    window.addEventListener("portfolio_menu_toggle", onMenu);
-    window.addEventListener("portfolio_swarm_start", run); // optional external trigger
+    const unsubMenu = subscribePortfolioEvent("portfolio_menu_toggle", (detail) => {
+      setIsMenuOpen(Boolean(detail?.isOpen));
+    });
+    const unsubSwarm = subscribePortfolioEvent("portfolio_swarm_start", () => {
+      run();
+    });
     return () => {
-      window.removeEventListener("portfolio_menu_toggle", onMenu);
-      window.removeEventListener("portfolio_swarm_start", run);
+      unsubMenu();
+      unsubSwarm();
     };
   }, [run]);
 
