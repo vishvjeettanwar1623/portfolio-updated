@@ -116,3 +116,127 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-row flex-nowrap items-center justify-center gap-1 sm:gap-2 md:gap-3 max-w-full overflow-hidden"
+          >
+            <span className="text-xs sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-black uppercase font-[family-name:var(--font-audiowide)] tracking-tight text-neutral-900 dark:text-white whitespace-nowrap select-none flex-shrink-0">
+              CURRENTLY DOING SOMETHING
+            </span>
+
+            {/* Inline Looping Dynamic Focus Words */}
+            <LoopingWords
+              words={[
+                "EXTRAORDINARY",
+                "DECENTRALIZED",
+                "IMMERSIVE",
+                "FUTURE-PROOF",
+                "IMPACTFUL",
+                "CREATIVE",
+              ]}
+              fontFamily="var(--font-audiowide)"
+              className="text-xs sm:text-base md:text-xl lg:text-2xl xl:text-3xl flex-shrink-0"
+            />
+          </motion.div>
+        </div>
+
+        {/* 2-Column Bottom Bar Layout */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-6 pt-6 border-t border-foreground/10">
+          {/* Left Column: Name & Tagline */}
+          <div className="flex flex-col gap-2 text-center md:text-left">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <TextStaggerHover as="h2" className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] tracking-tight whitespace-nowrap cursor-pointer">
+                <TextStaggerHoverActive animation="top">
+                  Vishvjeet Singh Tanwar
+                </TextStaggerHoverActive>
+                <TextStaggerHoverHidden animation="bottom">
+                  Vishvjeet Singh Tanwar
+                </TextStaggerHoverHidden>
+              </TextStaggerHover>
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="text-neutral-700 dark:text-white/80 text-sm md:text-base max-w-md font-light leading-relaxed"
+            >
+              Designer & Builder — Building things that my creativity allows.
+            </motion.p>
+          </div>
+
+          {/* Right Column: Social Links with Hover Card Preview */}
+          <div className="flex flex-col items-center md:items-end gap-3">
+            <motion.span
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xs font-mono tracking-widest uppercase text-neutral-700 dark:text-white/70"
+            >
+              Get a link to my social cards
+            </motion.span>
+            <div className="flex items-center gap-4">
+              {socialLinks.map((social, index) => (
+                <motion.a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={social.name}
+                  initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.25 + index * 0.08,
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20,
+                  }}
+                  whileHover={{ scale: 1.18, rotate: index % 2 === 0 ? 6 : -6, y: -5 }}
+                  whileTap={{ scale: 0.92 }}
+                  onMouseEnter={() =>
+                    setActiveSocial({ name: social.name, image: social.image })
+                  }
+                  onMouseLeave={() => setActiveSocial(null)}
+                  className="relative p-3.5 rounded-2xl bg-foreground/5 border border-foreground/15 text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-colors duration-300 shadow-md group overflow-visible cursor-pointer"
+                >
+                  <motion.div className="group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300">
+                    {social.icon}
+                  </motion.div>
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Expanding Divider Line */}
+        <motion.div
+          initial={{ scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full h-px bg-gradient-to-r from-transparent via-foreground/25 to-transparent my-4 origin-center"
+        />
+
+        {/* Bottom Full-Width Copyright */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="pt-2 text-center w-full"
+        >
+          <p className="text-xs md:text-sm text-foreground/60 font-mono tracking-wider">
+            © {currentYear} Vishvjeet Singh Tanwar. All rights reserved. Built with inspirations and creations.
+          </p>
+        </motion.div>
+      </motion.div>
+    </footer>
+  );
+}
+
+export default Footer;
