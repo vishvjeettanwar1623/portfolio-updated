@@ -78,7 +78,7 @@ export function LayeredText({
   return (
     <div
       ref={containerRef}
-      className={`mx-auto py-4 font-sans font-black tracking-[-3px] uppercase text-black dark:text-white antialiased cursor-pointer select-none ${className}`}
+      className={`mx-auto py-4 font-sans font-black tracking-[-3px] uppercase text-night dark:text-fog antialiased cursor-pointer select-none ${className}`}
       style={{ fontSize } as React.CSSProperties}
     >
       <ul className="list-none p-0 m-0 flex flex-col items-center">

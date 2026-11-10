@@ -130,7 +130,7 @@ export function JourneyScrollbar() {
                 transition={{ type: "spring", stiffness: 380, damping: 26 }}
                 className={`h-[1.5px] rounded-full transition-colors duration-300 ${
                   isActive
-                    ? "bg-foreground shadow-[0_0_8px_rgba(255,255,255,0.7)]"
+                    ? "bg-molten"
                     : "bg-foreground"
                 }`}
               />

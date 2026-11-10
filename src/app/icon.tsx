@@ -12,21 +12,6 @@ export default function Icon() {
       <div
         style={{
           fontSize: 22,
-          background: "#0a0a0a",
+          background: "#11161b",
           width: "100%",
           height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 6,
-          color: "white",
-          fontWeight: 700,
-          letterSpacing: "-1px",
-        }}
-      >
-        V
-      </div>
-    ),
-    { ...size }
-  );
-}

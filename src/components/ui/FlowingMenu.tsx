@@ -136,11 +136,11 @@ const MenuItem = ({
 export default function FlowingMenu({
   categories = [],
   speed = 18,
-  textColor = '#ffffff',
-  bgColor = '#09090b',
-  marqueeBgColor = '#ffffff',
-  marqueeTextColor = '#000000',
-  borderColor = 'rgba(255,255,255,0.1)',
+  textColor = '#cfd4d9',
+  bgColor = '#11161b',
+  marqueeBgColor = '#cfd4d9',
+  marqueeTextColor = '#11161b',
+  borderColor = 'rgba(207, 212, 217,0.1)',
   fontFamily = 'sans-serif',
 }: FlowingMenuProps) {
   return (

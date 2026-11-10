@@ -11,6 +11,7 @@ interface RainStreak {
   opacity: number;
   width: number;
   glow: boolean;
+  ember: boolean;
 }
 
 export function GlassRain({ className = "" }: { className?: string }) {
@@ -46,6 +47,7 @@ export function GlassRain({ className = "" }: { className?: string }) {
         opacity: Math.random() * 0.4 + 0.15,
         width: Math.random() < 0.2 ? 1.5 : 1,
         glow: Math.random() < 0.15,
+        ember: Math.random() < 0.07,
       };
     };
 
@@ -93,9 +95,12 @@ export function GlassRain({ className = "" }: { className?: string }) {
 
       ctx.clearRect(0, 0, width, height);
 
-      const baseR = isDark ? 255 : 30;
-      const baseG = isDark ? 255 : 30;
-      const baseB = isDark ? 255 : 30;
+      const fogR = isDark ? 207 : 17;
+      const fogG = isDark ? 212 : 22;
+      const fogB = isDark ? 217 : 27;
+      const emR = isDark ? 255 : 217;
+      const emG = isDark ? 106 : 72;
+      const emB = isDark ? 26 : 15;
 
       for (let i = 0; i < streaks.length; i++) {
         const s = streaks[i];
@@ -113,6 +118,10 @@ export function GlassRain({ className = "" }: { className?: string }) {
 
         s.x += deflectionX;
         s.y += s.speed;
+
+        const baseR = s.ember ? emR : fogR;
+        const baseG = s.ember ? emG : fogG;
+        const baseB = s.ember ? emB : fogB;
 
         // Draw falling glass rain streak with gradient trail
         const grad = ctx.createLinearGradient(s.x, s.y - s.length, s.x, s.y);

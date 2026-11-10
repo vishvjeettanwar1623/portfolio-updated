@@ -44,13 +44,13 @@ export interface IDCardLanyardProps {
 const CSS = `
 .idcl-root{
   --idcl-ink-faint:#5b6270;
-  --idcl-accent:#e4e4e7;
-  --idcl-accent-dim:#71717a;
-  --idcl-card:#faf7f1;
-  --idcl-card-2:#efeadf;
-  --idcl-card-ink:#15171d;
-  --idcl-card-soft:#666c78;
-  --idcl-card-line:#e1dbcb;
+  --idcl-accent:#cfd4d9;
+  --idcl-accent-dim:#7b858f;
+  --idcl-card:#dde1e5;
+  --idcl-card-2:#c9cfd5;
+  --idcl-card-ink:#11161b;
+  --idcl-card-soft:#55616b;
+  --idcl-card-line:#b3bac2;
   --idcl-font-display:'Archivo','Arial Narrow',sans-serif;
   --idcl-font-mono:'JetBrains Mono','Consolas',monospace;
   --idcl-font-script:'Caveat',cursive;
@@ -96,16 +96,17 @@ const CSS = `
   -webkit-backface-visibility:hidden;
   transform-style:preserve-3d;
   -webkit-transform-style:preserve-3d;
+  border: 1.5px solid #ff6a1a;
   box-shadow:
     0 36px 70px -18px rgba(0,0,0,.65),
     0 12px 24px -10px rgba(0,0,0,.45),
-    inset 0 1px 0 rgba(255,255,255,.65),
+    inset 0 1px 0 rgba(207, 212, 217,.65),
     inset 0 0 0 1px rgba(0,0,0,.06);
 }
 .idcl-face::before{
   content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
   background:
-    linear-gradient(180deg, rgba(255,255,255,.55) 0%, transparent 24%),
+    linear-gradient(180deg, rgba(207, 212, 217,.55) 0%, transparent 24%),
     radial-gradient(rgba(0,0,0,.07) 1px, transparent 1.3px) 0 0/3px 3px;
   mix-blend-mode:multiply; opacity:.6;
 }
@@ -137,14 +138,14 @@ const CSS = `
 /* Photo */
 .idcl-photo{
   position:relative; width:100%; height:138px; border-radius:12px;
-  background:#eae7de; overflow:hidden; margin-bottom:0px; flex-shrink:0;
+  background:#c9cfd5; overflow:hidden; margin-bottom:0px; flex-shrink:0;
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.08), inset 0 2px 6px rgba(0,0,0,.12);
 }
 .idcl-photo svg{ width:100%; height:100%; display:block; }
 .idcl-photo img{ width:100%; height:100%; display:block; object-fit:cover; object-position:center 35%; }
 .idcl-verified{
   position:absolute; right:-6px; bottom:-6px; width:26px; height:26px; border-radius:50%;
-  background:linear-gradient(160deg, #18181b, #27272a);
+  background:linear-gradient(160deg, #161c22, #2a3239);
   display:flex; align-items:center; justify-content:center;
   box-shadow:0 2px 6px rgba(0,0,0,.4), 0 0 0 3px var(--idcl-card);
 }
@@ -167,14 +168,14 @@ const CSS = `
 }
 .idcl-footer i{ color:var(--idcl-card-line); font-style:normal; margin:0 6px; }
 
-.idcl-stripe{ width:100%; height:34px; background:repeating-linear-gradient(45deg, #1b1d24, #1b1d24 7px, #26282f 7px, #26282f 14px); border-radius:4px; margin-bottom:14px; }
-.idcl-barcode{ display:flex; align-items:flex-end; gap:2.5px; height:38px; width:100%; background:#fff; border-radius:4px; padding:0 5px; margin-bottom:10px; overflow:hidden; }
+.idcl-stripe{ width:100%; height:34px; background:repeating-linear-gradient(45deg, #161c22, #161c22 7px, #2a3239 7px, #2a3239 14px); border-radius:4px; margin-bottom:14px; }
+.idcl-barcode{ display:flex; align-items:flex-end; gap:2.5px; height:38px; width:100%; background:#cfd4d9; border-radius:4px; padding:0 5px; margin-bottom:10px; overflow:hidden; }
 .idcl-barcode span{ width:2.5px; background:#1a1c22; }
 .idcl-idnum{ margin:0 0 10px; font-family:var(--idcl-font-mono); font-size:12px; font-weight:600; color:var(--idcl-card-ink); letter-spacing:.03em; display:flex; justify-content:space-between; font-variant-numeric: tabular-nums; }
 .idcl-idnum em{ font-style:normal; color:var(--idcl-card-soft); }
 
 .idcl-backrow{ display:flex; gap:14px; align-items:flex-start; margin-bottom:12px; }
-.idcl-qr{ display:grid; grid-template-columns:repeat(9,1fr); gap:1.2px; width:68px; height:68px; background:#fff; padding:5px; border-radius:5px; flex-shrink:0; box-shadow:0 0 0 1px var(--idcl-card-line); }
+.idcl-qr{ display:grid; grid-template-columns:repeat(9,1fr); gap:1.2px; width:68px; height:68px; background:#cfd4d9; padding:5px; border-radius:5px; flex-shrink:0; box-shadow:0 0 0 1px var(--idcl-card-line); }
 .idcl-qr i{ background:transparent; }
 .idcl-qr i.on{ background:#181a20; }
 .idcl-qr.idcl-small{ width:54px; height:54px; padding:4px; }
@@ -202,7 +203,7 @@ const CSS = `
   position:absolute; top:20px; left:50%; transform:translateX(-50%);
   display:flex; align-items:center; gap:6px;
   background:rgba(10,12,16,.75);
-  color:#f3f0e9;
+  color:#cfd4d9;
   padding:8px 16px;
   border-radius:999px;
   font-family:var(--idcl-font-mono);
@@ -299,14 +300,14 @@ export function IDCardLanyard({
 
     function resolveAnchorX() {
       const rect = scene!.getBoundingClientRect();
-      if (typeof window !== "undefined" && window.innerWidth < 768) {
-        return rect.width * 0.5;
-      }
-      const themeToggleEl = document.getElementById("theme-toggle-anchor") || document.querySelector("[data-theme-toggle]");
+      const themeToggleEl =
+        document.querySelector(".theme-switch__container") ||
+        document.getElementById("theme-toggle-anchor") ||
+        document.querySelector("[data-theme-toggle]");
       if (themeToggleEl && scene) {
         const toggleRect = themeToggleEl.getBoundingClientRect();
-        const targetX = toggleRect.left + toggleRect.width / 2 - rect.left;
-        if (targetX > 40 && targetX < rect.width + 100) {
+        if (toggleRect.width > 0) {
+          const targetX = toggleRect.left + toggleRect.width / 2 - rect.left;
           return targetX;
         }
       }
@@ -319,12 +320,15 @@ export function IDCardLanyard({
 
     function resolveAnchorY() {
       const rect = scene!.getBoundingClientRect();
-      const themeToggleEl = document.getElementById("theme-toggle-anchor") || document.querySelector("[data-theme-toggle]");
-      if (themeToggleEl && scene && typeof window !== "undefined" && window.innerWidth >= 768) {
+      const themeToggleEl =
+        document.querySelector(".theme-switch__container") ||
+        document.getElementById("theme-toggle-anchor") ||
+        document.querySelector("[data-theme-toggle]");
+      if (themeToggleEl && scene) {
         const toggleRect = themeToggleEl.getBoundingClientRect();
-        // Position top mounting loop snug directly beneath the theme toggle switch
-        const targetY = toggleRect.bottom - rect.top + 5;
-        if (targetY >= 0 && targetY < 180) {
+        if (toggleRect.height > 0) {
+          // Position top mounting loop snug directly beneath the bottom center of the theme toggle switch
+          const targetY = toggleRect.bottom - rect.top + 5;
           return targetY;
         }
       }
@@ -501,47 +505,26 @@ export function IDCardLanyard({
       ctx!.save();
       ctx!.translate(3, 5);
       ctx!.globalAlpha = 0.5;
-      strokeRibbon("#000000", 22);
+      strokeRibbon("#11161b", 22);
       ctx!.restore();
 
       // Outer contrasting border (clearly visible on pure dark background)
-      strokeRibbon("rgba(255, 255, 255, 0.4)", 20);
+      strokeRibbon("rgba(207, 212, 217, 0.4)", 20);
 
       // Main fabric strap body (tactile charcoal/graphite)
-      strokeRibbon("#333742", 18);
+      strokeRibbon("#2a3239", 18);
 
       // Inner woven texture core
-      strokeRibbon("#22252c", 14);
+      strokeRibbon("#1a2127", 14);
 
-      // Center stitched reflective silver/white safety line
-      strokeRibbon("rgba(255, 255, 255, 0.85)", 3);
+      // Center stitched molten seam
+      strokeRibbon("#ff6a1a", 3);
 
       // Center dotted stitch pattern
       ctx!.save();
       ctx!.setLineDash([4, 4]);
-      strokeRibbon("rgba(0, 0, 0, 0.7)", 2.5);
+      strokeRibbon("rgba(17, 22, 27, 0.75)", 2.5);
       ctx!.restore();
-
-      const markIdx = Math.floor(points.length * 0.35);
-      const m = points[markIdx];
-      const mPrev = points[markIdx - 1];
-      const mNext = points[markIdx + 1];
-      if (m && mPrev && mNext) {
-        const angle = Math.atan2(mNext.y - mPrev.y, mNext.x - mPrev.x) + Math.PI / 2;
-        ctx!.save();
-        ctx!.translate(m.x, m.y);
-        ctx!.rotate(angle);
-        ctx!.strokeStyle = "rgba(255,255,255,0.95)";
-        ctx!.lineWidth = 2;
-        ctx!.lineCap = "round";
-        ctx!.lineJoin = "round";
-        ctx!.beginPath();
-        ctx!.moveTo(-5, 5);
-        ctx!.lineTo(0, -5);
-        ctx!.lineTo(5, 5);
-        ctx!.stroke();
-        ctx!.restore();
-      }
     }
 
     function drawClip() {
@@ -550,7 +533,7 @@ export function IDCardLanyard({
       ctx!.translate(anchor.x, anchor.y);
 
       // (A) Top Metallic Eyelet / D-Ring Loop
-      ctx!.strokeStyle = "rgba(255, 255, 255, 0.6)";
+      ctx!.strokeStyle = "rgba(207, 212, 217, 0.6)";
       ctx!.lineWidth = 2.2;
       ctx!.lineCap = "round";
       ctx!.beginPath();
@@ -569,7 +552,7 @@ export function IDCardLanyard({
 
       // Brushed Metal Finish
       const clampGrad = ctx!.createLinearGradient(-clampW / 2, clampY, clampW / 2, clampY + clampH);
-      clampGrad.addColorStop(0, "#ffffff");
+      clampGrad.addColorStop(0, "#cfd4d9");
       clampGrad.addColorStop(0.3, "#c8ced8");
       clampGrad.addColorStop(0.7, "#7a828f");
       clampGrad.addColorStop(1, "#3c4048");
@@ -578,7 +561,7 @@ export function IDCardLanyard({
       ctx!.fill();
 
       // Metallic border highlight
-      ctx!.strokeStyle = "rgba(255, 255, 255, 0.75)";
+      ctx!.strokeStyle = "rgba(207, 212, 217, 0.75)";
       ctx!.lineWidth = 0.8;
       ctx!.stroke();
 
@@ -610,12 +593,12 @@ export function IDCardLanyard({
 
       // Metal Clasp Loop with high-contrast chrome
       const claspGrad = ctx!.createLinearGradient(-12, -14, 12, 14);
-      claspGrad.addColorStop(0, "#ffffff");
+      claspGrad.addColorStop(0, "#cfd4d9");
       claspGrad.addColorStop(0.4, "#a8adb6");
       claspGrad.addColorStop(0.8, "#5f636b");
       claspGrad.addColorStop(1, "#36393f");
       ctx!.fillStyle = claspGrad;
-      ctx!.strokeStyle = "rgba(255,255,255,0.7)";
+      ctx!.strokeStyle = "rgba(207, 212, 217,0.7)";
       ctx!.lineWidth = 1.2;
       drawRoundedRect(ctx!, -12, -16, 24, 20, 5);
       ctx!.fill();
@@ -624,7 +607,7 @@ export function IDCardLanyard({
       // Chrome Swivel Pin
       const pinGrad = ctx!.createLinearGradient(-5, 0, 5, 0);
       pinGrad.addColorStop(0, "#a0a6b0");
-      pinGrad.addColorStop(0.5, "#ffffff");
+      pinGrad.addColorStop(0.5, "#cfd4d9");
       pinGrad.addColorStop(1, "#707680");
       ctx!.fillStyle = pinGrad;
       drawRoundedRect(ctx!, -4, -6, 8, 16, 2);
@@ -700,6 +683,8 @@ export function IDCardLanyard({
       last.oldy = last.y - Math.max(-12, Math.min(12, velocity.y * 0.45));
     };
     const onResize = () => resize();
+    const timer1 = setTimeout(resize, 80);
+    const timer2 = setTimeout(resize, 350);
 
     card.addEventListener("pointerdown", onCardDown);
     window.addEventListener("pointermove", onWindowMove);
@@ -710,6 +695,8 @@ export function IDCardLanyard({
 
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
       card.removeEventListener("pointerdown", onCardDown);
       window.removeEventListener("pointermove", onWindowMove);
       window.removeEventListener("pointerup", onWindowUp);
@@ -721,7 +708,6 @@ export function IDCardLanyard({
     <div className={`idcl-root ${className}`} style={{ "--idcl-z": zIndex } as React.CSSProperties}>
       <style>{CSS}</style>
 
-      {/* stage container */}
       <div className={`idcl-stage ${position === "fixed" ? "idcl-stage-fixed" : "idcl-stage-absolute"}`} ref={sceneRef}>
         <canvas className="idcl-rope" ref={canvasRef} />
 
@@ -756,24 +742,24 @@ export function IDCardLanyard({
                   <svg viewBox="0 0 182 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
                     <defs>
                       <linearGradient id="idcl-faceGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0" stopColor="#8fb0ff" />
-                        <stop offset="1" stopColor="#3f5fd8" />
+                        <stop offset="0" stopColor="#ff9a5c" />
+                        <stop offset="1" stopColor="#d9480f" />
                       </linearGradient>
                       <pattern id="idcl-dots" width="6" height="6" patternUnits="userSpaceOnUse">
-                        <circle cx="3" cy="3" r="0.8" fill="#ffffff" opacity="0.35" />
+                        <circle cx="3" cy="3" r="0.8" fill="#cfd4d9" opacity="0.35" />
                       </pattern>
                     </defs>
-                    <rect width="182" height="100" fill="#12151c" />
+                    <rect width="182" height="100" fill="#161c22" />
                     <circle cx="91" cy="62" r="46" fill="url(#idcl-faceGrad)" />
-                    <path d="M42,46 Q91,-18 140,46 L140,66 Q91,38 42,66 Z" fill="#1c2029" />
-                    <circle cx="72" cy="62" r="3.6" fill="#12151c" />
-                    <circle cx="110" cy="62" r="3.6" fill="#12151c" />
-                    <path d="M75,78 Q91,86 107,78" stroke="#12151c" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+                    <path d="M42,46 Q91,-18 140,46 L140,66 Q91,38 42,66 Z" fill="#2a3239" />
+                    <circle cx="72" cy="62" r="3.6" fill="#161c22" />
+                    <circle cx="110" cy="62" r="3.6" fill="#161c22" />
+                    <path d="M75,78 Q91,86 107,78" stroke="#161c22" strokeWidth="2.8" fill="none" strokeLinecap="round" />
                     <rect width="182" height="100" fill="url(#idcl-dots)" />
                   </svg>
                 )}
                 <span className="idcl-verified">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#cfd4d9" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M4 12l5 5L20 6" />
                   </svg>
                 </span>

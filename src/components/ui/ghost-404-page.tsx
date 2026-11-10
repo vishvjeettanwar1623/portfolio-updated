@@ -81,7 +81,7 @@ export function NotFound() {
                 custom={i}
                 variants={letterVariants}
                 animate={["visible", "floating"]}
-                className="text-[90px] md:text-[180px] lg:text-[220px] font-black select-none tracking-tighter text-neutral-800 dark:text-neutral-200 font-[family-name:var(--font-audiowide)]"
+                className="text-[90px] md:text-[180px] lg:text-[220px] font-black select-none tracking-tighter text-gunmetal dark:text-fog font-[family-name:var(--font-audiowide)]"
               >
                 {letter}
               </motion.span>
@@ -110,7 +110,7 @@ export function NotFound() {
           {!isMaintenance ? (
             <Link 
               href="/"
-              className="inline-block bg-neutral-900 text-white dark:bg-white dark:text-black px-8 py-3.5 rounded-full text-sm font-mono font-semibold tracking-widest uppercase hover:opacity-90 transition-all select-none shadow-lg cursor-pointer"
+              className="inline-block bg-night-2 text-fog dark:bg-mist dark:text-night px-8 py-3.5 rounded-full text-sm font-mono font-semibold tracking-widest uppercase hover:opacity-90 transition-all select-none shadow-lg cursor-pointer"
             >
               Return Home
             </Link>
@@ -120,7 +120,7 @@ export function NotFound() {
                 href="https://www.linkedin.com/in/vishvjeet-tanwar" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-white/10 transition-all group"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-fog/5 backdrop-blur-md border border-fog/10 rounded-full text-fog hover:bg-fog/10 transition-all group"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -128,7 +128,7 @@ export function NotFound() {
                 <span className="text-lg font-semibold tracking-wide">Connect on LinkedIn</span>
                 <span className="text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">↗</span>
               </motion.a>
-              <p className="text-white/30 text-xs uppercase tracking-[0.3em] font-medium">Neural systems offline for calibration</p>
+              <p className="text-fog/30 text-xs uppercase tracking-[0.3em] font-medium">Neural systems offline for calibration</p>
             </>
           )}
         </div>
