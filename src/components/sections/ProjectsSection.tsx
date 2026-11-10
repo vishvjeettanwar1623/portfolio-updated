@@ -25,6 +25,7 @@ import {
   SliderBtnGroup,
   SliderBtn,
 } from "@/components/ui/progressive-carousel";
+import { SITE_CONFIG } from "@/config/site";
 
 interface TechLogo {
   name: string;
@@ -284,7 +285,6 @@ export function ProjectsSection() {
       className="bg-transparent py-20 md:py-32 overflow-visible relative"
     >
       <div ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10 [perspective:1200px]">
-        {/* Section Header with On-Scroll Kinetic Reveal */}
         <motion.div
           style={{ y: headerY, opacity: headerOpacity, scale: headerScale }}
           className="mb-12 md:mb-16 text-center w-full"
@@ -302,18 +302,15 @@ export function ProjectsSection() {
           </TextStaggerHover>
         </motion.div>
 
-        {/* PROGRESSIVE CAROUSEL SLIDER */}
         <div className="w-full">
           <ProgressSlider
             activeSlider={projects[0].id}
-            className="w-full rounded-2xl md:rounded-3xl border border-foreground/15 bg-neutral-950/80 backdrop-blur-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
+            className="w-full rounded-2xl md:rounded-3xl border border-foreground/15 bg-card/95 dark:bg-night/80 backdrop-blur-xl overflow-hidden shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
           >
-            {/* Slide Content Viewport */}
             <SliderContent className="w-full">
               {projects.map((project) => (
                 <SliderWrapper key={project.id} value={project.id} className="w-full">
                   <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[480px] md:min-h-[520px] lg:min-h-[560px]">
-                    {/* Visual Media Showcase (7 Columns) - Enters from Left, Exits to Left */}
                     <motion.div
                       style={{
                         x: leftX,
@@ -321,7 +318,7 @@ export function ProjectsSection() {
                         rotateY: leftRotateY,
                         transformStyle: "preserve-3d",
                       }}
-                      className="lg:col-span-7 relative h-72 sm:h-96 md:h-[420px] lg:h-full overflow-hidden bg-neutral-900 border-b lg:border-b-0 lg:border-r border-foreground/15 group will-change-transform"
+                      className="lg:col-span-7 relative h-72 sm:h-96 md:h-[420px] lg:h-full overflow-hidden bg-foreground/5 dark:bg-night-2 border-b lg:border-b-0 lg:border-r border-foreground/15 group will-change-transform"
                     >
                       <Image
                         src={project.image}
@@ -331,25 +328,22 @@ export function ProjectsSection() {
                         sizes="(max-width: 1024px) 100vw, 60vw"
                         className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-night/80 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/20 dark:from-night/40 via-transparent to-transparent pointer-events-none" />
 
-                      {/* Top Corner Badge */}
                       <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                        <span className="px-3 py-1 rounded-full bg-black/80 border border-white/20 text-white font-mono text-xs uppercase tracking-widest backdrop-blur-md">
+                        <span className="px-3 py-1 rounded-full bg-background/90 dark:bg-night/80 border border-foreground/15 dark:border-fog/20 text-foreground dark:text-fog font-mono text-xs uppercase tracking-widest backdrop-blur-md shadow-sm">
                           {project.num} · {project.category}
                         </span>
                       </div>
 
-                      {/* Domain URL Tag */}
                       <div className="absolute bottom-4 left-4 z-10 flex items-center">
-                        <span className="text-xs font-mono text-white/70 bg-black/60 backdrop-blur-md px-3 py-1 rounded-md border border-white/10">
+                        <span className="text-xs font-mono text-foreground/80 dark:text-fog/70 bg-background/90 dark:bg-night/60 backdrop-blur-md px-3 py-1 rounded-md border border-foreground/15 dark:border-fog/10 shadow-sm">
                           https://{project.domainUrl}
                         </span>
                       </div>
                     </motion.div>
 
-                    {/* Engineering & Product Deep-Dive (5 Columns) - Enters from Right, Exits to Right */}
                     <motion.div
                       style={{
                         x: rightX,
@@ -361,46 +355,44 @@ export function ProjectsSection() {
                     >
                       <div>
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-xs font-mono font-bold uppercase tracking-widest text-neutral-400">
+                          <span className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground">
                             {project.category}
                           </span>
                         </div>
 
-                        <h3 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white font-[family-name:var(--font-audiowide)] mb-2">
+                        <h3 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground font-[family-name:var(--font-audiowide)] mb-2">
                           {project.name}
                         </h3>
 
-                        <p className="text-xs sm:text-sm font-mono text-neutral-400 mb-4 leading-relaxed">
+                        <p className="text-xs sm:text-sm font-mono text-muted-foreground mb-4 leading-relaxed">
                           {project.tagline}
                         </p>
 
-                        <p className="text-sm text-neutral-300 font-light leading-relaxed mb-6">
+                        <p className="text-sm text-foreground/85 font-light leading-relaxed mb-6">
                           {project.description}
                         </p>
 
-                        {/* Highlights Matrix */}
                         <div className="space-y-2 mb-6">
                           {project.highlights.map((highlight, hIdx) => (
                             <div
                               key={hIdx}
-                              className="flex items-start gap-2 text-xs sm:text-sm text-neutral-300"
+                              className="flex items-start gap-2 text-xs sm:text-sm text-foreground/85"
                             >
-                              <span className="text-white font-mono mt-0.5">✦</span>
+                              <span className="text-molten font-mono mt-0.5">✦</span>
                               <span>{highlight}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      {/* Tech Stack & Action Links */}
-                      <div className="pt-4 border-t border-white/10 space-y-4">
+                      <div className="pt-4 border-t border-foreground/10 space-y-4">
                         <div className="flex flex-wrap gap-2">
                           {project.techStack.map((techKey) => {
                             const tech = TECH_LOGOS[techKey] || { name: techKey, icon: "" };
                             return (
                               <span
                                 key={techKey}
-                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white font-mono text-[11px]"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-foreground/5 border border-foreground/10 text-foreground font-mono text-[11px]"
                               >
                                 {tech.icon && (
                                   /* eslint-disable-next-line @next/next/no-img-element */
@@ -408,7 +400,7 @@ export function ProjectsSection() {
                                     src={tech.icon}
                                     alt={tech.name}
                                     className={`w-3.5 h-3.5 object-contain ${
-                                      tech.invert ? "invert" : ""
+                                      tech.invert ? "dark:invert" : ""
                                     }`}
                                   />
                                 )}
@@ -418,7 +410,6 @@ export function ProjectsSection() {
                           })}
                         </div>
 
-                        {/* Action Buttons */}
                         <div className="flex flex-wrap items-center gap-3 pt-2">
                           {project.liveUrl && (
                             <motion.a
@@ -427,7 +418,7 @@ export function ProjectsSection() {
                               rel="noopener noreferrer"
                               whileHover={{ scale: 1.05, y: -2 }}
                               whileTap={{ scale: 0.95 }}
-                              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-mono font-bold text-xs uppercase tracking-widest hover:bg-neutral-200 transition-all shadow-md cursor-pointer"
+                              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background font-mono font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all shadow-md cursor-pointer"
                             >
                               <span>Launch</span>
                               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -441,7 +432,7 @@ export function ProjectsSection() {
                               rel="noopener noreferrer"
                               whileHover={{ scale: 1.05, y: -2 }}
                               whileTap={{ scale: 0.95 }}
-                              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 text-white border border-white/15 hover:bg-white/20 font-mono font-semibold text-xs uppercase tracking-widest transition-all cursor-pointer"
+                              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-foreground/5 text-foreground border border-foreground/15 hover:bg-foreground/10 font-mono font-semibold text-xs uppercase tracking-widest transition-all cursor-pointer"
                             >
                               <Github className="w-4 h-4" />
                               <span>Source</span>
@@ -455,7 +446,6 @@ export function ProjectsSection() {
               ))}
             </SliderContent>
 
-            {/* Bottom Progressive Indicator Button Group - Enters from Bottom, Exits to Above */}
             <motion.div
               style={{
                 y: bottomY,
@@ -463,26 +453,26 @@ export function ProjectsSection() {
               }}
               className="w-full will-change-transform"
             >
-              <SliderBtnGroup className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-foreground/15 bg-black/60 backdrop-blur-md">
+              <SliderBtnGroup className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-foreground/15 bg-foreground/[0.03] dark:bg-night/60 backdrop-blur-md">
                 {projects.map((item, index) => (
                   <SliderBtn
                     key={index}
                     value={item.id}
-                    className="text-left cursor-pointer p-3 sm:p-4 border-r border-b sm:border-b-0 border-foreground/15 last:border-r-0 hover:bg-white/5 transition-colors group"
-                    progressBarClass="bg-white/20 dark:bg-white/25 h-full"
+                    className="text-left cursor-pointer p-3 sm:p-4 border-r border-b sm:border-b-0 border-foreground/15 last:border-r-0 hover:bg-foreground/5 transition-colors group"
+                    progressBarClass="bg-foreground/10 dark:bg-fog/20 h-full"
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-[10px] font-mono font-bold text-neutral-400 group-hover:text-white transition-colors">
+                      <span className="text-[10px] font-mono font-bold text-muted-foreground group-hover:text-foreground transition-colors">
                         {item.num}
                       </span>
-                      <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 truncate max-w-[80px]">
+                      <span className="text-[9px] font-mono uppercase tracking-widest text-muted-foreground/80 dark:text-steel truncate max-w-[80px]">
                         {item.category}
                       </span>
                     </div>
-                    <h4 className="text-xs sm:text-sm font-bold font-[family-name:var(--font-audiowide)] text-white truncate mb-1">
+                    <h4 className="text-xs sm:text-sm font-bold font-[family-name:var(--font-audiowide)] text-foreground truncate mb-1">
                       {item.name}
                     </h4>
-                    <p className="text-[11px] text-neutral-400 font-light line-clamp-1 hidden sm:block">
+                    <p className="text-[11px] text-muted-foreground font-light line-clamp-1 hidden sm:block">
                       {item.tagline}
                     </p>
                   </SliderBtn>
@@ -512,7 +502,7 @@ export function ProjectsSection() {
           </div>
 
           <motion.a
-            href="https://github.com/vishvjeettanwar1623"
+            href={SITE_CONFIG.socials.github.href}
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05, y: -2 }}

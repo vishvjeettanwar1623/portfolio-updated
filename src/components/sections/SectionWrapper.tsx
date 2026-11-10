@@ -45,7 +45,7 @@ export function SectionWrapper({
       </div>
 
       {/* Soft Ambient Radial Background Aura */}
-      <div className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.04),transparent_75%)]" />
+      <div className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(ellipse_at_center,rgba(207,212,217,0.04),transparent_75%)]" />
     </section>
   );
 }

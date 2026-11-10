@@ -34,12 +34,12 @@ export function Navbar() {
       socialItems={socialItems}
       displaySocials
       displayItemNumbering
-      logoText="vishvjeet.me"
-      menuButtonColor={isDark ? "#f4f4f5" : "#000000"}
-      openMenuButtonColor="#000000"
+      logoText={SITE_CONFIG.domain}
+      menuButtonColor={isDark ? "#cfd4d9" : "#11161b"}
+      openMenuButtonColor="#11161b"
       changeMenuColorOnOpen
-      colors={isDark ? ["#18181b", "#ffffff"] : ["#e5e5e5", "#ffffff"]}
-      accentColor="#000000"
+      colors={["#2a3239", "#ff6a1a"]}
+      accentColor="#ff6a1a"
       onMenuOpen={() => {}}
       onMenuClose={() => {}}
     />
