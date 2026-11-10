@@ -81,9 +81,9 @@ export function Footer() {
             animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
             exit={{ opacity: 0, scale: 0.5, rotate: 6, y: 15 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
-            className="pointer-events-none absolute z-50 -translate-x-1/2 -translate-y-[115%] w-64 h-40 sm:w-72 sm:h-44 rounded-2xl p-1.5 bg-neutral-950/90 dark:bg-neutral-950/90 border border-white/20 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden"
+            className="pointer-events-none absolute z-50 -translate-x-1/2 -translate-y-[115%] w-64 h-40 sm:w-72 sm:h-44 rounded-2xl p-1.5 bg-night/90 dark:bg-night/90 border border-fog/20 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden"
           >
-            <div className="relative w-full h-full rounded-xl overflow-hidden bg-neutral-900 border border-white/10">
+            <div className="relative w-full h-full rounded-xl overflow-hidden bg-night-2 border border-fog/10">
               <Image
                 src={activeSocial.image}
                 alt={`${activeSocial.name} card`}
@@ -91,8 +91,8 @@ export function Footer() {
                 sizes="(max-width: 768px) 300px, 400px"
                 className="object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-3">
-                <span className="text-xs font-mono font-bold text-white uppercase tracking-widest">
+              <div className="absolute inset-0 bg-gradient-to-t from-night/80 via-transparent to-transparent flex items-end p-3">
+                <span className="text-xs font-mono font-bold text-fog uppercase tracking-widest">
                   {activeSocial.name}
                 </span>
               </div>
@@ -117,7 +117,7 @@ export function Footer() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-row flex-nowrap items-center justify-center gap-1 sm:gap-2 md:gap-3 max-w-full overflow-hidden"
           >
-            <span className="text-xs sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-black uppercase font-[family-name:var(--font-audiowide)] tracking-tight text-neutral-900 dark:text-white whitespace-nowrap select-none flex-shrink-0">
+            <span className="text-xs sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-black uppercase font-[family-name:var(--font-audiowide)] tracking-tight text-night-2 dark:text-fog whitespace-nowrap select-none flex-shrink-0">
               CURRENTLY DOING SOMETHING
             </span>
 
@@ -147,12 +147,12 @@ export function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <TextStaggerHover as="h2" className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] tracking-tight whitespace-nowrap cursor-pointer">
+              <TextStaggerHover as="h2" className="text-2xl md:text-3xl font-bold text-night-2 dark:text-fog font-[family-name:var(--font-audiowide)] tracking-tight whitespace-nowrap cursor-pointer">
                 <TextStaggerHoverActive animation="top">
-                  Vishvjeet Singh Tanwar
+                  {SITE_CONFIG.name}
                 </TextStaggerHoverActive>
                 <TextStaggerHoverHidden animation="bottom">
-                  Vishvjeet Singh Tanwar
+                  {SITE_CONFIG.name}
                 </TextStaggerHoverHidden>
               </TextStaggerHover>
             </motion.div>
@@ -161,9 +161,9 @@ export function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="text-neutral-700 dark:text-white/80 text-sm md:text-base max-w-md font-light leading-relaxed"
+              className="text-gunmetal dark:text-fog/80 text-sm md:text-base max-w-md font-light leading-relaxed"
             >
-              Designer & Builder — Building things that my creativity allows.
+              {SITE_CONFIG.tagline}
             </motion.p>
           </div>
 
@@ -174,7 +174,7 @@ export function Footer() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-xs font-mono tracking-widest uppercase text-neutral-700 dark:text-white/70"
+              className="text-xs font-mono tracking-widest uppercase text-gunmetal dark:text-fog/70"
             >
               Get a link to my social cards
             </motion.span>

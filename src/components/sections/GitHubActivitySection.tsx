@@ -10,6 +10,7 @@ import {
   TextStaggerHoverHidden,
 } from "@/components/ui/text-stagger-hover";
 import { SectionWrapper } from "@/components/sections/SectionWrapper";
+import { SITE_CONFIG } from "@/config/site";
 
 interface CommitRecord {
   id: string;
@@ -176,7 +177,7 @@ export function GitHubActivitySection() {
         if (!entry.isIntersecting) return;
         observer.disconnect();
 
-        fetch("https://api.github.com/users/vishvjeettanwar1623/events/public")
+        fetch(`https://api.github.com/users/${SITE_CONFIG.socials.github.username}/events/public`)
           .then((res) => res.json())
           .then((data) => {
             if (Array.isArray(data) && data.length > 0) {
@@ -316,7 +317,7 @@ export function GitHubActivitySection() {
       // Draw Orbit Radar Rings
       ctx.save();
       ctx.translate(centerX, centerY);
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+      ctx.strokeStyle = "rgba(207, 212, 217, 0.04)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(0, 0, 175, 0, Math.PI * 2);
@@ -380,7 +381,7 @@ export function GitHubActivitySection() {
 
           if (dist < 46) {
             const alpha = Math.max(0, (1 - dist / 46) * 0.12 * p1.scale);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+            ctx.strokeStyle = `rgba(207, 212, 217, ${alpha})`;
             ctx.lineWidth = 0.75;
             ctx.beginPath();
             ctx.moveTo(p1.projX, p1.projY);
@@ -401,17 +402,13 @@ export function GitHubActivitySection() {
         ctx.arc(p.projX, p.projY, radius, 0, Math.PI * 2);
 
         if (isTarget) {
-          ctx.fillStyle = "#ffffff";
-          ctx.shadowColor = "#ffffff";
-          ctx.shadowBlur = 16;
+          ctx.fillStyle = "#ff6a1a";
         } else if (p.intensity > 0.7) {
-          ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-          ctx.shadowColor = "rgba(255, 255, 255, 0.8)";
-          ctx.shadowBlur = 8 * p.scale;
+          ctx.fillStyle = `rgba(255, 106, 26, ${alpha})`;
         } else if (p.intensity > 0.35) {
-          ctx.fillStyle = `rgba(210, 210, 210, ${alpha * 0.75})`;
+          ctx.fillStyle = `rgba(207, 212, 217, ${alpha * 0.8})`;
         } else {
-          ctx.fillStyle = `rgba(130, 130, 130, ${alpha * 0.4})`;
+          ctx.fillStyle = `rgba(143, 153, 163, ${alpha * 0.45})`;
         }
 
         ctx.fill();
@@ -488,7 +485,6 @@ export function GitHubActivitySection() {
   return (
     <SectionWrapper id="github-activity" className="py-24 bg-background relative overflow-hidden font-mono">
       <div ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-        {/* Section Header */}
         <div className="mb-14 text-center max-w-3xl mx-auto">
           <TextStaggerHover as="h2" className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase tracking-[2px] sm:tracking-[4px] text-foreground font-[family-name:var(--font-audiowide)] drop-shadow-md">
             <TextStaggerHoverActive animation="top">
@@ -500,12 +496,9 @@ export function GitHubActivitySection() {
           </TextStaggerHover>
         </div>
 
-        {/* 3D Holographic Viewport & Live Commit Telemetry Grid */}
         <div className="relative w-full rounded-3xl bg-card/60 border border-foreground/15 p-6 sm:p-8 md:p-12 backdrop-blur-2xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Background Ambient Radial Radar Light */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(207,212,217,0.03)_0%,transparent_70%)] pointer-events-none" />
 
-          {/* Left Column: Interactive 3D Hologram Globe (Cols 1-7) */}
           <div
             onMouseDown={handleMouseDown}
             onMouseMove={handleCanvasMouseMove}
@@ -515,7 +508,6 @@ export function GitHubActivitySection() {
           >
             <canvas ref={canvasRef} className="w-full h-full block" />
 
-            {/* Hovered Commit Real-Time Floating Tooltip */}
             <AnimatePresence>
               {hoveredCommit && (
                 <motion.div
@@ -530,7 +522,6 @@ export function GitHubActivitySection() {
                   }}
                   className="absolute z-40 pointer-events-none w-72 p-3.5 rounded-2xl bg-card/95 border border-foreground/30 shadow-2xl backdrop-blur-2xl space-y-2 text-left"
                 >
-                  {/* Header: Repo & SHA */}
                   <div className="flex items-center justify-between border-b border-foreground/15 pb-1.5 text-[10px]">
                     <div className="flex items-center gap-1.5 text-foreground font-bold truncate">
                       <GitBranch className="w-3 h-3 text-foreground flex-shrink-0" />
@@ -541,12 +532,10 @@ export function GitHubActivitySection() {
                     </span>
                   </div>
 
-                  {/* Commit Message */}
                   <div className="text-xs font-semibold text-foreground leading-snug line-clamp-2">
                     {hoveredCommit.message}
                   </div>
 
-                  {/* Footer: Timestamp */}
                   <div className="flex items-center justify-between text-[9.5px] text-muted-foreground pt-1 border-t border-foreground/10">
                     <span>{hoveredCommit.date}</span>
                     <span>{hoveredCommit.time}</span>
@@ -556,7 +545,6 @@ export function GitHubActivitySection() {
             </AnimatePresence>
           </div>
 
-          {/* Right Column: Actual Repositories & Real Commit Feed (Cols 8-12) */}
           <div className="lg:col-span-5 flex flex-col space-y-4 relative z-20">
             <div className="flex items-center justify-between border-b border-foreground/10 pb-3">
               <div className="flex items-center gap-2">
@@ -570,12 +558,11 @@ export function GitHubActivitySection() {
               </span>
             </div>
 
-            {/* Real Repository List */}
             <div className="space-y-2.5">
               {REAL_REPOS.map((repo) => (
                 <motion.a
                   key={repo.name}
-                  href={`https://github.com/vishvjeettanwar1623/${repo.name}`}
+                  href={`${SITE_CONFIG.socials.github.href}/${repo.name}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ x: 4, scale: 1.01 }}
@@ -602,9 +589,8 @@ export function GitHubActivitySection() {
               ))}
             </div>
 
-            {/* Direct GitHub Profile Action */}
             <motion.a
-              href="https://github.com/vishvjeettanwar1623"
+              href={SITE_CONFIG.socials.github.href}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.02 }}
@@ -612,7 +598,7 @@ export function GitHubActivitySection() {
               className="w-full mt-2 py-3 rounded-2xl bg-foreground text-background font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg hover:opacity-90 transition-opacity cursor-pointer"
             >
               <Github className="w-4 h-4" />
-              <span>Explore @vishvjeettanwar1623</span>
+              <span>Explore {SITE_CONFIG.socials.github.handle}</span>
             </motion.a>
           </div>
         </div>
