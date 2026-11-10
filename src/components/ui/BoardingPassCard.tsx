@@ -86,7 +86,7 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
         className="relative w-full flex flex-col rounded-3xl overflow-visible shadow-[0_25px_60px_rgba(0,0,0,0.95)]"
       >
         {/* Top Portion */}
-        <div className="relative w-full aspect-[629/838] rounded-t-3xl overflow-hidden bg-[#121215] border-t border-l border-r border-[#c5a880]/30">
+        <div className="relative w-full aspect-[629/838] rounded-t-3xl overflow-hidden bg-[#161c22] border-t border-l border-r border-[#ff6a1a]/30">
           <Image
             src="/assets/designs/card-top-v2.jpg"
             alt="Developer Boarding Pass Top"
@@ -94,10 +94,10 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
             priority
             unoptimized
             sizes="(max-width: 640px) 90vw, 400px"
-            className="object-cover object-top select-none pointer-events-none"
+            className="object-cover object-top select-none pointer-events-none [filter:hue-rotate(-16deg)_saturate(1.2)]"
           />
 
-          <div className="absolute inset-0 bg-radial from-amber-500/[0.04] to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-radial from-molten/[0.04] to-transparent pointer-events-none" />
 
           {SITE_CONFIG.boardingPassLinks.map((link) => (
             <a
@@ -116,9 +116,9 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
                 left: link.left,
                 width: link.width,
               }}
-              className="absolute rounded-xl transition-all duration-200 hover:ring-1 hover:ring-[#c5a880]/50 hover:bg-white/[0.03] flex items-center justify-end pr-3.5 z-10 group cursor-pointer"
+              className="absolute rounded-xl transition-all duration-200 hover:ring-1 hover:ring-[#ff6a1a]/50 hover:bg-fog/[0.03] flex items-center justify-end pr-3.5 z-10 group cursor-pointer"
             >
-              <ArrowUpRight className="w-3.5 h-3.5 text-white/30 group-hover:text-[#f5e6a3] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-fog/30 group-hover:text-[#ffb48a] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </a>
           ))}
 
@@ -137,17 +137,17 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
                 }}
                 className="absolute inset-0 z-30 flex items-center justify-center p-3 pointer-events-none"
               >
-                <div className="relative border-4 border-dashed border-[#f5e6a3] rounded-2xl px-5 py-4 sm:px-7 sm:py-5 bg-[#14120e]/95 shadow-[0_0_45px_rgba(212,175,55,0.65)] text-center flex flex-col items-center justify-center transform-gpu">
-                  <div className="absolute inset-1.5 border border-[#d4af37]/70 rounded-xl pointer-events-none" />
-                  <div className="flex items-center gap-2 text-[9px] sm:text-[10.5px] font-mono tracking-[3px] sm:tracking-[4px] text-[#e8c88c] uppercase font-bold mb-1">
+                <div className="relative border-4 border-dashed border-[#ffb48a] rounded-2xl px-5 py-4 sm:px-7 sm:py-5 bg-night/95 text-center flex flex-col items-center justify-center transform-gpu">
+                  <div className="absolute inset-1.5 border border-[#ff6a1a]/70 rounded-xl pointer-events-none" />
+                  <div className="flex items-center gap-2 text-[9px] sm:text-[10.5px] font-mono tracking-[3px] sm:tracking-[4px] text-[#ffa066] uppercase font-bold mb-1">
                     <span>★</span>
                     <span>SECURITY &amp; BOARDING CLEARED</span>
                     <span>★</span>
                   </div>
-                  <div className="text-4xl sm:text-6xl font-black font-mono tracking-[8px] sm:tracking-[14px] text-[#f5e6a3] uppercase drop-shadow-[0_2px_15px_rgba(212,175,55,0.9)] pl-2 sm:pl-3">
+                  <div className="text-4xl sm:text-6xl font-black font-mono tracking-[8px] sm:tracking-[14px] text-[#ffb48a] uppercase pl-2 sm:pl-3">
                     BOARDED
                   </div>
-                  <div className="flex items-center justify-between w-full mt-2 pt-1.5 border-t border-[#d4af37]/50 text-[8px] sm:text-[9.5px] font-mono text-[#e8c88c] tracking-widest uppercase">
+                  <div className="flex items-center justify-between w-full mt-2 pt-1.5 border-t border-[#ff6a1a]/50 text-[8px] sm:text-[9.5px] font-mono text-[#ffa066] tracking-widest uppercase">
                     <span>GATE 01</span>
                     <span>VT-2026 EDITION</span>
                     <span>SEAT 1A</span>
@@ -168,7 +168,7 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
               width: cutWidth,
               opacity: cutOpacity,
             }}
-            className="absolute left-[16px] top-1/2 -translate-y-1/2 h-[2.5px] bg-gradient-to-r from-amber-300 via-yellow-100 to-white shadow-[0_0_12px_rgba(255,230,150,0.95)] pointer-events-none z-30"
+            className="absolute left-[16px] top-1/2 -translate-y-1/2 h-[2.5px] bg-gradient-to-r from-molten via-molten to-fog pointer-events-none z-30"
           />
 
           {!isTorn && (
@@ -195,9 +195,9 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
               }}
               whileHover={{ scale: 1.12 }}
               whileDrag={{ scale: 1.22 }}
-              className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-[#d4af37] to-[#8c7324] border border-[#f5e6a3] text-black flex items-center justify-center shadow-[0_0_18px_rgba(212,175,55,0.9)] cursor-grab active:cursor-grabbing z-40 touch-none"
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-[#ff6a1a] to-[#b8400a] border border-[#ffb48a] text-night flex items-center justify-center cursor-grab active:cursor-grabbing z-40 touch-none"
             >
-              <Scissors className="w-4 h-4 text-neutral-950 rotate-90 pointer-events-none" />
+              <Scissors className="w-4 h-4 text-night rotate-90 pointer-events-none" />
             </motion.div>
           )}
         </div>
@@ -227,9 +227,9 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
           transition={
             isTorn ? { duration: 0.65, ease: [0.32, 0, 0.67, 0] } : undefined
           }
-          className={`relative w-full aspect-[629/263] rounded-b-3xl overflow-hidden bg-[#121215] border-b border-l border-r border-[#c5a880]/30 ${
+          className={`relative w-full aspect-[629/263] rounded-b-3xl overflow-hidden bg-[#161c22] border-b border-l border-r border-[#ff6a1a]/30 ${
             !isTorn
-              ? "cursor-pointer group/stub hover:border-[#c5a880]/60 transition-colors"
+              ? "cursor-pointer group/stub hover:border-[#ff6a1a]/60 transition-colors"
               : "pointer-events-none"
           }`}
         >
@@ -240,9 +240,9 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
             priority
             unoptimized
             sizes="(max-width: 640px) 90vw, 400px"
-            className="object-cover object-bottom select-none pointer-events-none"
+            className="object-cover object-bottom select-none pointer-events-none [filter:hue-rotate(-16deg)_saturate(1.2)]"
           />
-          <div className="absolute inset-0 bg-white/[0.02] group-hover/stub:bg-white/[0.06] transition-colors pointer-events-none" />
+          <div className="absolute inset-0 bg-fog/[0.02] group-hover/stub:bg-fog/[0.06] transition-colors pointer-events-none" />
         </motion.div>
       </motion.div>
     </div>

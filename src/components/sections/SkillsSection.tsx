@@ -92,7 +92,7 @@ export function SkillsSection() {
     <SectionWrapper id="skills" className="pb-12 bg-background relative overflow-hidden flex flex-col min-h-screen transition-colors duration-400">
       {/* Centered Heading with TextStaggerHover */}
       <div className="relative z-10 w-full px-4 md:px-12 pt-16 pb-10 flex flex-col items-center justify-center text-center flex-shrink-0">
-        <TextStaggerHover as="h2" className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-3 text-neutral-900 dark:text-white font-[family-name:var(--font-audiowide)] drop-shadow-sm">
+        <TextStaggerHover as="h2" className="text-4xl md:text-5xl font-normal uppercase tracking-[2px] sm:tracking-[5px] mb-3 text-night-2 dark:text-fog font-[family-name:var(--font-audiowide)] drop-shadow-sm">
           <TextStaggerHoverActive animation="top">
             My Stack
           </TextStaggerHoverActive>
@@ -100,7 +100,7 @@ export function SkillsSection() {
             My Stack
           </TextStaggerHoverHidden>
         </TextStaggerHover>
-        <p className="text-neutral-700 dark:text-white/85 text-base md:text-lg max-w-md">
+        <p className="text-gunmetal dark:text-fog/85 text-base md:text-lg max-w-md">
           technologies, frameworks, and tools I use
         </p>
       </div>
@@ -109,11 +109,11 @@ export function SkillsSection() {
         <FlowingMenu 
           categories={skillCategories}
           speed={40} 
-          textColor={isDark ? "#ffffff" : "#09090b"}
+          textColor={isDark ? "#cfd4d9" : "#11161b"}
           bgColor="transparent"
-          marqueeBgColor={isDark ? "#ffffff" : "#09090b"} 
-          marqueeTextColor={isDark ? "#0a0a0a" : "#ffffff"}
-          borderColor={isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}
+          marqueeBgColor={isDark ? "#cfd4d9" : "#11161b"} 
+          marqueeTextColor={isDark ? "#11161b" : "#cfd4d9"}
+          borderColor={isDark ? "rgba(207, 212, 217,0.08)" : "rgba(0,0,0,0.08)"}
           fontFamily="var(--font-wallpoet)"
         />
       </div>
