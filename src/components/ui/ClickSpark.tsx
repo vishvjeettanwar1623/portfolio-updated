@@ -15,7 +15,7 @@ interface ClickSparkProps {
 }
 
 export const ClickSpark: React.FC<ClickSparkProps> = ({
-  sparkColor = "#fff",
+  sparkColor = "#cfd4d9",
   sparkSize = 10,
   sparkRadius = 15,
   sparkCount = 8,
