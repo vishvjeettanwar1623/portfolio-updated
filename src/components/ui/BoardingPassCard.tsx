@@ -85,7 +85,6 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
         }}
         className="relative w-full flex flex-col rounded-3xl overflow-visible shadow-[0_25px_60px_rgba(0,0,0,0.95)]"
       >
-        {/* Top Portion */}
         <div className="relative w-full aspect-[629/838] rounded-t-3xl overflow-hidden bg-[#161c22] border-t border-l border-r border-[#ff6a1a]/30">
           <Image
             src="/assets/designs/card-top-v2.jpg"
@@ -122,7 +121,6 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
             </a>
           ))}
 
-          {/* Stamp */}
           <AnimatePresence>
             {isTorn && (
               <motion.div
@@ -158,7 +156,6 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
           </AnimatePresence>
         </div>
 
-        {/* Perforation Seam & Scissor */}
         <div
           ref={trackRef}
           className="relative w-full h-8 -my-4 z-30 flex items-center select-none"
@@ -202,7 +199,6 @@ export function BoardingPassCard({ isTorn, onTear, className = "" }: BoardingPas
           )}
         </div>
 
-        {/* Bottom Portion */}
         <motion.div
           onClick={handleStubClick}
           style={
