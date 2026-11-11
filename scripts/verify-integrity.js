@@ -2,7 +2,7 @@
 
 /**
  * Behavior & Integrity Verification Suite
- * Ensures essential configuration, assets, and event channels are valid.
+ * Ensures essential configuration, assets, event channels, and modular cohesion.
  */
 
 const fs = require('fs');
@@ -18,16 +18,23 @@ const siteConfigContent = fs.readFileSync(siteConfigPath, 'utf8');
 assert(siteConfigContent.includes('Vishvjeet Singh Tanwar'), 'Site developer name must be present');
 assert(siteConfigContent.includes('sbvj727@gmail.com'), 'Site email must be present');
 assert(siteConfigContent.includes('boardingPassLinks'), 'Boarding pass links must be configured');
+assert(siteConfigContent.includes('domain: "vishvjeet.me"'), 'Site domain must be configured');
 console.log('  ✓ Site configuration & contact metadata verified');
 
-// 2. Verify Events Bus & Shared Components
+// 2. Verify Events Bus, Season Context & Shared Components
 const eventsPath = path.join(__dirname, '..', 'src', 'lib', 'events.ts');
 assert(fs.existsSync(eventsPath), 'src/lib/events.ts must exist');
+const seasonPath = path.join(__dirname, '..', 'src', 'context', 'SeasonContext.tsx');
+assert(fs.existsSync(seasonPath), 'src/context/SeasonContext.tsx must exist');
+const seasonContent = fs.readFileSync(seasonPath, 'utf8');
+assert(seasonContent.includes('SeasonProvider'), 'SeasonProvider must be exported');
+assert(seasonContent.includes('useSeason'), 'useSeason hook must be exported');
+
 const cardPath = path.join(__dirname, '..', 'src', 'components', 'ui', 'BoardingPassCard.tsx');
 assert(fs.existsSync(cardPath), 'src/components/ui/BoardingPassCard.tsx must exist');
 const leavesPath = path.join(__dirname, '..', 'src', 'components', 'ui', 'FallingLeavesEffect.tsx');
 assert(fs.existsSync(leavesPath), 'src/components/ui/FallingLeavesEffect.tsx must exist');
-console.log('  ✓ Custom event bus, BoardingPassCard, and FallingLeavesEffect verified');
+console.log('  ✓ Custom event bus, SeasonContext, BoardingPassCard, and FallingLeavesEffect verified');
 
 // 3. Verify All Static Assets Referenced in Code Exist
 const requiredAssets = [
@@ -54,19 +61,20 @@ for (const asset of requiredAssets) {
 }
 console.log(`  ✓ All ${requiredAssets.length} essential static assets exist and are verified`);
 
-// 4. Verify No Deprecated Wrappers Exist
+// 4. Verify No Deprecated Wrappers or Dead Code Exist
 const deadFiles = [
   'src/components/ui/ThemeToggle.tsx',
   'src/components/ui/config/maintenance.ts',
-  'src/components/ui/morphing-cursor.tsx'
+  'src/components/ui/morphing-cursor.tsx',
+  'src/components/ui/timeline.tsx',
+  'src/components/ui/button.tsx'
 ];
 
 for (const dead of deadFiles) {
   const fullPath = path.join(__dirname, '..', dead);
   assert(!fs.existsSync(fullPath), `Deprecated surplus file must not exist: ${dead}`);
 }
-console.log('  ✓ Verified 0 surplus or duplicate files remain');
+console.log('  ✓ Verified 0 surplus, pass-through wrappers, or dead files remain');
 
 console.log('\n✨ All integrity and behavior tests passed successfully!\n');
 process.exit(0);
-

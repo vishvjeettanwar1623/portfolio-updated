@@ -2,9 +2,12 @@
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { Leaf, Snowflake } from 'lucide-react';
 import ThemeToggle from './sky-toggle';
 import { emitPortfolioEvent } from '@/lib/events';
 import SoundToggle from './SoundToggle';
+import { useSeason } from '@/context/SeasonContext';
+import { useSound } from '@/context/SoundContext';
 import './StaggeredMenu.css';
 
 export interface MenuItem {
@@ -47,7 +50,7 @@ export interface StaggeredMenuProps {
 
 export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   position = 'right',
-  colors = ['#B19EEF', '#5227FF'],
+  colors = ['#2a3239', '#ff6a1a'],
   items = [],
   socialItems = [],
   displaySocials = true,
@@ -56,15 +59,17 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   logoText,
   logoUrl,
   hideLogo = false,
-  menuButtonColor = '#fff',
-  openMenuButtonColor = '#fff',
-  accentColor = '#5227FF',
+  menuButtonColor = '#cfd4d9',
+  openMenuButtonColor = '#cfd4d9',
+  accentColor = '#ff6a1a',
   changeMenuColorOnOpen = true,
   isFixed = false,
   closeOnClickAway = true,
   onMenuOpen,
   onMenuClose,
 }) => {
+  const { season, setSeason } = useSeason();
+  const { playSound } = useSound();
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
 
@@ -126,6 +131,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
     const itemEls = Array.from(panel.querySelectorAll<HTMLElement>('.sm-panel-itemLabel'));
     const numberEls = Array.from(panel.querySelectorAll<HTMLElement>('.sm-panel-list[data-numbering] .sm-panel-item'));
+    const seasonEl = panel.querySelector<HTMLElement>('.sm-season');
     const socialTitle = panel.querySelector<HTMLElement>('.sm-socials-title');
     const socialLinks = Array.from(panel.querySelectorAll<HTMLElement>('.sm-socials-link'));
 
@@ -134,6 +140,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
     if (itemEls.length) gsap.set(itemEls, { yPercent: 140, rotate: 10 });
     if (numberEls.length) gsap.set(numberEls, { '--sm-num-opacity': 0 });
+    if (seasonEl) gsap.set(seasonEl, { opacity: 0, y: 15 });
     if (socialTitle) gsap.set(socialTitle, { opacity: 0 });
     if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
 
@@ -157,15 +164,16 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       }
     }
 
-    if (socialTitle || socialLinks.length) {
-      const socialsStart = panelInsertTime + panelDuration * 0.4;
-      if (socialTitle) tl.to(socialTitle, { opacity: 1, duration: 0.5, ease: 'power2.out' }, socialsStart);
+    if (seasonEl || socialTitle || socialLinks.length) {
+      const footerStart = panelInsertTime + panelDuration * 0.4;
+      if (seasonEl) tl.to(seasonEl, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, footerStart);
+      if (socialTitle) tl.to(socialTitle, { opacity: 1, duration: 0.5, ease: 'power2.out' }, footerStart + 0.05);
       if (socialLinks.length) {
         tl.to(socialLinks, {
           y: 0, opacity: 1, duration: 0.55, ease: 'power3.out',
           stagger: { each: 0.08, from: 'start' },
           onComplete: () => { gsap.set(socialLinks, { clearProps: 'opacity' }); },
-        }, socialsStart + 0.04);
+        }, footerStart + 0.08);
       }
     }
 
@@ -203,8 +211,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         if (itemEls.length) gsap.set(itemEls, { yPercent: 140, rotate: 10 });
         const numberEls = Array.from(panel.querySelectorAll<HTMLElement>('.sm-panel-list[data-numbering] .sm-panel-item'));
         if (numberEls.length) gsap.set(numberEls, { '--sm-num-opacity': 0 });
+        const seasonEl = panel.querySelector<HTMLElement>('.sm-season');
         const socialTitle = panel.querySelector<HTMLElement>('.sm-socials-title');
         const socialLinks = Array.from(panel.querySelectorAll<HTMLElement>('.sm-socials-link'));
+        if (seasonEl) gsap.set(seasonEl, { opacity: 0, y: 15 });
         if (socialTitle) gsap.set(socialTitle, { opacity: 0 });
         if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
         busyRef.current = false;
@@ -409,20 +419,53 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
             )}
           </ul>
 
-          {displaySocials && socialItems.length > 0 && (
-            <div className="sm-socials" aria-label="Social links">
-              <h3 className="sm-socials-title">Socials</h3>
-              <ul className="sm-socials-list" role="list">
-                {socialItems.map((s: SocialItem, i: number) => (
-                  <li key={s.label + i} className="sm-socials-item">
-                    <a href={s.link} target="_blank" rel="noopener noreferrer" className="sm-socials-link">
-                      {s.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+          <div className="sm-bottom-tray">
+            {/* Atmosphere / Season Switcher */}
+            <div className="sm-season" aria-label="Season atmosphere switcher">
+              <span className="sm-season-title">Season</span>
+              <div className="sm-season-toggle" role="group" aria-label="Select season animation">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSeason("autumn");
+                    playSound("click");
+                  }}
+                  className={`sm-season-btn ${season === "autumn" ? "sm-season-btn-active" : ""}`}
+                  aria-pressed={season === "autumn"}
+                >
+                  <Leaf className="w-3.5 h-3.5" />
+                  <span>Autumn</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSeason("winter");
+                    playSound("click");
+                  }}
+                  className={`sm-season-btn ${season === "winter" ? "sm-season-btn-active" : ""}`}
+                  aria-pressed={season === "winter"}
+                >
+                  <Snowflake className="w-3.5 h-3.5" />
+                  <span>Winter</span>
+                </button>
+              </div>
             </div>
-          )}
+
+            {displaySocials && socialItems.length > 0 && (
+              <div className="sm-socials" aria-label="Social links">
+                <h3 className="sm-socials-title">Socials</h3>
+                <ul className="sm-socials-list" role="list">
+                  {socialItems.map((s: SocialItem, i: number) => (
+                    <li key={s.label + i} className="sm-socials-item">
+                      <a href={s.link} target="_blank" rel="noopener noreferrer" className="sm-socials-link">
+                        {s.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </aside>
     </div>

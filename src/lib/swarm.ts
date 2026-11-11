@@ -37,7 +37,7 @@ interface Cur {
 /* Cursor name tags: edit freely (keep them short). Matches COLORS by index. */
 const NAMES = ["kitsune", "segfault", "ronin", "daemon", "sumi", "0xdead", "wraith", "tanuki", "kernel", "overflow", "oni", "nullptr"];
 /* Muted earth tones: distinct per cursor, but no blue, purple or neon. Edit freely. */
-const COLORS = ["#e07a5f", "#d9a441", "#81b29a", "#c8553d", "#e5c9a0", "#a3b18a", "#d98e73", "#f2cc8f", "#b08968", "#c9b79c", "#cf9d7a", "#9fb59a"];
+const COLORS = ["#ff6a1a", "#cfd4d9", "#8f99a3", "#ff8a4a", "#aab3bb", "#e5530a", "#dfe3e6", "#7b858f", "#ffa066", "#b8c0c7", "#d9480f", "#9aa4ad"];
 const IGNORE =
   '[data-sw-ignore],.staggered-menu-wrapper,.sw-layer,.sw-bar,dialog,[aria-hidden="true"],script,style,noscript,svg *';
 /* Split-text headings (one span per word or letter, hover-roll duplicates) must be built as ONE block. */

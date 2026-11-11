@@ -1,7 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
+function getLeetCodeUsername() {
+  try {
+    const siteConfig = fs.readFileSync(path.join(__dirname, '..', 'src', 'config', 'site.ts'), 'utf8');
+    const match = siteConfig.match(/leetcode:\s*\{[\s\S]*?username:\s*["']([^"']+)["']/);
+    if (match && match[1]) return match[1];
+  } catch {}
+  return 'vishvjeet1623';
+}
+
 async function fetchLeetCodeStats() {
+  const username = getLeetCodeUsername();
   const query = `
     query getUserProfile($username: String!) {
       matchedUser(username: $username) {
@@ -24,7 +34,7 @@ async function fetchLeetCodeStats() {
       },
       body: JSON.stringify({
         query,
-        variables: { username: 'vishvjeet1623' },
+        variables: { username },
       }),
     });
 

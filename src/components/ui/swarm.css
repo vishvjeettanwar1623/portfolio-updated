@@ -24,7 +24,7 @@ body.swarming [data-sw] {
 }
 .sw-title {
   position: fixed; left: 50%; top: 34%; transform: translateX(-50%); padding: 8px 18px; border-radius: 999px;
-  background: rgba(14, 14, 14, 0.78); color: #f4f4f5; backdrop-filter: blur(8px); white-space: nowrap;
+  background: rgba(14, 14, 14, 0.78); color: #cfd4d9; backdrop-filter: blur(8px); white-space: nowrap;
   font: 500 12px/1.4 var(--font-syne-mono, ui-monospace, monospace); letter-spacing: 0.28em; text-transform: uppercase;
   animation: sw-title 2.2s ease both;
 }
@@ -58,18 +58,18 @@ body.swarming [data-sw] {
 .sw-bar {
   position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 9999; overflow: hidden;
   display: flex; align-items: center; gap: 2px; max-width: calc(100% - 24px);
-  padding: 2px 6px 2px 18px; border-radius: 999px; background: rgba(14, 14, 14, 0.78); color: #f4f4f5;
-  border: 1px solid rgba(255, 255, 255, 0.16); backdrop-filter: blur(12px);
+  padding: 2px 6px 2px 18px; border-radius: 999px; background: rgba(14, 14, 14, 0.78); color: #cfd4d9;
+  border: 1px solid rgba(207, 212, 217, 0.16); backdrop-filter: blur(12px);
   font: 400 12px/1.4 var(--font-syne-mono, ui-monospace, monospace);
 }
-.sw-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(255, 255, 255, 0.1); }
-.sw-prog i { display: block; height: 100%; width: 0; background: #f4f4f5; transition: width 0.3s ease; }
+.sw-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(207, 212, 217, 0.1); }
+.sw-prog i { display: block; height: 100%; width: 0; background: #cfd4d9; transition: width 0.3s ease; }
 .sw-pct { font-variant-numeric: tabular-nums; min-width: 3.2ch; margin-right: 6px; }
 .sw-msg { opacity: 0.65; margin-right: 6px; white-space: nowrap; }
 .sw-hint { opacity: 0.4; font-size: 11px; margin: 0 10px 0 6px; white-space: nowrap; }
 .sw-bar button { min-height: 44px; padding: 0 12px; border-radius: 999px; background: none; border: 0; color: inherit; cursor: pointer; font: inherit; }
-.sw-bar button:hover { background: rgba(255, 255, 255, 0.1); }
-.sw-bar button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.sw-bar button:hover { background: rgba(207, 212, 217, 0.1); }
+.sw-bar button:focus-visible { outline: 2px solid #cfd4d9; outline-offset: -2px; }
 @media (max-width: 900px) { .sw-hint { display: none; } }
 
 @media (prefers-reduced-motion: reduce) { body.swarming [data-sw] { transition: none; }  }

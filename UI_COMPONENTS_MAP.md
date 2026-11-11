@@ -237,20 +237,10 @@ This document provides a comprehensive breakdown of every file in the **vishvjee
 * **What it does**: Visualizes audio state with animated equalizer bars; clicking toggles sound effects globally via `SoundContext`.
 * **Where used**: Header of `StaggeredMenu.tsx` (Navbar).
 
-### `src/components/ui/sky-toggle.tsx` & `sky-toggle.css`
-* **Purpose**: Theme mode switcher (Dark / Light).
-* **What it does**: Switches between monochrome dark mode and clean light mode, persisting the user's choice in `localStorage`. Directly exports `ThemeToggle`.
+### `src/components/ui/ThemeToggle.tsx` & `sky-toggle.tsx`
+* **Purpose**: Theme mode switchers (Dark / Light).
+* **What it does**: Switches between monochrome dark mode and clean light mode, persisting the user's choice in `localStorage`.
 * **Where used**: Inside `StaggeredMenu.tsx` (Navbar).
-
-### `src/components/ui/BoardingPassCard.tsx`
-* **Purpose**: Reusable interactive developer boarding pass card.
-* **What it does**: Encapsulates 3D perspective tilting, interactive contact hotspot links, draggable perforation scissors cutting mechanics, laser seam glow, tearaway bottom stub, and "BOARDED" stamp animation.
-* **Where used**: Shared across `LoadingScreen.tsx` and `NFCContactModal.tsx`.
-
-### `src/components/ui/FallingLeavesEffect.tsx`
-* **Purpose**: Seasonal ambient falling leaves animation using HTML5 canvas.
-* **What it does**: Renders lightweight falling autumn leaves (maple, oak, ginkgo, birch) dynamically shaded to match dark/light theme (silver/charcoal/subtle gold).
-* **Where used**: Ambient background mounted in `src/app/page.tsx`.
 
 ### `src/components/ui/SwarmMotionButton.tsx` & `swarm.css`
 * **Purpose**: Floating "BUILD" interactive motion button.
@@ -368,10 +358,8 @@ This document provides a comprehensive breakdown of every file in the **vishvjee
 | `ClickSpark.tsx` | Radial Click Spark Particles | Root wrapper in `page.tsx` |
 | `JourneyScrollbar.tsx` | Scroll Progress Indicator | Fixed right-edge widget |
 | `SoundToggle.tsx` | Audio Mute/Unmute Switch | Inside `Navbar.tsx` |
-| `sky-toggle.tsx` | Light/Dark Theme Switch | Inside `Navbar.tsx` |
-| `BoardingPassCard.tsx` | Shared Interactive Card Physics | `LoadingScreen.tsx` & `NFCContactModal.tsx` |
+| `ThemeToggle.tsx` | Light/Dark Theme Switch | Inside `Navbar.tsx` |
 | `SwarmMotionButton.tsx` | Agent Swarm Motion Trigger | Floating widget in `page.tsx` |
-| `FallingLeavesEffect.tsx` | Ambient Canvas Falling Leaves | Background in `page.tsx` |
 | `SoundContext.tsx` | Web Audio Synthesizer | Global provider in `layout.tsx` |
 | `ThemeContext.tsx` | Theme State Manager | Global provider in `layout.tsx` |
 | `utils.ts` | Tailwind Class Merger (`cn`) | Shared utility across all UI files |

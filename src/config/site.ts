@@ -2,6 +2,7 @@ export interface SocialLink {
   label: string;
   href: string;
   handle?: string;
+  username?: string;
 }
 
 export interface BoardingPassLink {
@@ -18,7 +19,10 @@ export const SITE_CONFIG = {
   name: "Vishvjeet Singh Tanwar",
   role: "Full-Stack & Web3 Systems Developer",
   badge: "Designer & Builder",
-  tagline: "Build · Ship · Iterate",
+  domain: "vishvjeet.me",
+  url: "https://vishvjeet.me",
+  tagline: "Designer & Builder — Building things that my creativity allows.",
+  shortTagline: "Build · Ship · Iterate",
   location: "Noida, UP",
   base: "DEL",
   destination: "GLOBAL",
@@ -28,20 +32,28 @@ export const SITE_CONFIG = {
       label: "GitHub",
       href: "https://github.com/vishvjeettanwar1623",
       handle: "@vishvjeettanwar1623",
+      username: "vishvjeettanwar1623",
     },
     linkedin: {
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/vishvjeet-tanwar/",
       handle: "in/vishvjeet-tanwar",
+      username: "vishvjeet-tanwar",
     },
     twitter: {
       label: "Twitter / X",
       href: "https://x.com/VishvjeetTanwar",
       handle: "@VishvjeetTanwar",
+      username: "VishvjeetTanwar",
     },
     resume: {
       label: "Resume",
       href: "/resume.pdf",
+    },
+    leetcode: {
+      label: "LeetCode",
+      href: "https://leetcode.com/u/vishvjeet1623/",
+      username: "vishvjeet1623",
     },
   },
   boardingPassLinks: [
@@ -85,4 +97,3 @@ export const SITE_CONFIG = {
 };
 
 export default SITE_CONFIG;
-

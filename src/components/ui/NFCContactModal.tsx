@@ -49,7 +49,7 @@ export function NFCContactModal() {
                 playSound("close");
               }
             }}
-            className="absolute inset-0 bg-black/85 backdrop-blur-2xl"
+            className="absolute inset-0 bg-night/85 backdrop-blur-2xl"
           />
 
           <motion.div
@@ -66,7 +66,7 @@ export function NFCContactModal() {
                   setIsOpen(false);
                   playSound("close");
                 }}
-                className="absolute -top-11 right-0 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                className="absolute -top-11 right-0 p-2 rounded-full bg-fog/10 hover:bg-fog/20 text-fog transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
