@@ -43,6 +43,9 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "liquid-weather-glass-main",
+    "ink-bleed-theme-changer-main",
+    "promo-film"
   ]
 }
