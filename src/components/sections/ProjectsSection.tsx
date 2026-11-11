@@ -26,90 +26,7 @@ import {
   SliderBtn,
 } from "@/components/ui/progressive-carousel";
 import { SITE_CONFIG } from "@/config/site";
-
-interface TechLogo {
-  name: string;
-  icon: string;
-  invert?: boolean;
-}
-
-const TECH_LOGOS: Record<string, TechLogo> = {
-  TypeScript: {
-    name: "TypeScript",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg",
-  },
-  JavaScript: {
-    name: "JavaScript",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg",
-  },
-  Solidity: {
-    name: "Solidity",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/solidity/solidity-original.svg",
-    invert: true,
-  },
-  React: {
-    name: "React.js",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
-  },
-  Python: {
-    name: "Python",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg",
-  },
-  FastAPI: {
-    name: "FastAPI",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg",
-  },
-  Flutter: {
-    name: "Flutter",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg",
-  },
-  Dart: {
-    name: "Dart",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg",
-  },
-  Firebase: {
-    name: "Firebase",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg",
-  },
-  HTML: {
-    name: "HTML5",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
-  },
-  AI: {
-    name: "AI / LLM",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
-  },
-  IPFS: {
-    name: "IPFS",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/1/18/Ipfs-logo-1024-ice-text.png",
-  },
-  Pinata: {
-    name: "Pinata Cloud",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/1/18/Ipfs-logo-1024-ice-text.png",
-  },
-  Rust: {
-    name: "Rust",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg",
-    invert: true,
-  },
-  Tauri: {
-    name: "Tauri",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tauri/tauri-original.svg",
-  },
-  Git: {
-    name: "Git Core",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg",
-  },
-  Markdown: {
-    name: "Obsidian",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/markdown/markdown-original.svg",
-    invert: true,
-  },
-  "Story Protocol": {
-    name: "Story Protocol",
-    icon: "/assets/skills/smart-contract.png",
-  },
-};
+import { TECHNOLOGIES as TECH_LOGOS } from "@/config/technologies";
 
 export interface Project {
   id: string;
@@ -136,9 +53,9 @@ const projects: Project[] = [
     image: "/assets/Projects/eternal.png",
     domainUrl: "eternal.onchain.app",
     description:
-      "A competitive 1v1 on-chain auto-battler where players stake crypto tokens, solve real-time algorithmic coding challenges, and have their solutions evaluated on-chain by autonomous AI validator nodes for instant automated payouts.",
+      "A 1v1 on-chain auto-battler where players stake tokens, solve real-time algorithmic challenges, and get evaluated on-chain by AI validator nodes for automated payouts.",
     highlights: [
-      "Zero-latency WebSockets match engine",
+      "Real-time WebSocket match engine",
       "Solidity smart contract escrow & staking vaults",
       "AST-based AI code grading oracle",
       "Instant automated EVM contract settlement",
@@ -154,7 +71,7 @@ const projects: Project[] = [
     image: "/assets/Projects/data_roots.webp",
     domainUrl: "data-roots.vercel.app",
     description:
-      "A decentralized P2P data marketplace empowering users to encrypt, control, share, and monetize personal telemetry and structured datasets with Solidity smart contracts and IPFS storage.",
+      "A decentralized data marketplace for encrypting, controlling, and monetizing personal telemetry and structured datasets with Solidity and IPFS.",
     highlights: [
       "Client-side AES-GCM file encryption pipeline",
       "Decentralized storage via Pinata & IPFS nodes",
@@ -174,7 +91,7 @@ const projects: Project[] = [
     image: "/assets/Projects/promp-ip.png",
     domainUrl: "promp-ip.protocol.xyz",
     description:
-      "An intellectual property licensing marketplace powered by Story Protocol, converting high-performance prompt engineering pipelines into verifiable, royalty-earning programmable IP assets.",
+      "An IP licensing marketplace on Story Protocol that turns prompt engineering pipelines into verifiable, royalty-earning programmable assets.",
     highlights: [
       "Story Protocol programmable IP asset registration",
       "Automated on-chain royalty distribution contracts",
@@ -192,7 +109,7 @@ const projects: Project[] = [
     image: "/assets/Projects/questfi.webp",
     domainUrl: "questfi.network",
     description:
-      "A modern decentralized task and bounty platform connecting open-source developers with verified organizations through automated smart contract milestone escrows.",
+      "A decentralized bounty and task platform connecting open-source developers with verified organizations through smart contract milestone escrows.",
     highlights: [
       "Smart contract milestone escrow vault architecture",
       "Proof-of-work submission & review dashboard",
@@ -206,7 +123,7 @@ const projects: Project[] = [
     num: "05",
     name: "LagLine",
     category: "NATIVE DESKTOP",
-    tagline: "Ultra-Lightweight Multi-Repo Git Workspace Monitor",
+    tagline: "Lightweight Multi-Repo Git Workspace Monitor",
     image: "/assets/Projects/lagline.jpg",
     domainUrl: "lagline.desktop.dev",
     description:
@@ -228,7 +145,7 @@ const projects: Project[] = [
     image: "/assets/Projects/profile-auditor.png",
     domainUrl: "auditor.dev/verify",
     description:
-      "An automated verification engine that extracts resume credentials and cross-examines them against online developer activity across GitHub, LeetCode, and public repositories.",
+      "An automated verification engine that extracts resume claims and verifies them against public developer activity across GitHub, LeetCode, and open-source repos.",
     highlights: [
       "FastAPI asynchronous worker architecture",
       "Multi-platform developer data aggregation scrapers",
@@ -256,26 +173,21 @@ export function ProjectsSection() {
     restDelta: 0.001,
   });
 
-  // Header: Enters from top -> Sits centered -> Exits upward earlier
   const headerY = useTransform(smoothProgress, [0, 0.38, 0.60, 0.88], ["-70px", "0px", "0px", "-80px"]);
   const headerOpacity = useTransform(smoothProgress, [0, 0.26, 0.62, 0.86], [0, 1, 1, 0]);
   const headerScale = useTransform(smoothProgress, [0, 0.38, 0.60, 0.88], [0.9, 1, 1, 0.92]);
 
-  // Left Visual Media: Enters with weight from Left -> Stays -> Exits earlier to Left
   const leftX = useTransform(smoothProgress, [0, 0.40, 0.58, 0.88], ["-160px", "0px", "0px", "-160px"]);
   const leftOpacity = useTransform(smoothProgress, [0, 0.26, 0.60, 0.88], [0, 1, 1, 0]);
   const leftRotateY = useTransform(smoothProgress, [0, 0.40, 0.58, 0.88], [14, 0, 0, -12]);
 
-  // Right Deep-Dive Info: Enters with weight from Right -> Stays -> Exits earlier to Right
   const rightX = useTransform(smoothProgress, [0, 0.40, 0.58, 0.88], ["160px", "0px", "0px", "160px"]);
   const rightOpacity = useTransform(smoothProgress, [0, 0.26, 0.60, 0.88], [0, 1, 1, 0]);
   const rightRotateY = useTransform(smoothProgress, [0, 0.40, 0.58, 0.88], [-14, 0, 0, 12]);
 
-  // Bottom Timeline Buttons: Enters with weight from Bottom -> Stays -> Exits earlier to Above
   const bottomY = useTransform(smoothProgress, [0, 0.40, 0.58, 0.88], ["90px", "0px", "0px", "-70px"]);
   const bottomOpacity = useTransform(smoothProgress, [0, 0.26, 0.60, 0.88], [0, 1, 1, 0]);
 
-  // GitHub Explorer: Enters from bottom -> Exits upward
   const githubY = useTransform(smoothProgress, [0.15, 0.46, 0.68, 0.92], ["70px", "0px", "0px", "-50px"]);
   const githubOpacity = useTransform(smoothProgress, [0.15, 0.40, 0.70, 0.92], [0, 1, 1, 0]);
 
@@ -305,7 +217,7 @@ export function ProjectsSection() {
         <div className="w-full">
           <ProgressSlider
             activeSlider={projects[0].id}
-            className="w-full rounded-2xl md:rounded-3xl border border-foreground/15 bg-card/95 dark:bg-night/80 backdrop-blur-xl overflow-hidden shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
+            className="w-full rounded-2xl md:rounded-3xl border border-foreground/15 bg-mist/95 dark:bg-night-2/90 backdrop-blur-xl overflow-hidden shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
           >
             <SliderContent className="w-full">
               {projects.map((project) => (
@@ -328,8 +240,8 @@ export function ProjectsSection() {
                         sizes="(max-width: 1024px) 100vw, 60vw"
                         className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-night/80 via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/20 dark:from-night/40 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/40 dark:from-night/80 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-background/20 dark:from-night/40 via-transparent to-transparent pointer-events-none" />
 
                       <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
                         <span className="px-3 py-1 rounded-full bg-background/90 dark:bg-night/80 border border-foreground/15 dark:border-fog/20 text-foreground dark:text-fog font-mono text-xs uppercase tracking-widest backdrop-blur-md shadow-sm">
@@ -351,7 +263,7 @@ export function ProjectsSection() {
                         rotateY: rightRotateY,
                         transformStyle: "preserve-3d",
                       }}
-                      className="lg:col-span-5 p-6 sm:p-8 md:p-10 flex flex-col justify-between space-y-6 will-change-transform"
+                      className="lg:col-span-5 p-6 sm:p-8 md:p-10 flex flex-col justify-between space-y-6 will-change-transform bg-mist/40 dark:bg-transparent"
                     >
                       <div>
                         <div className="flex items-center gap-2 mb-2">
@@ -482,7 +394,6 @@ export function ProjectsSection() {
           </ProgressSlider>
         </div>
 
-        {/* GitHub Explorer Banner at Bottom */}
         <motion.div
           style={{ y: githubY, opacity: githubOpacity }}
           className="mt-12 md:mt-16 w-full rounded-2xl bg-foreground/5 border border-foreground/15 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm will-change-transform"
