@@ -2,12 +2,11 @@
 
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
-import { useTheme } from "@/context/ThemeContext";
 import { GlassRain } from "./GlassRain";
+import { FogAtmosphere } from "./FogAtmosphere";
 import ButtonWithIcon from "./button-with-icon";
 import { IDCardLanyard } from "./id-card-lanyard";
 import { LayeredText } from "./layered-text";
-import { cn } from "@/lib/utils";
 import { SITE_CONFIG } from "@/config/site";
 
 interface HeroProps {
@@ -23,8 +22,6 @@ export function MascotHero({
   avatarSrc = "/assets/img.png",
   animationDelay = 0.2,
 }: HeroProps) {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleExploreClick = () => {
@@ -50,21 +47,10 @@ export function MascotHero({
       ref={containerRef}
       className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background select-none"
     >
-      {/* 1. ATMOSPHERIC BACKGROUND WITH SUBTLE GLASS LIGHT STREAKS */}
       <GlassRain className="opacity-70" />
+      <FogAtmosphere />
 
-      {/* Stage Radial Spotlight */}
-      <div
-        className={cn(
-          "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[550px] pointer-events-none rounded-full blur-[140px] transition-all duration-700",
-          isDark ? "bg-white/[0.04]" : "bg-black/[0.03]"
-        )}
-      />
-
-      {/* 2. MAIN 2-COLUMN HERO LAYOUT */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-12 flex flex-col md:flex-row items-center justify-between min-h-screen pt-20 pb-16 pointer-events-none">
-        
-        {/* LEFT COLUMN: 46% WIDTH - LAYERED ISOMETRIC SKEW TYPOGRAPHY */}
         <div className="w-full md:w-[48%] lg:w-[45%] flex flex-col justify-center items-start z-20 py-8 pointer-events-auto">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -83,25 +69,23 @@ export function MascotHero({
           </motion.div>
         </div>
 
-        {/* RIGHT COLUMN: Spacer to preserve grid balance */}
         <div className="w-full md:w-[52%] lg:w-[55%] h-[400px] md:h-screen pointer-events-none" />
       </div>
 
-      {/* 3. INTERACTIVE 3D ID CARD LANYARD (Mounted at Hero Root Level - Zero Boundary Clipping) */}
       <IDCardLanyard
         name={name}
         role={badge}
         brand="VISHVJEET"
         brandTagline="Designer & Developer"
         pillars={["Design", "Code", "Ship"]}
-        location="Noida, UP"
+        location={SITE_CONFIG.location}
         idNumber="VT-2026"
         validThru="03/2005"
         avatarUrl="/assets/img.png"
-        site="vishvjeet.me"
-        githubUrl="https://github.com/vishvjeettanwar1623"
-        linkedinUrl="https://www.linkedin.com/in/vishvjeet-tanwar/"
-        twitterUrl="https://x.com/VishvjeetTanwar"
+        site={SITE_CONFIG.domain}
+        githubUrl={SITE_CONFIG.socials.github.href}
+        linkedinUrl={SITE_CONFIG.socials.linkedin.href}
+        twitterUrl={SITE_CONFIG.socials.twitter.href}
         anchorX="82%"
         anchorY={52}
         zIndex={25}
@@ -109,12 +93,11 @@ export function MascotHero({
         showHint={false}
       />
 
-      {/* 3. SIGNATURE BUTTON WITH ICON AT BOTTOM RIGHT */}
       <motion.div
         initial={{ opacity: 1, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute bottom-[40px] sm:bottom-[50px] md:bottom-[60px] right-[30px] sm:right-[50px] md:right-[70px] z-30 pointer-events-auto shadow-[0_6px_30px_rgba(255,255,255,0.2)] rounded-full"
+        className="absolute bottom-[40px] sm:bottom-[50px] md:bottom-[60px] right-[30px] sm:right-[50px] md:right-[70px] z-30 pointer-events-auto rounded-full"
       >
         <ButtonWithIcon
           label="EXPLORE WORKS"
