@@ -86,20 +86,20 @@ export function LoadingScreen({ onComplete }: { onComplete?: () => void }) {
         initial={{ y: "0%" }}
         animate={{ y: stage === "exiting" ? "-100%" : "0%" }}
         transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
-        className="absolute top-0 left-0 right-0 h-1/2 bg-[#09090b] z-20 transform-gpu border-none"
+        className="absolute top-0 left-0 right-0 h-1/2 bg-[#11161b] z-20 transform-gpu border-none"
       />
 
       <motion.div
         initial={{ y: "0%" }}
         animate={{ y: stage === "exiting" ? "100%" : "0%" }}
         transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
-        className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#09090b] z-20 transform-gpu border-none"
+        className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#11161b] z-20 transform-gpu border-none"
       />
 
       <button
         onClick={handleSkip}
         type="button"
-        className="absolute top-5 right-5 sm:top-7 sm:right-7 z-50 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white/80 hover:text-white font-mono text-xs flex items-center gap-1.5 transition-all backdrop-blur-md cursor-pointer pointer-events-auto"
+        className="absolute top-5 right-5 sm:top-7 sm:right-7 z-50 px-3.5 py-1.5 rounded-full bg-fog/10 hover:bg-fog/20 border border-fog/15 text-fog/80 hover:text-fog font-mono text-xs flex items-center gap-1.5 transition-all backdrop-blur-md cursor-pointer pointer-events-auto"
       >
         <span>Skip</span>
         <SkipForward className="w-3 h-3" />
@@ -126,7 +126,7 @@ export function LoadingScreen({ onComplete }: { onComplete?: () => void }) {
                     delay: 0.08 + i * 0.045,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="inline-block text-3xl sm:text-5xl md:text-6xl font-normal uppercase text-white font-[family-name:var(--font-audiowide)] tracking-[3px] sm:tracking-[6px] drop-shadow-md origin-bottom"
+                  className="inline-block text-3xl sm:text-5xl md:text-6xl font-normal uppercase text-fog font-[family-name:var(--font-audiowide)] tracking-[3px] sm:tracking-[6px] drop-shadow-md origin-bottom"
                 >
                   {char}
                 </motion.span>
@@ -137,15 +137,22 @@ export function LoadingScreen({ onComplete }: { onComplete?: () => void }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex items-baseline gap-1 font-mono text-white"
+              className="flex items-baseline gap-1 font-mono text-fog"
             >
               <span className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter tabular-nums">
                 {progress}
               </span>
-              <span className="text-lg sm:text-xl font-light text-white/50">
+              <span className="text-lg sm:text-xl font-light text-molten">
                 %
               </span>
             </motion.div>
+
+            <div className="mt-7 h-px w-[min(260px,60vw)] bg-fog/15 overflow-hidden">
+              <div
+                className="h-full bg-molten origin-left"
+                style={{ transform: `scaleX(${progress / 100})` }}
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
