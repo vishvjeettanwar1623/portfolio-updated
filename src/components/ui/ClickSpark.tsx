@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useRef, useEffect, useCallback } from "react";
 import { useSound } from "@/context/SoundContext";
@@ -29,7 +29,6 @@ export const ClickSpark: React.FC<ClickSparkProps> = ({
   const sparksRef = useRef<any[]>([]);
   const isAnimatingRef = useRef(false);
 
-  // Resize canvas to viewport size
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
