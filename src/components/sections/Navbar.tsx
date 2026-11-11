@@ -3,17 +3,7 @@
 import StaggeredMenu from "@/components/ui/StaggeredMenu";
 import { useTheme } from "@/context/ThemeContext";
 import { SITE_CONFIG } from "@/config/site";
-
-const menuItems = [
-  { label: "Home", ariaLabel: "Go to home section", link: "#home" },
-  { label: "Work", ariaLabel: "View selected engineering work", link: "#projects" },
-  { label: "Stack", ariaLabel: "View my engineering stack", link: "#skills" },
-  { label: "Achievements", ariaLabel: "View my achievements", link: "#achievements" },
-  { label: "About", ariaLabel: "Learn more about me", link: "#about" },
-  { label: "Journey", ariaLabel: "View experience and leadership journey", link: "#experience" },
-  { label: "Orbit", ariaLabel: "View Commit Orbit and open source telemetry", link: "#github-activity" },
-  { label: "Contact", ariaLabel: "Get in touch", link: "#contact" },
-];
+import { NAV_MENU_ITEMS } from "@/config/sections";
 
 const socialItems = [
   { label: SITE_CONFIG.socials.github.label, link: SITE_CONFIG.socials.github.href },
@@ -30,7 +20,7 @@ export function Navbar() {
     <StaggeredMenu
       isFixed
       position="right"
-      items={menuItems}
+      items={NAV_MENU_ITEMS}
       socialItems={socialItems}
       displaySocials
       displayItemNumbering
