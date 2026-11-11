@@ -1,43 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { Navbar } from "@/components/sections/Navbar";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { LazyRender } from "@/components/ui/lazy-render";
-import dynamic from "next/dynamic";
-import { SectionSkeleton } from "@/components/ui/section-skeleton";
 import ClickSpark from "@/components/ui/ClickSpark";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { JourneyScrollbar } from "@/components/ui/JourneyScrollbar";
-import { SoundToggle } from "@/components/ui/SoundToggle";
 import { NFCContactModal } from "@/components/ui/NFCContactModal";
-import { SwarmMotionButton } from "@/components/ui/SwarmMotionButton";
-
+import { LiquidMorphFloatingMenu } from "@/components/ui/liquid-morph-floating-menu";
 import { useTheme } from "@/context/ThemeContext";
 
 const ProjectsSection = dynamic(
   () => import("@/components/sections/ProjectsSection").then((mod) => mod.ProjectsSection),
-  { ssr: false, loading: () => <SectionSkeleton type="projects" /> }
+  { ssr: false }
 );
 const DesignsSection = dynamic(
   () => import("@/components/sections/DesignsSection").then((mod) => mod.DesignsSection),
-  { ssr: false, loading: () => <SectionSkeleton type="projects" /> }
+  { ssr: false }
 );
 const SkillsSection = dynamic(
   () => import("@/components/sections/SkillsSection").then((mod) => mod.SkillsSection),
-  { ssr: false, loading: () => <SectionSkeleton type="skills" /> }
+  { ssr: false }
 );
 const AchievementsSection = dynamic(
   () => import("@/components/sections/AchievementsSection").then((mod) => mod.AchievementsSection),
-  { ssr: false, loading: () => <SectionSkeleton type="achievements" /> }
+  { ssr: false }
 );
 const AboutSection = dynamic(
   () => import("@/components/sections/AboutSection").then((mod) => mod.AboutSection),
-  { ssr: false, loading: () => <SectionSkeleton type="about" /> }
+  { ssr: false }
 );
 const ExperienceSection = dynamic(
   () => import("@/components/sections/ExperienceSection").then((mod) => mod.ExperienceSection),
-  { ssr: false, loading: () => <SectionSkeleton type="experience" /> }
+  { ssr: false }
 );
 const GitHubActivitySection = dynamic(
   () => import("@/components/sections/GitHubActivitySection").then((mod) => mod.GitHubActivitySection),
@@ -67,66 +64,3 @@ export default function Home() {
       history.scrollRestoration = "manual";
     }
   }, []);
-
-  return (
-    <ClickSpark
-      sparkColor={isDark ? "#ff6a1a" : "#d9480f"}
-      sparkSize={12}
-      sparkRadius={20}
-      sparkCount={10}
-      duration={500}
-    >
-      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
-
-      <main className="relative min-h-screen bg-background text-foreground selection:bg-molten/30">
-        <FallingLeavesEffect />
-        <Navbar />
-        <SwarmMotionButton />
-        <JourneyScrollbar />
-                <NFCContactModal />
-
-        <HeroSection />
-        <VelocityMarquee />
-
-        <div className="relative w-full">
-          <div className="relative pt-24 pb-48 z-10 pointer-events-auto">
-            <LazyRender id="projects" skeletonType="projects" height="120vh">
-              <ProjectsSection />
-            </LazyRender>
-
-            <LazyRender height="150vh">
-              <DesignsSection />
-            </LazyRender>
-          </div>
-        </div>
-
-        <LazyRender id="skills" skeletonType="skills" height="100vh">
-          <SkillsSection />
-        </LazyRender>
-
-        <LazyRender id="achievements" skeletonType="achievements" height="100vh">
-          <AchievementsSection />
-        </LazyRender>
-
-        {/* Animating Text Section (About) */}
-        <LazyRender id="about" skeletonType="about" height="80vh">
-          <AboutSection />
-        </LazyRender>
-
-        {/* My Journey (Experience Section) */}
-        <LazyRender id="experience" skeletonType="experience" height="200vh">
-          <ExperienceSection />
-        </LazyRender>
-
-        {/* 3D Holographic GitHub Activity Section - Placed Below My Journey */}
-        <LazyRender id="github-activity" height="90vh">
-          <GitHubActivitySection />
-        </LazyRender>
-
-        {/* Contact (Footer) */}
-        <Footer />
-      </main>
-    </ClickSpark>
-  );
-}
-
