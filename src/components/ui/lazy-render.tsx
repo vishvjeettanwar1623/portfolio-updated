@@ -7,12 +7,10 @@ import { SectionSkeleton } from "@/components/ui/section-skeleton";
 export function LazyRender({
   children,
   skeletonType = "general",
-  height = "80vh",
   id,
 }: {
   children: React.ReactNode;
   skeletonType?: "projects" | "skills" | "experience" | "achievements" | "about" | "general";
-  height?: string;
   id?: string;
 }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -42,7 +40,7 @@ export function LazyRender({
   }, []);
 
   return (
-    <div ref={ref} id={id} className="min-h-[1px]">
+    <div ref={ref} id={!isVisible ? id : undefined} className="min-h-[1px]">
       <AnimatePresence>
         {isVisible ? (
           <motion.div
@@ -61,4 +59,3 @@ export function LazyRender({
 }
 
 export default LazyRender;
-

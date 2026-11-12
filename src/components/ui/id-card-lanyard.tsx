@@ -2,6 +2,9 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { SITE_CONFIG } from "@/config/site";
+import { useSeason } from "@/context/SeasonContext";
+import { useWeatherGlass } from "@/context/WeatherGlassContext";
+import { WeatherGlassRenderer } from "@/lib/weather-glass/WeatherGlassRenderer";
 
 export interface IDCardLanyardProps {
   /** Full name shown on the card and used for the back-face signature. */
@@ -38,6 +41,8 @@ export interface IDCardLanyardProps {
   position?: "absolute" | "fixed";
   /** Show the "drag to swing" hint until the visitor first interacts with the card. */
   showHint?: boolean;
+  /** Enable dynamic liquid glass weather effects (rain, fog, frost) on the card */
+  enableWeatherGlass?: boolean;
   className?: string;
 }
 
@@ -103,6 +108,12 @@ const CSS = `
     inset 0 1px 0 rgba(207, 212, 217,.65),
     inset 0 0 0 1px rgba(0,0,0,.06);
 }
+.idcl-weather-glass{
+  position:absolute; inset:0; width:100%; height:100%;
+  border-radius:18.5px;
+  pointer-events:none;
+  z-index:20;
+}
 .idcl-face::before{
   content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
   background:
@@ -137,12 +148,12 @@ const CSS = `
 
 /* Photo */
 .idcl-photo{
-  position:relative; width:100%; height:138px; border-radius:12px;
-  background:#c9cfd5; overflow:hidden; margin-bottom:0px; flex-shrink:0;
+  position:relative; width:100%; height:207px; border-radius:12px;
+  background:#c9cfd5; overflow:hidden; margin-bottom:8px; flex-shrink:0;
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.08), inset 0 2px 6px rgba(0,0,0,.12);
 }
 .idcl-photo svg{ width:100%; height:100%; display:block; }
-.idcl-photo img{ width:100%; height:100%; display:block; object-fit:cover; object-position:center 35%; }
+.idcl-photo img{ width:100%; height:100%; display:block; object-fit:cover; object-position:center 30%; }
 .idcl-verified{
   position:absolute; right:-6px; bottom:-6px; width:26px; height:26px; border-radius:50%;
   background:linear-gradient(160deg, #161c22, #2a3239);
@@ -152,52 +163,58 @@ const CSS = `
 .idcl-verified svg{ width:13px; height:13px; }
 
 /* Name on card - prominent, bold, clear */
-.idcl-name{ margin:0 0 2px; font-family:var(--idcl-font-display); font-weight:800; font-size:23px; color:var(--idcl-card-ink); letter-spacing:-.015em; line-height:1.15; }
-.idcl-role{ margin:0 0 12px; font-size:12px; color:var(--idcl-card-soft); font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
+.idcl-name{ margin:4px 0 2px; font-family:var(--idcl-font-display); font-weight:800; font-size:21px; color:var(--idcl-card-ink); letter-spacing:-.015em; line-height:1.15; }
+.idcl-role{ margin:0 0 10px; font-size:11px; color:var(--idcl-card-soft); font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
 
-.idcl-idrow{ width:100%; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px; }
-.idcl-idrow-labels{ display:flex; flex-direction:column; gap:6px; font-family:var(--idcl-font-mono); }
+.idcl-idrow{ width:100%; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px; }
+.idcl-idrow-labels{ display:flex; flex-direction:column; gap:4px; font-family:var(--idcl-font-mono); }
 .idcl-idrow-labels div{ display:flex; gap:9px; align-items:baseline; }
 .idcl-idrow-labels span{ width:64px; flex-shrink:0; font-size:9px; letter-spacing:.06em; text-transform:uppercase; color:var(--idcl-card-soft); }
 .idcl-idrow-labels b{ font-size:11.5px; font-weight:600; color:var(--idcl-card-ink); }
 
 .idcl-footer{
-  width:100%; margin-top:14px; padding-top:4px;
+  width:100%; margin-top:auto; padding-top:6px; padding-bottom:2px;
   text-align:center; font-family:var(--idcl-font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
   color:var(--idcl-card-soft);
 }
 .idcl-footer i{ color:var(--idcl-card-line); font-style:normal; margin:0 6px; }
 
-.idcl-stripe{ width:100%; height:34px; background:repeating-linear-gradient(45deg, #161c22, #161c22 7px, #2a3239 7px, #2a3239 14px); border-radius:4px; margin-bottom:14px; }
-.idcl-barcode{ display:flex; align-items:flex-end; gap:2.5px; height:38px; width:100%; background:#cfd4d9; border-radius:4px; padding:0 5px; margin-bottom:10px; overflow:hidden; }
-.idcl-barcode span{ width:2.5px; background:#1a1c22; }
-.idcl-idnum{ margin:0 0 10px; font-family:var(--idcl-font-mono); font-size:12px; font-weight:600; color:var(--idcl-card-ink); letter-spacing:.03em; display:flex; justify-content:space-between; font-variant-numeric: tabular-nums; }
+.idcl-stripe{ width:100%; height:32px; background:repeating-linear-gradient(45deg, #161c22, #161c22 7px, #2a3239 7px, #2a3239 14px); border-radius:4px; margin-bottom:12px; }
+.idcl-idnum{ margin:0 0 8px; font-family:var(--idcl-font-mono); font-size:11.5px; font-weight:600; color:var(--idcl-card-ink); letter-spacing:.03em; display:flex; justify-content:space-between; font-variant-numeric: tabular-nums; }
 .idcl-idnum em{ font-style:normal; color:var(--idcl-card-soft); }
 
-.idcl-backrow{ display:flex; gap:14px; align-items:flex-start; margin-bottom:12px; }
-.idcl-qr{ display:grid; grid-template-columns:repeat(9,1fr); gap:1.2px; width:68px; height:68px; background:#cfd4d9; padding:5px; border-radius:5px; flex-shrink:0; box-shadow:0 0 0 1px var(--idcl-card-line); }
-.idcl-qr i{ background:transparent; }
-.idcl-qr i.on{ background:#181a20; }
-.idcl-qr.idcl-small{ width:54px; height:54px; padding:4px; }
+.idcl-barcode{ display:flex; align-items:flex-end; justify-content:space-between; height:74px; width:100%; background:#cfd4d9; border-radius:6px; padding:6px 8px; margin-bottom:14px; box-shadow:inset 0 0 0 1px var(--idcl-card-line); overflow:hidden; }
+.idcl-barcode span{ background:#1a1c22; border-radius:1px; }
 
-.idcl-scan{ font-family:var(--idcl-font-mono); font-size:9.5px; color:var(--idcl-card-soft); line-height:1.5; padding-top:2px; text-align:left; }
-.idcl-scan b{ color:var(--idcl-card-ink); display:block; font-size:10.5px; margin-bottom:2px; letter-spacing:.03em; }
-
-.idcl-connect{ display:flex; align-items:center; justify-content:space-between; margin-top:16px; }
-.idcl-connect span{ font-family:var(--idcl-font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--idcl-card-soft); }
-.idcl-connect-icons{ display:flex; gap:7px; }
-.idcl-connect-icons a{
-  width:28px; height:28px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  border:1px solid var(--idcl-card-line); color:var(--idcl-card-soft);
-  transition:border-color .15s ease, color .15s ease, transform .15s ease;
+.idcl-connect{ width:100%; margin-top:4px; display:flex; flex-direction:column; gap:8px; }
+.idcl-connect-title{ font-family:var(--idcl-font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--idcl-card-soft); }
+.idcl-connect-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; width:100%; }
+.idcl-social-btn{
+  display:flex; align-items:center; gap:8px; padding:8px 10px;
+  background:rgba(17, 22, 27, 0.05);
+  border:1px solid var(--idcl-card-line);
+  border-radius:8px;
+  color:var(--idcl-card-ink);
+  font-family:var(--idcl-font-mono);
+  font-size:10px;
+  font-weight:600;
+  text-decoration:none;
+  transition:all .18s ease;
+  user-select:none;
 }
-.idcl-connect-icons a:hover{ border-color:var(--idcl-card-ink); color:var(--idcl-card-ink); transform:translateY(-1px); }
-.idcl-connect-icons svg{ width:14px; height:14px; }
+.idcl-social-btn:hover{
+  background:#11161b;
+  color:#cfd4d9;
+  border-color:#ff6a1a;
+  transform:translateY(-1px);
+  box-shadow:0 3px 8px rgba(0,0,0,.15);
+}
+.idcl-social-btn svg{ width:14px; height:14px; flex-shrink:0; }
+.idcl-social-btn span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
-.idcl-sig{ margin-top:18px; }
-.idcl-sig .idcl-script{ font-family:var(--idcl-font-script); font-size:32px; color:var(--idcl-card-ink); line-height:1; }
-.idcl-sig small{ display:block; font-family:var(--idcl-font-mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--idcl-card-soft); border-top:1px solid var(--idcl-card-line); margin-top:5px; padding-top:5px; }
+.idcl-sig{ margin-top:auto; padding-top:12px; }
+.idcl-sig .idcl-script{ font-family:var(--idcl-font-script); font-size:36px; color:var(--idcl-card-ink); line-height:1; }
+.idcl-sig small{ display:block; font-family:var(--idcl-font-mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--idcl-card-soft); border-top:1px solid var(--idcl-card-line); margin-top:6px; padding-top:6px; }
 
 .idcl-hint{
   position:absolute; top:20px; left:50%; transform:translateX(-50%);
@@ -238,16 +255,31 @@ export function IDCardLanyard({
   zIndex = 25,
   position = "absolute",
   showHint = false,
+  enableWeatherGlass = true,
   className = "",
 }: IDCardLanyardProps) {
+  const { season } = useSeason();
+  const { effect } = useWeatherGlass();
   const sceneRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const flipperRef = useRef<HTMLDivElement>(null);
   const barcodeRef = useRef<HTMLDivElement>(null);
-  const qrBackRef = useRef<HTMLDivElement>(null);
-  const qrFrontRef = useRef<HTMLDivElement>(null);
+  const weatherGlassCanvasRef = useRef<HTMLCanvasElement>(null);
+  const weatherGlassRef = useRef<WeatherGlassRenderer | null>(null);
   const [interacted, setInteracted] = useState(false);
+
+  useEffect(() => {
+    if (weatherGlassRef.current) {
+      weatherGlassRef.current.setEffect(effect);
+    }
+  }, [effect]);
+
+  useEffect(() => {
+    if (weatherGlassRef.current) {
+      weatherGlassRef.current.setSeason(season);
+    }
+  }, [season]);
 
   // load the display fonts once
   useEffect(() => {
@@ -267,36 +299,23 @@ export function IDCardLanyard({
     const card = cardRef.current;
     const flipper = flipperRef.current;
     const barcodeEl = barcodeRef.current;
-    const qrBackEl = qrBackRef.current;
-    const qrFrontEl = qrFrontRef.current;
-    if (!scene || !canvas || !card || !flipper || !barcodeEl || !qrBackEl || !qrFrontEl) return;
+    if (!scene || !canvas || !card || !flipper || !barcodeEl) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     barcodeEl.innerHTML = "";
-    for (let i = 0; i < 32; i++) {
+    // Full width dynamic barcode across the complete card width
+    const barWidths = [
+      2, 1, 3, 1, 1, 4, 2, 1, 2, 3, 1, 2, 1, 4, 1, 2, 3, 1, 1, 2,
+      4, 1, 2, 1, 3, 2, 1, 4, 1, 1, 3, 2, 1, 2, 4, 1, 2, 3, 1, 1,
+      2, 4, 1, 2, 1, 3, 2, 1, 3, 1, 2, 4, 1, 2, 3
+    ];
+    for (let i = 0; i < barWidths.length; i++) {
       const bar = document.createElement("span");
-      bar.style.height = ((i * 37) % 100 > 40 ? 100 : 55) + "%";
+      bar.style.width = `${barWidths[i]}px`;
+      bar.style.height = ((i * 37) % 100 > 30 ? 100 : 65) + "%";
       barcodeEl.appendChild(bar);
     }
-
-    function buildQR(el: HTMLDivElement, seed: number) {
-      el.innerHTML = "";
-      const N = 9;
-      const seedOn = new Set([
-        0, 1, 2, 9, 10, 11, 18, 19, 20,
-        6, 7, 8, 15, 16, 17, 24, 25, 26,
-        54, 55, 56, 63, 64, 65, 72, 73, 74,
-      ]);
-      for (let i = 0; i < N * N; i++) {
-        const cell = document.createElement("i");
-        const pseudoRandom = (i * seed) % 97 < 46;
-        if (seedOn.has(i) || pseudoRandom) cell.classList.add("on");
-        el.appendChild(cell);
-      }
-    }
-    buildQR(qrBackEl, 928371);
-    buildQR(qrFrontEl, 574123);
 
     function resolveAnchorX() {
       const rect = scene!.getBoundingClientRect();
@@ -616,10 +635,12 @@ export function IDCardLanyard({
       ctx!.restore();
     }
 
+    let currentAngle = 0;
     function positionCard() {
       const last = points[points.length - 1];
       const prev = points[points.length - 2];
       const angle = Math.atan2(last.y - prev.y, last.x - prev.x) - Math.PI / 2;
+      currentAngle = angle;
       card!.style.left = last.x - card!.offsetWidth / 2 + "px";
       card!.style.top = last.y - 2 + "px";
       card!.style.transform = `rotate(${angle}rad)`;
@@ -630,14 +651,63 @@ export function IDCardLanyard({
       flipper!.style.transform = `rotateY(${flipCurrent}deg)`;
     }
 
+    let weatherGlass: WeatherGlassRenderer | null = null;
+    if (weatherGlassCanvasRef.current && enableWeatherGlass) {
+      try {
+        weatherGlass = new WeatherGlassRenderer({
+          canvas: weatherGlassCanvasRef.current,
+          season,
+          effect,
+        });
+        weatherGlassRef.current = weatherGlass;
+      } catch (err) {
+        console.warn("Weather glass initialization failed:", err);
+      }
+    }
+
+    function updateWipe(e: PointerEvent, active: boolean) {
+      if (!weatherGlass || !card) return;
+      if (!active) {
+        weatherGlass.setPointer(0, 0, false);
+        return;
+      }
+      const rect = card.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const cos = Math.cos(-currentAngle);
+      const sin = Math.sin(-currentAngle);
+      const unrotX = dx * cos - dy * sin;
+      const unrotY = dx * sin + dy * cos;
+      const cardW = card.offsetWidth || 265;
+      const cardH = card.offsetHeight || 516;
+      const normX = unrotX / cardW + 0.5;
+      const normY = unrotY / cardH + 0.5;
+
+      const isInside = normX >= -0.05 && normX <= 1.05 && normY >= -0.05 && normY <= 1.05;
+      weatherGlass.setPointer(normX, normY, isInside && active);
+    }
+
     let raf = 0;
+    let lastTime = performance.now();
     function loop() {
+      const now = performance.now();
+      const dt = Math.min((now - lastTime) / 1000, 1 / 20);
+      lastTime = now;
+
       updatePoints();
       applyConstraints();
       drawRope();
       drawClip();
       positionCard();
       updateFlip();
+
+      if (weatherGlass) {
+        weatherGlass.setMotion(currentAngle, velocity.x, velocity.y);
+        weatherGlass.updateAndRender(dt);
+      }
+
       raf = requestAnimationFrame(loop);
     }
 
@@ -652,6 +722,7 @@ export function IDCardLanyard({
       pointer = pos;
       lastPointer = pos;
       downPos = pos;
+      updateWipe(e, true);
     };
     const onWindowMove = (e: PointerEvent) => {
       if (!dragging) return;
@@ -660,8 +731,10 @@ export function IDCardLanyard({
       velocity.y = pos.y - lastPointer.y;
       lastPointer = pos;
       pointer = pos;
+      updateWipe(e, true);
     };
     const onWindowUp = (e: PointerEvent) => {
+      updateWipe(e, false);
       if (!dragging) return;
       dragging = false;
       const pos = getScenePos(e);
@@ -682,11 +755,26 @@ export function IDCardLanyard({
       last.oldx = last.x - Math.max(-12, Math.min(12, velocity.x * 0.45));
       last.oldy = last.y - Math.max(-12, Math.min(12, velocity.y * 0.45));
     };
-    const onResize = () => resize();
+
+    const onCardPointerMove = (e: PointerEvent) => {
+      updateWipe(e, true);
+    };
+    const onCardPointerLeave = () => {
+      if (!dragging) {
+        weatherGlass?.setPointer(0, 0, false);
+      }
+    };
+
+    const onResize = () => {
+      resize();
+      weatherGlass?.resize();
+    };
     const timer1 = setTimeout(resize, 80);
     const timer2 = setTimeout(resize, 350);
 
     card.addEventListener("pointerdown", onCardDown);
+    card.addEventListener("pointermove", onCardPointerMove);
+    card.addEventListener("pointerleave", onCardPointerLeave);
     window.addEventListener("pointermove", onWindowMove);
     window.addEventListener("pointerup", onWindowUp);
     window.addEventListener("resize", onResize);
@@ -698,9 +786,13 @@ export function IDCardLanyard({
       clearTimeout(timer1);
       clearTimeout(timer2);
       card.removeEventListener("pointerdown", onCardDown);
+      card.removeEventListener("pointermove", onCardPointerMove);
+      card.removeEventListener("pointerleave", onCardPointerLeave);
       window.removeEventListener("pointermove", onWindowMove);
       window.removeEventListener("pointerup", onWindowUp);
       window.removeEventListener("resize", onResize);
+      weatherGlass?.dispose();
+      weatherGlassRef.current = null;
     };
   }, [anchorX, anchorY]);
 
@@ -783,12 +875,15 @@ export function IDCardLanyard({
                     <b>{validThru}</b>
                   </div>
                 </div>
-                <div className="idcl-qr idcl-small" ref={qrFrontRef} />
               </div>
 
               <div className="idcl-footer">
                 Build<i>·</i>Ship<i>·</i>Iterate
               </div>
+
+              {enableWeatherGlass && (
+                <canvas className="idcl-weather-glass" ref={weatherGlassCanvasRef} />
+              )}
             </div>
 
             <div className="idcl-face idcl-back">
@@ -801,58 +896,87 @@ export function IDCardLanyard({
               </div>
               <div className="idcl-barcode" ref={barcodeRef} />
 
-              <div className="idcl-backrow">
-                <div className="idcl-qr" ref={qrBackRef} />
-                <div className="idcl-scan">
-                  <b>Scan for portfolio</b>
-                  {site}
-                  <br />
-                  Full case studies,
-                  <br />
-                  source &amp; credits.
+              <div className="idcl-connect">
+                <span className="idcl-connect-title">Socials &amp; Profiles</span>
+                <div className="idcl-connect-grid">
+                  {githubUrl && (
+                    <a
+                      href={githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="idcl-social-btn"
+                      aria-label="GitHub"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                      </svg>
+                      <span>GitHub</span>
+                    </a>
+                  )}
+                  {linkedinUrl && (
+                    <a
+                      href={linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="idcl-social-btn"
+                      aria-label="LinkedIn"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                        <rect x="2" y="9" width="4" height="12" />
+                        <circle cx="4" cy="4" r="2" />
+                      </svg>
+                      <span>LinkedIn</span>
+                    </a>
+                  )}
+                  {twitterUrl && (
+                    <a
+                      href={twitterUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="idcl-social-btn"
+                      aria-label="Twitter / X"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                        <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                      </svg>
+                      <span>Twitter / X</span>
+                    </a>
+                  )}
+                  {instagramUrl ? (
+                    <a
+                      href={instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="idcl-social-btn"
+                      aria-label="Instagram"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                      </svg>
+                      <span>Instagram</span>
+                    </a>
+                  ) : site ? (
+                    <a
+                      href={`https://${site}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="idcl-social-btn"
+                      aria-label="Portfolio"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                      </svg>
+                      <span>Portfolio</span>
+                    </a>
+                  ) : null}
                 </div>
               </div>
-
-              {(githubUrl || linkedinUrl || instagramUrl || twitterUrl) && (
-                <div className="idcl-connect">
-                  <span>Connect</span>
-                  <div className="idcl-connect-icons">
-                    {githubUrl && (
-                      <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-                        </svg>
-                      </a>
-                    )}
-                    {linkedinUrl && (
-                      <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                          <rect x="2" y="9" width="4" height="12" />
-                          <circle cx="4" cy="4" r="2" />
-                        </svg>
-                      </a>
-                    )}
-                    {twitterUrl && (
-                      <a href={twitterUrl} target="_blank" rel="noopener noreferrer" aria-label="Twitter / X">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-                          <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-                        </svg>
-                      </a>
-                    )}
-                    {instagramUrl && (
-                      <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                        </svg>
-                      </a>
-                    )}
-                  </div>
-                </div>
-              )}
 
               <div className="idcl-sig">
                 <div className="idcl-script">{name}</div>

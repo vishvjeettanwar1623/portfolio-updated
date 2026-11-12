@@ -74,7 +74,7 @@ export function FallingLeavesEffect({
           depth={0.8}
           respectReducedMotion={true}
         />
-      ) : (
+      ) : season === "autumn" ? (
         <FallingLeaves
           fullScreen={fullScreen}
           zIndex={2}
@@ -88,7 +88,7 @@ export function FallingLeavesEffect({
           sway={[0.5, 1.2]}
           respectReducedMotion={true}
         />
-      )}
+      ) : null}
     </div>
   );
 }
