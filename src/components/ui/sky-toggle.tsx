@@ -17,7 +17,11 @@ export const Switch = ({ className = "", size = "15px" }: SwitchProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     playSound("theme");
-    toggleTheme(e as unknown as React.MouseEvent);
+    const rect = e.currentTarget.getBoundingClientRect();
+    toggleTheme({
+      clientX: rect.left + rect.width / 2,
+      clientY: rect.top + rect.height / 2,
+    });
   };
 
   return (
