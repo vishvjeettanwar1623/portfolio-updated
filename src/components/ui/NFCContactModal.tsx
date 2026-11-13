@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { useSound } from "@/context/SoundContext";
 import { subscribePortfolioEvent } from "@/lib/events";
+import { scrollToSection } from "@/lib/scroll";
 import { BoardingPassCard } from "./BoardingPassCard";
 
 export function NFCContactModal() {
@@ -27,11 +28,7 @@ export function NFCContactModal() {
 
     setTimeout(() => {
       setIsOpen(false);
-      const target = document.getElementById("projects") || document.getElementById("experience");
-      if (target) {
-        const topOffset = target.getBoundingClientRect().top + window.scrollY - 40;
-        window.scrollTo({ top: topOffset, behavior: "smooth" });
-      }
+      scrollToSection("projects");
     }, 1100);
   };
 

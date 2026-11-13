@@ -17,9 +17,8 @@ export function LoadingScreen({ onComplete }: { onComplete?: () => void }) {
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
-      (navigator.webdriver ||
-        navigator.userAgent.includes("Chrome-Lighthouse") ||
-        navigator.userAgent.includes("Lighthouse"))
+      (window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        Boolean(navigator.webdriver))
     ) {
       setStage("finished");
       if (onComplete) onComplete();
