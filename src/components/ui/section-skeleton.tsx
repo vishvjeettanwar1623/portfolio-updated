@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -25,11 +25,8 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
 
   return (
     <div className={`w-full max-w-6xl mx-auto px-4 md:px-8 py-20 sm:py-32 overflow-hidden select-none pointer-events-none ${className}`}>
-      
-      {/* 1. WORK PORTFOLIO SKELETON (1:1 Exact Match) */}
       {type === "projects" && (
         <div className="w-full flex flex-col items-center">
-          {/* Section Header */}
           <div className="mb-14 text-center w-full flex flex-col items-center">
             <motion.div
               {...shimmerProps}
@@ -37,14 +34,12 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
             />
           </div>
 
-          {/* Master Project Rows Table */}
           <div className="w-full border-t border-foreground/15 flex flex-col">
             {[1, 2, 3, 4, 5].map((idx) => (
               <div
                 key={idx}
                 className="w-full py-8 sm:py-10 px-4 sm:px-8 flex items-center justify-between border-b border-foreground/10"
               >
-                {/* Left: Number + Title + Tagline */}
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 flex-1 min-w-0">
                   <div className="flex items-center gap-3">
                     <motion.div
@@ -62,7 +57,6 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
                   />
                 </div>
 
-                {/* Right: Category Badge + Circle Chevron */}
                 <div className="flex items-center gap-3 sm:gap-6 flex-shrink-0 ml-4">
                   <motion.div
                     {...shimmerProps}
@@ -77,7 +71,6 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
             ))}
           </div>
 
-          {/* GitHub Explorer Bottom Card */}
           <div className="w-full mt-12 p-8 sm:p-10 rounded-3xl border border-foreground/15 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4 flex-1">
               <motion.div
@@ -103,10 +96,8 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
         </div>
       )}
 
-      {/* 2. MY JOURNEY / EXPERIENCE SKELETON (1:1 Exact Match) */}
       {type === "experience" && (
         <div className="w-full flex flex-col items-center">
-          {/* Header */}
           <div className="mb-14 text-center w-full flex flex-col items-center space-y-3">
             <motion.div
               {...shimmerProps}
@@ -118,9 +109,7 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
             />
           </div>
 
-          {/* 3D Carousel Stage */}
           <div className="relative w-full max-w-5xl h-[580px] sm:h-[520px] rounded-3xl border border-foreground/20 bg-card/40 p-6 sm:p-10 flex flex-col justify-between shadow-2xl">
-            {/* Top Bar: Timeline Pill & Year Watermark */}
             <div className="flex items-center justify-between border-b border-foreground/10 pb-5">
               <div className="space-y-2.5">
                 <motion.div
@@ -138,7 +127,6 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
               />
             </div>
 
-            {/* Main Content Grid: 7 cols Left (Bullets), 5 cols Right (Proof Card) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto">
               <div className="lg:col-span-7 space-y-4">
                 <motion.div
@@ -191,7 +179,6 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
               </div>
             </div>
 
-            {/* Bottom Nav Controls */}
             <div className="flex items-center justify-between pt-4 border-t border-foreground/10">
               <motion.div
                 {...shimmerProps}
@@ -212,10 +199,8 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
         </div>
       )}
 
-      {/* 3. MY STACK / SKILLS SKELETON (1:1 Exact Match) */}
       {type === "skills" && (
         <div className="w-full flex flex-col items-center">
-          {/* Header */}
           <div className="mb-12 text-center w-full flex flex-col items-center space-y-3">
             <motion.div
               {...shimmerProps}
@@ -227,7 +212,6 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
             />
           </div>
 
-          {/* Flowing Menu Track Rows */}
           <div className="w-full space-y-4">
             {["LANGUAGES", "FRONTEND", "BACKEND", "BLOCKCHAIN", "TOOLS", "AI & IDES"].map((cat) => (
               <div
@@ -261,10 +245,8 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
         </div>
       )}
 
-      {/* 4. ACHIEVEMENTS SKELETON (1:1 Exact Match) */}
       {type === "achievements" && (
         <div className="w-full flex flex-col items-center">
-          {/* Header */}
           <div className="mb-14 text-center w-full flex flex-col items-center space-y-3">
             <motion.div
               {...shimmerProps}
@@ -276,9 +258,7 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
             />
           </div>
 
-          {/* Kinetic Deck Shutter Accordion Skeleton */}
           <div className="flex gap-4 h-[480px] w-full items-stretch">
-            {/* 1 Expanded Card */}
             <div className="flex-[5] rounded-3xl border border-foreground/20 p-8 flex flex-col justify-between bg-card/40">
               <div className="flex items-center justify-between">
                 <motion.div
@@ -310,7 +290,6 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
               />
             </div>
 
-            {/* 6 Collapsed Shutter Bars */}
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={i}
@@ -334,10 +313,8 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
         </div>
       )}
 
-      {/* 5. ABOUT ME SKELETON (1:1 Exact Match) */}
       {(type === "about" || type === "general") && (
         <div className="w-full flex flex-col items-center">
-          {/* Header */}
           <div className="mb-14 text-center w-full flex flex-col items-center space-y-3">
             <motion.div
               {...shimmerProps}
@@ -349,7 +326,6 @@ export function SectionSkeleton({ type = "general", className = "" }: SectionSke
             />
           </div>
 
-          {/* Grid Layout: Left Profile, Right Details */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
             <div className="lg:col-span-5 p-8 rounded-3xl border border-foreground/15 flex flex-col items-center text-center space-y-4">
               <motion.div
