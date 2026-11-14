@@ -5,27 +5,27 @@ import { cn } from "@/lib/utils";
 
 export function WavyBackground({ className }: { className?: string }) {
   return (
-    <div className={cn("absolute inset-0 w-full h-[150%] overflow-hidden pointer-events-none z-0", className)}>
-      <div className="absolute inset-0 w-full h-full bg-fog/70 dark:bg-[#1a1a1a] shadow-[inset_0_40px_50px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_40px_50px_rgba(0,0,0,0.8)] transition-colors duration-400">
+    <div className={cn("wavy-bg-root absolute inset-0 w-full h-[150%] overflow-hidden pointer-events-none z-0", className)}>
+      <div className="wavy-bg-layer absolute inset-0 w-full h-full bg-fog/70 dark:bg-[#1a1a1a] shadow-[inset_0_40px_50px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_40px_50px_rgba(0,0,0,0.8)] transition-colors duration-400">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
           style={{ x: "-50%", y: "calc(-100% + 150px)" }}
-          className="absolute top-0 left-1/2 w-[6000px] h-[6000px] rounded-[45%] bg-background"
+          className="wavy-bg-wave-1 absolute top-0 left-1/2 w-[6000px] h-[6000px] rounded-[45%] bg-background"
         />
         
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
           style={{ x: "-50%", y: "calc(-100% + 150px)" }}
-          className="absolute top-0 left-1/2 w-[6000px] h-[6000px] rounded-[40%] bg-background/80"
+          className="wavy-bg-wave-2 absolute top-0 left-1/2 w-[6000px] h-[6000px] rounded-[40%] bg-background/80"
         />
         
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 17, repeat: Infinity, ease: "linear" }}
           style={{ x: "-50%", y: "calc(-100% + 150px)" }}
-          className="absolute top-0 left-1/2 w-[6000px] h-[6000px] rounded-[42.5%] bg-background/80"
+          className="wavy-bg-wave-3 absolute top-0 left-1/2 w-[6000px] h-[6000px] rounded-[42.5%] bg-background/80"
         />
       </div>
     </div>
