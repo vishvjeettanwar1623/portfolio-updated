@@ -2,12 +2,9 @@
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { Leaf, Snowflake } from 'lucide-react';
 import ThemeToggle from './sky-toggle';
 import { emitPortfolioEvent } from '@/lib/events';
-import SoundToggle from './SoundToggle';
-import { useSeason } from '@/context/SeasonContext';
-import { useSound } from '@/context/SoundContext';
+import { scrollToSection } from '@/lib/scroll';
 import './StaggeredMenu.css';
 
 export interface MenuItem {
@@ -68,8 +65,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   onMenuOpen,
   onMenuClose,
 }) => {
-  const { season, setSeason } = useSeason();
-  const { playSound } = useSound();
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
 
@@ -131,7 +126,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
     const itemEls = Array.from(panel.querySelectorAll<HTMLElement>('.sm-panel-itemLabel'));
     const numberEls = Array.from(panel.querySelectorAll<HTMLElement>('.sm-panel-list[data-numbering] .sm-panel-item'));
-    const seasonEl = panel.querySelector<HTMLElement>('.sm-season');
     const socialTitle = panel.querySelector<HTMLElement>('.sm-socials-title');
     const socialLinks = Array.from(panel.querySelectorAll<HTMLElement>('.sm-socials-link'));
 
@@ -140,7 +134,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
     if (itemEls.length) gsap.set(itemEls, { yPercent: 140, rotate: 10 });
     if (numberEls.length) gsap.set(numberEls, { '--sm-num-opacity': 0 });
-    if (seasonEl) gsap.set(seasonEl, { opacity: 0, y: 15 });
     if (socialTitle) gsap.set(socialTitle, { opacity: 0 });
     if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
 
@@ -164,9 +157,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       }
     }
 
-    if (seasonEl || socialTitle || socialLinks.length) {
+    if (socialTitle || socialLinks.length) {
       const footerStart = panelInsertTime + panelDuration * 0.4;
-      if (seasonEl) tl.to(seasonEl, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, footerStart);
       if (socialTitle) tl.to(socialTitle, { opacity: 1, duration: 0.5, ease: 'power2.out' }, footerStart + 0.05);
       if (socialLinks.length) {
         tl.to(socialLinks, {
@@ -211,10 +203,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         if (itemEls.length) gsap.set(itemEls, { yPercent: 140, rotate: 10 });
         const numberEls = Array.from(panel.querySelectorAll<HTMLElement>('.sm-panel-list[data-numbering] .sm-panel-item'));
         if (numberEls.length) gsap.set(numberEls, { '--sm-num-opacity': 0 });
-        const seasonEl = panel.querySelector<HTMLElement>('.sm-season');
         const socialTitle = panel.querySelector<HTMLElement>('.sm-socials-title');
         const socialLinks = Array.from(panel.querySelectorAll<HTMLElement>('.sm-socials-link'));
-        if (seasonEl) gsap.set(seasonEl, { opacity: 0, y: 15 });
         if (socialTitle) gsap.set(socialTitle, { opacity: 0 });
         if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
         busyRef.current = false;
@@ -341,16 +331,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         <div
           className="sm-logo "
           aria-label="Logo"
-          onClick={() => {
-            if (typeof window !== "undefined") {
-              const home = document.getElementById("home") || document.querySelector("main");
-              if (home) {
-                home.scrollIntoView({ behavior: "smooth" });
-              } else {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }
-            }
-          }}
+          onClick={() => scrollToSection("home")}
           style={{
             opacity: hideLogo ? 0 : 1,
             transition: 'opacity 0.5s ease',
@@ -364,7 +345,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         </div>
 
         <div className="sm-header-controls flex items-center">
-          <SoundToggle />
           <div
             id="theme-toggle-anchor"
             data-theme-toggle
@@ -420,37 +400,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </ul>
 
           <div className="sm-bottom-tray">
-            {/* Atmosphere / Season Switcher */}
-            <div className="sm-season" aria-label="Season atmosphere switcher">
-              <span className="sm-season-title">Season</span>
-              <div className="sm-season-toggle" role="group" aria-label="Select season animation">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSeason("autumn");
-                    playSound("click");
-                  }}
-                  className={`sm-season-btn ${season === "autumn" ? "sm-season-btn-active" : ""}`}
-                  aria-pressed={season === "autumn"}
-                >
-                  <Leaf className="w-3.5 h-3.5" />
-                  <span>Autumn</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSeason("winter");
-                    playSound("click");
-                  }}
-                  className={`sm-season-btn ${season === "winter" ? "sm-season-btn-active" : ""}`}
-                  aria-pressed={season === "winter"}
-                >
-                  <Snowflake className="w-3.5 h-3.5" />
-                  <span>Winter</span>
-                </button>
-              </div>
-            </div>
-
             {displaySocials && socialItems.length > 0 && (
               <div className="sm-socials" aria-label="Social links">
                 <h3 className="sm-socials-title">Socials</h3>
