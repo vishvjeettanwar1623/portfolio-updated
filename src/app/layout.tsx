@@ -110,3 +110,118 @@ export const metadata: Metadata = {
     url: SITE_CONFIG.url,
     siteName: SITE_CONFIG.name,
     locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_CONFIG.name} · ${SITE_CONFIG.role}`,
+    description:
+      "Full-Stack & Web3 Developer building high-performance decentralized protocols and kinetic frontends.",
+    creator: SITE_CONFIG.socials.twitter.handle,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_CONFIG.url}/#person`,
+      name: SITE_CONFIG.name,
+      url: SITE_CONFIG.url,
+      jobTitle: SITE_CONFIG.role,
+      sameAs: [
+        SITE_CONFIG.socials.github.href,
+        SITE_CONFIG.socials.linkedin.href,
+        SITE_CONFIG.socials.twitter.href,
+      ],
+      knowsAbout: [
+        "Full-Stack Development",
+        "Web3 Development",
+        "Smart Contracts",
+        "Solidity",
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Creative Web Development",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_CONFIG.url}/#website`,
+      url: SITE_CONFIG.url,
+      name: `${SITE_CONFIG.name} Portfolio`,
+      publisher: {
+        "@id": `${SITE_CONFIG.url}/#person`,
+      },
+    },
+  ],
+};
+
+const themeScript = `
+  (function() {
+    try {
+      var saved = localStorage.getItem('portfolio-theme');
+      var theme = (saved === 'light' || saved === 'dark') ? saved : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (e) {}
+  })();
+`;
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      data-theme="dark"
+      suppressHydrationWarning
+      className={`dark ${noto.variable} ${signika.variable} ${dmSans.variable} ${greatVibes.variable} ${audiowide.variable} ${tektur.variable} ${syneMono.variable} ${wallpoet.variable} ${bungeeOutline.variable}`}
+    >
+      <head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Kalam:wght@400;700&display=swap" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className="antialiased font-sans" suppressHydrationWarning>
+        <ThemeProvider>
+          <SoundProvider>
+            <SeasonProvider>
+              <WeatherGlassProvider>
+                <SmoothScroll>
+                  {children}
+                </SmoothScroll>
+              </WeatherGlassProvider>
+            </SeasonProvider>
+          </SoundProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}

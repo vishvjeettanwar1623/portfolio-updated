@@ -64,3 +64,61 @@ export default function Home() {
       history.scrollRestoration = "manual";
     }
   }, []);
+
+  return (
+    <ClickSpark
+      sparkColor={isDark ? "#ff6a1a" : "#d9480f"}
+      sparkSize={12}
+      sparkRadius={20}
+      sparkCount={10}
+      duration={500}
+    >
+      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+
+      <main className="relative min-h-screen bg-background text-foreground selection:bg-molten/30">
+        <FallingLeavesEffect />
+        <Navbar />
+        <LiquidMorphFloatingMenu />
+        <JourneyScrollbar />
+        <NFCContactModal />
+
+        <HeroSection />
+        <VelocityMarquee />
+
+        <div className="relative w-full">
+          <div className="relative pt-24 pb-48 z-10 pointer-events-auto">
+            <LazyRender id="projects" skeletonType="projects">
+              <ProjectsSection />
+            </LazyRender>
+
+            <LazyRender>
+              <DesignsSection />
+            </LazyRender>
+          </div>
+        </div>
+
+        <LazyRender id="skills" skeletonType="skills">
+          <SkillsSection />
+        </LazyRender>
+
+        <LazyRender id="achievements" skeletonType="achievements">
+          <AchievementsSection />
+        </LazyRender>
+
+        <LazyRender id="about" skeletonType="about">
+          <AboutSection />
+        </LazyRender>
+
+        <LazyRender id="experience" skeletonType="experience">
+          <ExperienceSection />
+        </LazyRender>
+
+        <LazyRender id="github-activity">
+          <GitHubActivitySection />
+        </LazyRender>
+
+        <Footer />
+      </main>
+    </ClickSpark>
+  );
+}
