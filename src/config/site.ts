@@ -15,83 +15,87 @@ export interface BoardingPassLink {
   label: string;
 }
 
+const EMAIL = "sbvj727@gmail.com";
+
+const SOCIALS = {
+  github: {
+    label: "GitHub",
+    href: "https://github.com/vishvjeettanwar1623",
+    handle: "@vishvjeettanwar1623",
+    username: "vishvjeettanwar1623",
+  },
+  linkedin: {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/vishvjeet-tanwar/",
+    handle: "in/vishvjeet-tanwar",
+    username: "vishvjeet-tanwar",
+  },
+  twitter: {
+    label: "Twitter / X",
+    href: "https://x.com/VishvjeetTanwar",
+    handle: "@VishvjeetTanwar",
+    username: "VishvjeetTanwar",
+  },
+  resume: {
+    label: "Resume",
+    href: "/resume.pdf",
+  },
+  leetcode: {
+    label: "LeetCode",
+    href: "https://leetcode.com/u/vishvjeet1623/",
+    username: "vishvjeet1623",
+  },
+} as const;
+
 export const SITE_CONFIG = {
   name: "Vishvjeet Singh Tanwar",
   role: "Full-Stack & Web3 Systems Developer",
   badge: "Designer & Builder",
   domain: "vishvjeet.me",
   url: "https://vishvjeet.me",
-  tagline: "Designer & Builder — Building things that my creativity allows.",
+  tagline: "Designer & systems builder focused on Web3 protocols, native tools, and interactive 3D.",
   shortTagline: "Build · Ship · Iterate",
   location: "Noida, UP",
   base: "DEL",
   destination: "GLOBAL",
-  email: "sbvj727@gmail.com",
-  socials: {
-    github: {
-      label: "GitHub",
-      href: "https://github.com/vishvjeettanwar1623",
-      handle: "@vishvjeettanwar1623",
-      username: "vishvjeettanwar1623",
-    },
-    linkedin: {
-      label: "LinkedIn",
-      href: "https://www.linkedin.com/in/vishvjeet-tanwar/",
-      handle: "in/vishvjeet-tanwar",
-      username: "vishvjeet-tanwar",
-    },
-    twitter: {
-      label: "Twitter / X",
-      href: "https://x.com/VishvjeetTanwar",
-      handle: "@VishvjeetTanwar",
-      username: "VishvjeetTanwar",
-    },
-    resume: {
-      label: "Resume",
-      href: "/resume.pdf",
-    },
-    leetcode: {
-      label: "LeetCode",
-      href: "https://leetcode.com/u/vishvjeet1623/",
-      username: "vishvjeet1623",
-    },
-  },
+  email: EMAIL,
+  socials: SOCIALS,
   boardingPassLinks: [
     {
       name: "Email",
-      href: "mailto:sbvj727@gmail.com",
+      href: `mailto:${EMAIL}`,
       top: "56.4%",
       height: "6.8%",
       left: "7%",
       width: "86%",
-      label: "sbvj727@gmail.com",
+      label: EMAIL,
     },
     {
       name: "GitHub",
-      href: "https://github.com/vishvjeettanwar1623",
+      href: SOCIALS.github.href,
       top: "65.0%",
       height: "6.8%",
       left: "7%",
       width: "86%",
-      label: "@vishvjeettanwar1623",
+      label: SOCIALS.github.handle,
     },
     {
       name: "LinkedIn",
-      href: "https://www.linkedin.com/in/vishvjeet-tanwar/",
+      href: SOCIALS.linkedin.href,
       top: "73.5%",
       height: "6.8%",
       left: "7%",
       width: "86%",
-      label: "in/vishvjeet-tanwar",
+      label: SOCIALS.linkedin.handle,
     },
     {
       name: "Twitter / X",
-      href: "https://x.com/VishvjeetTanwar",
+      href: SOCIALS.twitter.href,
       top: "82.0%",
       height: "6.8%",
       left: "7%",
       width: "86%",
-      label: "@VishvjeetTanwar",
+      label: SOCIALS.twitter.handle,
     },
   ] as BoardingPassLink[],
 };
