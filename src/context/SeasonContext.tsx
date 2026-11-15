@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-export type Season = "autumn" | "winter";
+export type Season = "autumn" | "winter" | "off";
 
 interface SeasonContextType {
   season: Season;
@@ -18,7 +18,7 @@ export function SeasonProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const saved = localStorage.getItem("portfolio-season") as Season | null;
-      if (saved === "autumn" || saved === "winter") {
+      if (saved === "autumn" || saved === "winter" || saved === "off") {
         setSeasonState(saved);
       }
     } catch {
@@ -36,7 +36,8 @@ export function SeasonProvider({ children }: { children: React.ReactNode }) {
   };
 
   const toggleSeason = () => {
-    const nextSeason: Season = season === "autumn" ? "winter" : "autumn";
+    const nextSeason: Season =
+      season === "autumn" ? "winter" : season === "winter" ? "off" : "autumn";
     setSeason(nextSeason);
   };
 
@@ -60,4 +61,3 @@ export function useSeason(): SeasonContextType {
 }
 
 export default SeasonContext;
-

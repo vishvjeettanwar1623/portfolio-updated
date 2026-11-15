@@ -1,6 +1,5 @@
 type PortfolioEvents = {
   portfolio_menu_toggle: { isOpen: boolean };
-  portfolio_swarm_start: void;
   open_contact_pass: void;
 };
 
