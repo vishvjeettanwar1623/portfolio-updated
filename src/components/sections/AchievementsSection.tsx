@@ -143,3 +143,166 @@ export function AchievementsSection() {
                 onClick={() => setActiveIndex(index)}
                 animate={{
                   flex: isActive ? 5 : 1,
+                }}
+                transition={{
+                  duration: 0.85,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className={`relative rounded-3xl overflow-hidden border transition-colors duration-700 cursor-pointer group ${
+                  isActive
+                    ? "border-night/20 dark:border-fog/40 bg-mist dark:bg-night-2 shadow-xl dark:shadow-2xl"
+                    : "border-night/10 dark:border-fog/10 bg-fog/90 dark:bg-night/80 hover:border-night/25 dark:hover:border-fog/25"
+                }`}
+              >
+                <motion.div
+                  className="absolute inset-0 z-0"
+                  animate={{
+                    scale: isActive ? 1.05 : 1.2,
+                    opacity: isActive ? 0.95 : 0.7,
+                    filter: isActive ? "brightness(1) contrast(1.05)" : "brightness(0.9) contrast(1)",
+                  }}
+                  transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover object-center"
+                  />
+                </motion.div>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-fog/90 via-fog/45 to-fog/10 dark:from-night/90 dark:via-night/45 dark:to-night/10 z-10" />
+
+                <motion.div
+                  animate={{ opacity: isActive ? 0 : 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 z-20 h-full flex flex-col justify-between p-6 items-center pointer-events-none"
+                >
+                  <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-gunmetal dark:text-fog/80 bg-night/5 dark:bg-fog/10 border border-night/15 dark:border-fog/15 px-3 py-1 rounded-full backdrop-blur-sm">
+                    {item.tag}
+                  </span>
+                  <span className="text-lg font-bold text-night-2 dark:text-fog/75 font-[family-name:var(--font-audiowide)] uppercase [writing-mode:vertical-rl] rotate-180 tracking-widest">
+                    {item.title}
+                  </span>
+                  <span className="text-xs font-mono text-gunmetal dark:text-fog/40">{item.date}</span>
+                </motion.div>
+
+                <motion.div
+                  animate={{ opacity: isActive ? 1 : 0 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute inset-0 z-30 p-8 md:p-10 flex flex-col justify-between overflow-hidden pointer-events-auto"
+                >
+                  <div className="w-[480px] min-w-[480px] h-full flex flex-col justify-between">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-xs font-mono uppercase tracking-widest text-night-2 dark:text-fog/90 bg-night/5 dark:bg-fog/10 border border-night/20 dark:border-fog/20 px-3.5 py-1.5 rounded-full backdrop-blur-sm">
+                        {item.tag}
+                      </span>
+                      <span className="text-sm font-mono font-bold text-gunmetal dark:text-fog/80">
+                        {item.date}
+                      </span>
+                    </div>
+
+                    <div className="my-auto w-full">
+                      <h4 className="text-xs font-mono tracking-[0.25em] text-steel dark:text-fog/70 uppercase mb-2">
+                        {item.subtitle}
+                      </h4>
+                      <h3 className="text-3xl md:text-5xl font-bold text-night-2 dark:text-fog font-[family-name:var(--font-audiowide)] uppercase tracking-tight leading-tight mb-4 drop-shadow-sm">
+                        {item.title}
+                      </h3>
+                      <p className="text-gunmetal dark:text-fog/90 text-base md:text-lg leading-relaxed font-light">
+                        {item.excerpt}
+                      </p>
+                    </div>
+
+                    <div className="w-full flex items-center">
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          playSound("click");
+                        }}
+                        className="inline-flex items-center gap-2 px-6 py-3.5 bg-foreground text-background hover:opacity-90 font-bold text-xs uppercase tracking-widest rounded-full transition-all shadow-xl group/btn"
+                      >
+                        <Linkedin className="w-4 h-4" />
+                        <span>Verify Certificate</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-col gap-4 lg:hidden">
+          {achievements.map((item, index) => {
+            const isActive = activeIndex === index;
+
+            return (
+              <div
+                key={item.id}
+                onClick={() => setActiveIndex(index)}
+                className={`rounded-3xl overflow-hidden border transition-all duration-500 ${
+                  isActive
+                    ? "border-night/20 dark:border-fog/40 bg-mist dark:bg-night-2 shadow-md"
+                    : "border-night/10 dark:border-fog/10 bg-fog/80 dark:bg-night/80"
+                }`}
+              >
+                <div className="p-5 flex items-center justify-between cursor-pointer">
+                  <h3 className="text-lg font-bold text-night-2 dark:text-fog font-[family-name:var(--font-audiowide)]">
+                    {item.title}
+                  </h3>
+                  <span className="text-xs font-mono text-steel dark:text-fog/50">{item.date}</span>
+                </div>
+
+                <AnimatePresence>
+                  {isActive && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      className="px-5 pb-6 pt-2 border-t border-night/10 dark:border-fog/10 flex flex-col gap-4"
+                    >
+                      <div className="relative w-full h-48 rounded-2xl overflow-hidden border border-night/10 dark:border-fog/15">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <p className="text-sm text-gunmetal dark:text-fog/80 font-light leading-relaxed">
+                        {item.excerpt}
+                      </p>
+                      
+                      <div className="flex flex-col sm:flex-row gap-2 mt-2">
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-foreground text-background font-bold text-xs uppercase tracking-wider rounded-full shadow-md"
+                        >
+                          <Linkedin className="w-4 h-4" />
+                          <span>Verify Certificate</span>
+                          <ArrowUpRight className="w-4 h-4" />
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </SectionWrapper>
+  );
+}
+
+export default AchievementsSection;
