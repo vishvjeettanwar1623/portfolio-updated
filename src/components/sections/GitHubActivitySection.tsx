@@ -280,3 +280,322 @@ export function GitHubActivitySection() {
 
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(render);
+        }
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(canvas);
+
+    const render = () => {
+      if (!isVisible || !canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Auto-rotation inertia
+      if (!isDraggingRef.current) {
+        rotationRef.current.y += velocityRef.current.y;
+        rotationRef.current.x += velocityRef.current.x;
+      }
+
+      const rotX = rotationRef.current.x;
+      const rotY = rotationRef.current.y;
+
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.strokeStyle = "rgba(207, 212, 217, 0.04)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(0, 0, 175, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, 115, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      const projected: ProjectedNode[] = nodes.map((node, index) => {
+        let x1 = node.x * Math.cos(rotY) + node.z * Math.sin(rotY);
+        let z1 = -node.x * Math.sin(rotY) + node.z * Math.cos(rotY);
+
+        let y2 = node.y * Math.cos(rotX) - z1 * Math.sin(rotX);
+        let z2 = node.y * Math.sin(rotX) + z1 * Math.cos(rotX);
+
+        const fov = 420;
+        const scale = fov / (fov + z2);
+        const projX = centerX + x1 * scale;
+        const projY = centerY + y2 * scale;
+
+        return {
+          ...node,
+          projX,
+          projY,
+          scale,
+          zDepth: z2,
+          index,
+        };
+      });
+
+      projected.sort((a, b) => b.zDepth - a.zDepth);
+      projectedPointsRef.current = projected;
+
+      let currentHit: ProjectedNode | null = null;
+      if (mousePosRef.current) {
+        const { x: mX, y: mY } = mousePosRef.current;
+        for (let i = projected.length - 1; i >= 0; i--) {
+          const p = projected[i];
+          if (p.zDepth < 100) {
+            const dist = Math.hypot(mX - p.projX, mY - p.projY);
+            if (dist < 14) {
+              currentHit = p;
+              break;
+            }
+          }
+        }
+      }
+
+      for (let i = 0; i < projected.length; i++) {
+        const p1 = projected[i];
+        if (p1.zDepth > 80) continue;
+
+        for (let j = i + 1; j < Math.min(i + 4, projected.length); j++) {
+          const p2 = projected[j];
+          const dist = Math.hypot(p1.projX - p2.projX, p1.projY - p2.projY);
+
+          if (dist < 46) {
+            const alpha = Math.max(0, (1 - dist / 46) * 0.12 * p1.scale);
+            ctx.strokeStyle = `rgba(207, 212, 217, ${alpha})`;
+            ctx.lineWidth = 0.75;
+            ctx.beginPath();
+            ctx.moveTo(p1.projX, p1.projY);
+            ctx.lineTo(p2.projX, p2.projY);
+            ctx.stroke();
+          }
+        }
+      }
+
+      projected.forEach((p) => {
+        const isTarget = currentHit?.index === p.index;
+        const alpha = isTarget ? 1 : Math.min(1, Math.max(0.15, (p.scale - 0.4) * 1.5));
+        const radius = isTarget ? 6.5 : Math.max(1, p.size * p.scale);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(p.projX, p.projY, radius, 0, Math.PI * 2);
+
+        if (isTarget) {
+          ctx.fillStyle = "#ff6a1a";
+        } else if (p.intensity > 0.7) {
+          ctx.fillStyle = `rgba(255, 106, 26, ${alpha})`;
+        } else if (p.intensity > 0.35) {
+          ctx.fillStyle = `rgba(207, 212, 217, ${alpha * 0.8})`;
+        } else {
+          ctx.fillStyle = `rgba(143, 153, 163, ${alpha * 0.45})`;
+        }
+
+        ctx.fill();
+        ctx.restore();
+      });
+
+      rafId = requestAnimationFrame(render);
+    };
+
+    rafId = requestAnimationFrame(render);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateDimensions);
+      cancelAnimationFrame(rafId);
+    };
+  }, [nodes]);
+
+  const handleCanvasMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    mousePosRef.current = { x, y };
+
+    const hit = projectedPointsRef.current.find((p) => {
+      return p.zDepth < 100 && Math.hypot(x - p.projX, y - p.projY) < 14;
+    });
+
+    if (hit) {
+      if (hoveredCommit?.index !== hit.index) {
+        setHoveredCommit(hit);
+        playSound("hover");
+      }
+    } else {
+      setHoveredCommit(null);
+    }
+
+    if (isDraggingRef.current) {
+      const deltaX = e.clientX - lastMouseRef.current.x;
+      const deltaY = e.clientY - lastMouseRef.current.y;
+
+      rotationRef.current.y += deltaX * 0.008;
+      rotationRef.current.x -= deltaY * 0.008;
+
+      velocityRef.current = {
+        x: -deltaY * 0.0005,
+        y: deltaX * 0.0005,
+      };
+
+      lastMouseRef.current = { x: e.clientX, y: e.clientY };
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    isDraggingRef.current = true;
+    lastMouseRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+  };
+
+  const handleMouseLeave = () => {
+    isDraggingRef.current = false;
+    mousePosRef.current = null;
+    setHoveredCommit(null);
+  };
+
+  return (
+    <SectionWrapper id="github-activity" className="py-24 bg-background relative overflow-hidden font-mono">
+      <div ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+        <div className="mb-14 text-center max-w-3xl mx-auto">
+          <TextStaggerHover as="h2" className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase tracking-[2px] sm:tracking-[4px] text-foreground font-[family-name:var(--font-audiowide)] drop-shadow-md">
+            <TextStaggerHoverActive animation="top">
+              Commit Orbit
+            </TextStaggerHoverActive>
+            <TextStaggerHoverHidden animation="bottom">
+              Commit Orbit
+            </TextStaggerHoverHidden>
+          </TextStaggerHover>
+        </div>
+
+        <div className="relative w-full rounded-3xl bg-card/60 border border-foreground/15 p-6 sm:p-8 md:p-12 backdrop-blur-2xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(207,212,217,0.03)_0%,transparent_70%)] pointer-events-none" />
+
+          <div
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleCanvasMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+            className="lg:col-span-7 relative h-[380px] sm:h-[450px] w-full flex items-center justify-center cursor-crosshair select-none"
+          >
+            <canvas ref={canvasRef} className="w-full h-full block" />
+
+            <AnimatePresence>
+              {hoveredCommit && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.15 }}
+                  style={{
+                    left: `${hoveredCommit.projX}px`,
+                    top: `${hoveredCommit.projY - 20}px`,
+                    transform: "translate(-50%, -100%)",
+                  }}
+                  className="absolute z-40 pointer-events-none w-72 p-3.5 rounded-2xl bg-card/95 border border-foreground/30 shadow-2xl backdrop-blur-2xl space-y-2 text-left"
+                >
+                  <div className="flex items-center justify-between border-b border-foreground/15 pb-1.5 text-[10px]">
+                    <div className="flex items-center gap-1.5 text-foreground font-bold truncate">
+                      <GitBranch className="w-3 h-3 text-foreground flex-shrink-0" />
+                      <span className="truncate">{hoveredCommit.repo}</span>
+                    </div>
+                    <span className="text-muted-foreground font-mono text-[9px] px-1.5 py-0.5 rounded bg-foreground/5">
+                      {hoveredCommit.sha}
+                    </span>
+                  </div>
+
+                  <div className="text-xs font-semibold text-foreground leading-snug line-clamp-2">
+                    {hoveredCommit.message}
+                  </div>
+
+                  <div className="flex items-center justify-between text-[9.5px] text-muted-foreground pt-1 border-t border-foreground/10">
+                    <span>{hoveredCommit.date}</span>
+                    <span>{hoveredCommit.time}</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="lg:col-span-5 flex flex-col space-y-4 relative z-20">
+            <div className="flex items-center justify-between border-b border-foreground/10 pb-3">
+              <div className="flex items-center gap-2">
+                <Github className="w-4 h-4 text-foreground" />
+                <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                  Verified Repositories
+                </span>
+              </div>
+              <span className="text-[10px] text-muted-foreground font-mono">
+                {liveStats.totalCommits}+ COMMITS
+              </span>
+            </div>
+
+            <div className="space-y-2.5">
+              {REAL_REPOS.map((repo) => (
+                <motion.a
+                  key={repo.name}
+                  href={`${SITE_CONFIG.socials.github.href}/${repo.name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ x: 4, scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                  onMouseEnter={() => playSound("hover")}
+                  className="group flex items-center justify-between p-3.5 rounded-2xl bg-foreground/5 hover:bg-foreground/10 border border-foreground/10 hover:border-foreground/30 transition-all shadow-xs cursor-pointer"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-xs text-foreground group-hover:underline">
+                        {repo.name}
+                      </span>
+                      <span className="text-[9px] px-2 py-0.5 rounded-full bg-foreground/10 text-muted-foreground font-mono">
+                        {repo.lang}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground font-sans font-light">
+                      {repo.desc}
+                    </p>
+                  </div>
+
+                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </motion.a>
+              ))}
+            </div>
+
+            <motion.a
+              href={SITE_CONFIG.socials.github.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full mt-2 py-3 rounded-2xl bg-foreground text-background font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              <Github className="w-4 h-4" />
+              <span>Explore {SITE_CONFIG.socials.github.handle}</span>
+            </motion.a>
+          </div>
+        </div>
+      </div>
+    </SectionWrapper>
+  );
+}
+
+export default GitHubActivitySection;
