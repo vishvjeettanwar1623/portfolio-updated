@@ -1,0 +1,259 @@
+/* ==========================================================================
+   Light Theme: Authentic Paper & Sketchbook UI Theme System
+   Option A: Warm Ivory Notebook Paper · Charcoal Pen Ink · Ruled Grid Lines
+   Strictly Monochrome / Warm Earthy Charcoal + Molten Highlighter
+   Automatically active when theme is "light" (html[data-theme="light"])
+   ========================================================================== */
+
+/* 1. Global Color Tokens for Light (Paper) Theme */
+html[data-theme="light"],
+html:not(.dark) {
+  --background: #f6f1e7 !important;
+  --foreground: #181d22 !important;
+  --text-primary: #181d22 !important;
+  --text-secondary: #4d5761 !important;
+  --accent: #e45710 !important;
+  --selection: rgba(228, 87, 16, 0.25) !important;
+
+  --color-night: #f6f1e7 !important;
+  --color-night-2: #fffdfa !important;
+  --color-gunmetal: #ded8cb !important;
+  --color-fog: #232930 !important;
+  --color-fog-dim: #5c6670 !important;
+  --color-mist: #eee8dc !important;
+  --color-background: #f6f1e7 !important;
+  --color-foreground: #181d22 !important;
+
+  --card: 40 30% 98% !important;
+  --card-foreground: 210 18% 12% !important;
+  --card-hsl: 40 30% 98% !important;
+  --card-foreground-hsl: 210 18% 12% !important;
+  --border-hsl: 38 18% 70% !important;
+  --input-hsl: 38 18% 70% !important;
+
+  color-scheme: light !important;
+}
+
+/* 2. Global Page Background: Ivory Paper with Engineering Quad Grid */
+html[data-theme="light"] body,
+html:not(.dark) body {
+  background-color: #f6f1e7 !important;
+  background-image:
+    linear-gradient(rgba(30, 42, 54, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 42, 54, 0.09) 1px, transparent 1px) !important;
+  background-size: 26px 26px !important;
+  background-position: -1px -1px !important;
+  color: #181d22 !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 3. Universal Handwritten Typography Across Every Single Element in Light Theme */
+html[data-theme="light"],
+html[data-theme="light"] body,
+html[data-theme="light"] *,
+html[data-theme="light"] *::before,
+html[data-theme="light"] *::after,
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) *,
+html:not(.dark) *::before,
+html:not(.dark) *::after {
+  font-family: 'Kalam', 'Caveat', cursive, sans-serif !important;
+}
+
+html[data-theme="light"],
+html:not(.dark) {
+  --font-sans: 'Kalam', 'Caveat', cursive, sans-serif !important;
+  --font-dm-sans: 'Kalam', 'Caveat', cursive, sans-serif !important;
+  --font-signika: 'Kalam', 'Caveat', cursive, sans-serif !important;
+  --font-audiowide: 'Kalam', 'Caveat', cursive, sans-serif !important;
+  --font-surgena: 'Kalam', 'Caveat', cursive, sans-serif !important;
+  --font-tektur: 'Kalam', 'Caveat', cursive, sans-serif !important;
+  --font-noto: 'Kalam', 'Caveat', cursive, sans-serif !important;
+}
+
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4,
+html[data-theme="light"] h5,
+html[data-theme="light"] h6,
+html[data-theme="light"] strong,
+html[data-theme="light"] b,
+html:not(.dark) h1,
+html:not(.dark) h2,
+html:not(.dark) h3,
+html:not(.dark) h4,
+html:not(.dark) h5,
+html:not(.dark) h6,
+html:not(.dark) strong,
+html:not(.dark) b {
+  font-weight: 700 !important;
+  color: #11161b !important;
+}
+
+/* 4. Notebook Paper Cards: Clean Cream Sheet with Ruled Lines & Hand-Drawn Borders */
+html[data-theme="light"] article,
+html[data-theme="light"] [data-slot="card"],
+html[data-theme="light"] .bento-card,
+html[data-theme="light"] .project-card,
+html[data-theme="light"] .experience-card,
+html[data-theme="light"] .skill-card,
+html:not(.dark) article,
+html:not(.dark) [data-slot="card"],
+html:not(.dark) .bento-card,
+html:not(.dark) .project-card,
+html:not(.dark) .experience-card,
+html:not(.dark) .skill-card {
+  position: relative;
+  background-color: #fffefb !important;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    rgba(35, 45, 55, 0.06) 28px
+  ) !important;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+  border: 1.8px solid #232930 !important;
+  box-shadow: 4px 6px 0px 0px rgba(35, 41, 48, 0.22) !important;
+  color: #181d22 !important;
+  transition: border-radius 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+/* Ensure text inside cards is deep charcoal ink */
+html[data-theme="light"] article p,
+html[data-theme="light"] [data-slot="card"] p,
+html[data-theme="light"] .text-muted-foreground,
+html:not(.dark) article p,
+html:not(.dark) [data-slot="card"] p,
+html:not(.dark) .text-muted-foreground {
+  color: #4a545e !important;
+}
+
+/* Interactive Desk Paper Hover: Pure shadow transition without layout shifts */
+html[data-theme="light"] article:hover,
+html[data-theme="light"] [data-slot="card"]:hover,
+html[data-theme="light"] .bento-card:hover,
+html[data-theme="light"] .project-card:hover,
+html[data-theme="light"] .experience-card:hover,
+html[data-theme="light"] .skill-card:hover,
+html:not(.dark) article:hover,
+html:not(.dark) [data-slot="card"]:hover,
+html:not(.dark) .bento-card:hover,
+html:not(.dark) .project-card:hover,
+html:not(.dark) .experience-card:hover,
+html:not(.dark) .skill-card:hover {
+  border-radius: 15px 225px 15px 255px/255px 15px 225px 15px !important;
+  box-shadow: 6px 8px 0px 0px rgba(228, 87, 16, 0.35) !important;
+}
+
+/* Complete Footer Stability Shield in Light Theme */
+html[data-theme="light"] footer,
+html:not(.dark) footer {
+  position: relative !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html[data-theme="light"] footer *,
+html:not(.dark) footer * {
+  background-image: none !important;
+}
+
+html[data-theme="light"] footer .pointer-events-none.absolute,
+html:not(.dark) footer .pointer-events-none.absolute {
+  position: absolute !important;
+}
+
+/* 5. Washi Tape Corners (Drafting Tape Pinning the Cards) */
+html[data-theme="light"] article::before,
+html[data-theme="light"] [data-slot="card"]::before,
+html[data-theme="light"] .bento-card::before,
+html[data-theme="light"] .project-card::before,
+html:not(.dark) article::before,
+html:not(.dark) [data-slot="card"]::before,
+html:not(.dark) .bento-card::before,
+html:not(.dark) .project-card::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 28px;
+  width: 54px;
+  height: 20px;
+  background: rgba(236, 224, 196, 0.88);
+  border: 1px dashed rgba(60, 50, 30, 0.25);
+  transform: rotate(-3deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* 6. Hand-Drawn Stamp Badges & Pills */
+html[data-theme="light"] span[class*="badge"],
+html[data-theme="light"] span[class*="rounded-full"][class*="border"],
+html[data-theme="light"] span[class*="rounded-md"][class*="border"],
+html:not(.dark) span[class*="badge"],
+html:not(.dark) span[class*="rounded-full"][class*="border"],
+html:not(.dark) span[class*="rounded-md"][class*="border"] {
+  background-color: #f3ede2 !important;
+  border: 1.6px solid #232930 !important;
+  color: #11161b !important;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+  transform: rotate(-0.8deg);
+  box-shadow: 1.5px 2px 0px 0px rgba(28, 34, 40, 0.15) !important;
+}
+
+/* 7. Hand-Drawn Navigation & Toggle Panels in Light Theme */
+html[data-theme="light"] .staggered-menu-panel,
+html:not(.dark) .staggered-menu-panel {
+  background-color: #f7f3eb !important;
+  border: 2px solid #232930 !important;
+  color: #181d22 !important;
+  box-shadow: -8px 0px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+html[data-theme="light"] .staggered-menu-panel a,
+html[data-theme="light"] .staggered-menu-panel span,
+html:not(.dark) .staggered-menu-panel a,
+html:not(.dark) .staggered-menu-panel span {
+  color: #181d22 !important;
+}
+
+html[data-theme="light"] .sm-season-btn,
+html:not(.dark) .sm-season-btn {
+  color: #4a545e !important;
+}
+
+html[data-theme="light"] .sm-season-btn-active,
+html:not(.dark) .sm-season-btn-active {
+  background-color: #232930 !important;
+  color: #f7f3eb !important;
+  box-shadow: 2px 3px 0px 0px rgba(228, 87, 16, 0.5) !important;
+}
+
+html[data-theme="light"] .sm-season-toggle,
+html:not(.dark) .sm-season-toggle {
+  background-color: #ece5d6 !important;
+  border: 1.5px dashed #4a545e !important;
+}
+
+/* 8. Wavy River Animation at the Bottom in Light Theme */
+html[data-theme="light"] .wavy-bg-layer,
+html:not(.dark) .wavy-bg-layer {
+  background-color: #eae3d2 !important;
+  box-shadow: inset 0 40px 50px rgba(50, 40, 25, 0.06) !important;
+}
+
+html[data-theme="light"] .wavy-bg-wave-1,
+html:not(.dark) .wavy-bg-wave-1 {
+  background-color: #f6f1e7 !important;
+}
+
+html[data-theme="light"] .wavy-bg-wave-2,
+html:not(.dark) .wavy-bg-wave-2 {
+  background-color: rgba(246, 241, 231, 0.85) !important;
+}
+
+html[data-theme="light"] .wavy-bg-wave-3,
+html:not(.dark) .wavy-bg-wave-3 {
+  background-color: rgba(246, 241, 231, 0.7) !important;
+}
